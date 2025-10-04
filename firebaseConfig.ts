@@ -6,12 +6,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAPwSLZV8HQ9fDCOv_Xi97vsBuDYgM16-M",
-  authDomain: "ats-cv-optimizer-3a741.firebaseapp.com",
-  projectId: "ats-cv-optimizer-3a741",
-  storageBucket: "ats-cv-optimizer-3a741.firebasestorage.app",
-  messagingSenderId: "621330035833",
-  appId: "1:621330035833:web:2272ebeb6e25de9dd110a8"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAPwSLZV8HQ9fDCOv_Xi97vsBuDYgM16-M",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "ats-cv-optimizer-3a741.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "ats-cv-optimizer-3a741",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "ats-cv-optimizer-3a741.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "621330035833",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:621330035833:web:2272ebeb6e25de9dd110a8"
 };
 
 // Initialize Firebase
