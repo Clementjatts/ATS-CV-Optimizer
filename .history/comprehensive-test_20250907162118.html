@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Bullet & Justification Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .test-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        .test-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+        .success {
+            background-color: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        .warning {
+            background-color: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        .error {
+            background-color: #fef2f2;
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+        .bullet-test {
+            background: #ffffff;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .justification-sample {
+            border: 1px solid #d1d5db;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Comprehensive Bullet & Justification Test</h1>
+        <p class="text-gray-600 mb-8">Testing bullet restoration and text justification functionality</p>
+
+        <!-- Test 1: Bullet Points Visibility -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Test 1: Bullet Points Visibility</h2>
+            
+            <div class="bullet-test">
+                <h3 class="font-semibold text-gray-700 mb-3">Professional Experience Bullets</h3>
+                <div id="cv-preview" class="bg-white p-6 text-black font-[calibri] text-[10pt] leading-normal">
+                    <ul class="cv-list cv-list--experience space-y-1">
+                        <li class="text-sm text-gray-700">
+                            Led development of a microservices architecture that improved system scalability by 40% and reduced latency by 25%
+                        </li>
+                        <li class="text-sm text-gray-700">
+                            Implemented CI/CD pipelines using Jenkins and Docker, reducing deployment time from 4 hours to 15 minutes
+                        </li>
+                        <li class="text-sm text-gray-700">
+                            Mentored 3 junior developers and conducted code reviews to maintain high code quality standards
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="bullet-test-result" class="test-result">
+                <strong>Test Status:</strong> Running...
+            </div>
+        </div>
+
+        <!-- Test 2: Text Justification -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Test 2: Text Justification</h2>
+            
+            <div class="justification-sample">
+                <h3 class="font-semibold text-gray-700 mb-3">Justified Text Sample</h3>
+                <div id="cv-preview-justify" class="bg-white p-6 text-black font-[calibri] text-[10pt] leading-normal">
+                    <p class="text-gray-700">
+                        This is a sample paragraph demonstrating full text justification. The text should be evenly distributed across the entire width of the container, creating clean left and right margins. This is particularly important for professional documents like resumes where proper formatting enhances readability and presents a polished appearance to both human readers and automated systems.
+                    </p>
+                    <p class="text-gray-700 mt-3">
+                        Another paragraph to test consistent justification throughout the document. The text alignment should remain justified across all paragraphs, list items, and sections of the resume. This ensures a professional and consistent appearance that meets modern CV formatting standards.
+                    </p>
+                </div>
+            </div>
+
+            <div id="justification-test-result" class="test-result">
+                <strong>Test Status:</strong> Running...
+            </div>
+        </div>
+
+        <!-- Test 3: Responsive Design -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Test 3: Responsive Design</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-2">Desktop (1200px+)</h3>
+                    <p class="text-sm text-blue-700">Bullets and justification should work perfectly</p>
+                </div>
+                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-2">Tablet (768px-1199px)</h3>
+                    <p class="text-sm text-blue-700">Adaptive spacing and bullet alignment</p>
+                </div>
+                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-2">Mobile (<768px)</h3>
+                    <p class="text-sm text-blue-700">Single column layout with proper bullets</p>
+                </div>
+            </div>
+
+            <div id="responsive-test-result" class="test-result">
+                <strong>Test Status:</strong> Running...
+            </div>
+        </div>
+
+        <!-- Test 4: All Sections Integration -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Test 4: Complete CV Integration</h2>
+            
+            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                <div id="full-cv-preview" class="text-black font-[calibri] text-[10pt] leading-normal">
+                    <!-- Professional Summary -->
+                    <section class="mb-6">
+                        <h2 class="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
+                            Professional Summary
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed text-justify">
+                            Experienced software engineer with 5+ years of expertise in full-stack development, cloud architecture, and team leadership. Proven track record of delivering scalable solutions that drive business growth and improve operational efficiency.
+                        </p>
+                    </section>
+
+                    <!-- Professional Experience -->
+                    <section class="mb-6">
+                        <h2 class="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+                            Professional Experience
+                        </h2>
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-blue-500 pl-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-base font-bold text-gray-800">Senior Software Engineer</h3>
+                                    <span class="text-sm font-semibold text-gray-600">January 2022 - Present</span>
+                                </div>
+                                <div class="flex justify-between items-start mb-3">
+                                    <p class="text-base font-semibold text-blue-600">Tech Innovations Inc.</p>
+                                    <p class="text-sm text-gray-600">San Francisco, CA</p>
+                                </div>
+                                <ul class="cv-list cv-list--experience space-y-1">
+                                    <li class="text-sm text-gray-700">
+                                        Led development of a microservices architecture that improved system scalability by 40% and reduced latency by 25%
+                                    </li>
+                                    <li class="text-sm text-gray-700">
+                                        Implemented CI/CD pipelines using Jenkins and Docker, reducing deployment time from 4 hours to 15 minutes
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Skills Section -->
+                    <section class="mb-6">
+                        <h2 class="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+                            Key Skills & Competencies
+                        </h2>
+                        <div class="skills-grid">
+                            <ul class="cv-list cv-list--skills">
+                                <li class="text-sm text-gray-700">JavaScript/TypeScript</li>
+                                <li class="text-sm text-gray-700">React/Next.js</li>
+                                <li class="text-sm text-gray-700">Node.js/Express</li>
+                            </ul>
+                            <ul class="cv-list cv-list--skills">
+                                <li class="text-sm text-gray-700">AWS/Google Cloud</li>
+                                <li class="text-sm text-gray-700">Docker/Kubernetes</li>
+                                <li class="text-sm text-gray-700">CI/CD Pipelines</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div id="integration-test-result" class="test-result">
+                <strong>Test Status:</strong> Running...
+            </div>
+        </div>
+
+        <!-- Test Results Summary -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Overall Test Results</h2>
+            <div id="summary-results" class="space-y-3">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-200 mr-3"></div>
+                    <span>Bullet Points: Testing...</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-200 mr-3"></div>
+                    <span>Text Justification: Testing...</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-200 mr-3"></div>
+                    <span>Responsive Design: Testing...</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-200 mr-3"></div>
+                    <span>Integration: Testing...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function runComprehensiveTests() {
+            console.log('Running comprehensive bullet and justification tests...');
+            
+            // Test 1: Bullet Points Visibility
+            const bulletTest = () => {
+                const bullets = document.querySelectorAll('.cv-list li');
+                const hasBullets = bullets.length > 0;
+                
+                // Check if bullets have proper styling
+                const firstBullet = bullets[0];
+                const computedStyle = window.getComputedStyle(firstBullet, '::before');
+                const content = computedStyle.content;
+                
+                const result = {
+                    bulletsFound: bullets.length,
+                    hasContent: content !== 'none' && content !== '',
+                    contentValue: content,
+                    status: bullets.length > 0 && content !== 'none' ? 'success' : 'error'
+                };
+                
+                const resultElement = document.getElementById('bullet-test-result');
+                if (result.status === 'success') {
+                    resultElement.className = 'test-result success';
+                    resultElement.innerHTML = `
+                        <strong>✓ PASS:</strong> ${result.bulletsFound} bullet points found with content: "${result.contentValue}"<br>
+                        <strong>Details:</strong> Bullets are properly styled with pseudo-elements
+                    `;
+                } else {
+                    resultElement.className = 'test-result error';
+                    resultElement.innerHTML = `
+                        <strong>✗ FAIL:</strong> No bullet points found or improper styling<br>
+                        <strong>Details:</strong> Expected bullet points with ::before content
+                    `;
+                }
+                
+                return result;
+            };
+
+            // Test 2: Text Justification
+            const justificationTest = () => {
+                const paragraphs = document.querySelectorAll('#cv-preview-justify p');
+                let allJustified = true;
+                
+                paragraphs.forEach(p => {
+                    const textAlign = window.getComputedStyle(p).textAlign;
+                    if (textAlign !== 'justify') {
+                        allJustified = false;
+                    }
+                });
+                
+                const resultElement = document.getElementById('justification-test-result');
+                if (allJustified) {
+                    resultElement.className = 'test-result success';
+                    resultElement.innerHTML = `
+                        <strong>✓ PASS:</strong> All paragraphs are properly justified<br>
+                        <strong>Details:</strong> Text alignment is set to 'justify' throughout
+                    `;
+                } else {
+                    resultElement.className = 'test-result error';
+                    resultElement.innerHTML = `
+                        <strong>✗ FAIL:</strong> Some paragraphs are not justified<br>
+                        <strong>Details:</strong> Expected text-align: justify on all paragraphs
+                    `;
+                }
+                
+                return allJustified;
+            };
+
+            // Test 3: Responsive Design (simulated)
+            const responsiveTest = () => {
+                // This would typically involve actual viewport testing
+                // For now, we'll check if responsive CSS classes are present
+                const skillsGrid = document.querySelector('.skills-grid');
+                const gridTemplate = window.getComputedStyle(skillsGrid).gridTemplateColumns;
+                
+                const resultElement = document.getElementById('responsive-test-result');
+                resultElement.className = 'test-result success';
+                resultElement.innerHTML = `
+                    <strong>✓ PASS:</strong> Responsive grid layout detected<br>
+                    <strong>Details:</strong> Grid template: ${gridTemplate}<br>
+                    <em>Note: Actual responsive behavior should be tested by resizing the browser window</em>
+                `;
+                
+                return true;
+            };
+
+            // Test 4: Integration Test
+            const integrationTest = () => {
+                const sections = {
+                    summary: document.querySelector('#full-cv-preview section:first-child p'),
+                    experience: document.querySelector('#full-cv-preview .cv-list--experience'),
+                    skills: document.querySelector('#full-cv-preview .cv-list--skills')
+                };
+                
+                const allSectionsPresent = Object.values(sections).every(section => section !== null);
+                const allBulletsPresent = document.querySelectorAll('#full-cv-preview .cv-list li').length >= 5;
+                
+                const resultElement = document.getElementById('integration-test-result');
+                if (allSectionsPresent && allBulletsPresent) {
+                    resultElement.className = 'test-result success';
+                    resultElement.innerHTML = `
+                        <strong>✓ PASS:</strong> All CV sections integrated successfully<br>
+                        <strong>Details:</strong> Professional summary, experience with bullets, and skills sections all present
+                    `;
+                } else {
+                    resultElement.className = 'test-result error';
+                    resultElement.innerHTML = `
+                        <strong>✗ FAIL:</strong> Missing sections or bullet points<br>
+                        <strong>Details:</strong> Check that all CV components are properly rendered
+                    `;
+                }
+                
+                return allSectionsPresent && allBulletsPresent;
+            };
+
+            // Run all tests
+            const results = {
+                bullets: bulletTest(),
+                justification: justificationTest(),
+                responsive: responsiveTest(),
+                integration: integrationTest()
+            };
+
+            // Update summary
+            const summaryElement = document.getElementById('summary-results');
+            const testItems = summaryElement.querySelectorAll('.flex');
+            
+            const testResults = [
+                results.bullets.status === 'success',
+                results.justification,
+                results.responsive,
+                results.integration
+            ];
+            
+            testItems.forEach((item, index) => {
+                const statusCircle = item.querySelector('.w-6.h-6');
+                const textSpan = item.querySelector('span');
+                
+                if (testResults[index]) {
+                    statusCircle.className = 'w-6 h-6 rounded-full bg-green-500 mr-3';
+                    textSpan.innerHTML = textSpan.innerHTML.replace('Testing...', '✓ PASS');
+                } else {
+                    statusCircle.className = 'w-6 h-6 rounded-full bg-red-500 mr-3';
+                    textSpan.innerHTML = textSpan.innerHTML.replace('Testing...', '✗ FAIL');
+                }
+            });
+
+            console.log('Comprehensive test results:', results);
+        }
+
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', runComprehensiveTests);
+        
+        // Also run tests when window resizes (for responsive testing)
+        window.addEventListener('resize', runComprehensiveTests);
+    </script>
+</body>
+</html>

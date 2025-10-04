@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Justification Test - ATS CV Optimizer</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .test-result {
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            background-color: #d4edda !important;
+            color: #155724;
+            border-color: #c3e6cb !important;
+        }
+        .warning {
+            background-color: #fff3cd !important;
+            color: #856404;
+            border-color: #ffeaa7 !important;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .cv-preview {
+            border: 2px dashed #007bff;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Full Justification Implementation Test</h1>
+        <p>This test verifies that the full justification CSS implementation works correctly across all resume sections.</p>
+        
+        <button class="button" onclick="runTests()">Run Justification Tests</button>
+        <button class="button" onclick="showSampleCV()">Show Sample CV Preview</button>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">Test Results</div>
+        <div id="test-results" class="test-result">
+            Click "Run Justification Tests" to see results...
+        </div>
+    </div>
+
+    <div class="test-section" id="sample-cv-section" style="display: none;">
+        <div class="test-title">Sample CV Preview with Justification</div>
+        <div id="cv-preview" class="cv-preview">
+            <!-- CV content will be inserted here -->
+        </div>
+    </div>
+
+    <script src="test-full-justification.js"></script>
+    <script>
+        function runTests() {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.textContent = "Running tests...";
+            
+            setTimeout(() => {
+                try {
+                    const result = testJustification();
+                    resultsDiv.textContent = "=== TEST RESULTS ===\n\n";
+                    
+                    // Capture console output
+                    const originalLog = console.log;
+                    let testOutput = "";
+                    console.log = function(message) {
+                        testOutput += message + "\n";
+                        originalLog.apply(console, arguments);
+                    };
+                    
+                    // Run the test
+                    testJustification();
+                    
+                    console.log = originalLog;
+                    resultsDiv.textContent += testOutput;
+                    
+                    if (result) {
+                        resultsDiv.className = 'test-result success';
+                    } else {
+                        resultsDiv.className = 'test-result warning';
+                    }
+                    
+                } catch (error) {
+                    resultsDiv.textContent = "Error running tests: " + error.message;
+                    resultsDiv.className = 'test-result warning';
+                }
+            }, 100);
+        }
+
+        function showSampleCV() {
+            const section = document.getElementById('sample-cv-section');
+            const preview = document.getElementById('cv-preview');
+            
+            if (section.style.display === 'none') {
+                // Create sample CV content
+                preview.innerHTML = `
+                    <header style="text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
+                        <h1 style="font-size: 24px; font-weight: bold; margin: 0;">${sampleCvData.fullName}</h1>
+                        <div style="margin-top: 10px;">
+                            <span>${sampleCvData.contactInfo.email}</span> • 
+                            <span>${sampleCvData.contactInfo.phone}</span> • 
+                            <span>${sampleCvData.contactInfo.location}</span>
+                        </div>
+                    </header>
+
+                    <section style="margin-bottom: 20px;">
+                        <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Professional Summary</h2>
+                        <p class="text-justify">${sampleCvData.professionalSummary}</p>
+                    </section>
+
+                    <section style="margin-bottom: 20px;">
+                        <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Professional Experience</h2>
+                        ${sampleCvData.workExperience.map(job => `
+                            <div style="margin-bottom: 15px;">
+                                <h3 style="font-size: 16px; font-weight: bold; margin: 0;">${job.jobTitle}</h3>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span style="font-weight: bold;">${job.company}</span>
+                                    <span>${job.dates}</span>
+                                </div>
+                                <ul class="cv-list cv-list--experience">
+                                    ${job.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <section style="margin-bottom: 20px;">
+                        <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Skills</h2>
+                        <ul class="cv-list cv-list--skills">
+                            ${sampleCvData.skills.map(skill => `<li>${skill}</li>`).join('')}
+                        </ul>
+                    </section>
+                `;
+                
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        // Auto-run tests on page load for quick feedback
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Justification test page loaded. Ready to run tests.");
+        });
+    </script>
+</body>
+</html>

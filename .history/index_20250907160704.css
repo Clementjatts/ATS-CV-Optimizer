@@ -1,0 +1,317 @@
+/* ATS CV Optimizer - Bullet Point Alignment Fixes */
+/* Comprehensive solution for consistent bullet alignment across screen sizes and PDF generation */
+
+/* Base CV styling with improved bullet alignment and full text justification */
+#cv-preview {
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 10pt;
+  line-height: 1.4;
+}
+
+/* Full text justification for all body text content */
+#cv-preview {
+  text-align: justify;
+  word-spacing: -0.05em; /* Slightly reduce word spacing for better readability */
+  line-height: 1.5; /* Improved line height for readability */
+}
+
+/* Professional summary - already has text-justify class in component */
+#cv-preview .text-justify {
+  text-align: justify;
+  line-height: 1.5;
+  word-spacing: -0.05em;
+}
+
+/* Professional experience descriptions */
+#cv-preview .cv-list--experience li {
+  text-align: justify;
+  line-height: 1.5;
+  word-spacing: -0.05em;
+}
+
+/* Skills section text */
+#cv-preview .cv-list--skills li {
+  text-align: justify;
+  line-height: 1.5;
+  word-spacing: -0.05em;
+}
+
+/* All paragraph text throughout the CV */
+#cv-preview p:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
+  text-align: justify;
+  line-height: 1.5;
+  word-spacing: -0.05em;
+}
+
+/* List items throughout the CV */
+#cv-preview li:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
+  text-align: justify;
+  line-height: 1.5;
+  word-spacing: -0.05em;
+}
+
+/* Education, certifications, and other section text */
+#cv-preview section > div > p,
+#cv-preview section > div > div > p,
+#cv-preview .text-sm:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]),
+#cv-preview .text-xs:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
+  text-align: justify;
+  line-height: 1.5;
+  word-spacing: -0.05em;
+}
+
+/* Headers and structural elements remain left-aligned for better readability */
+#cv-preview h1,
+#cv-preview h2,
+#cv-preview h3,
+#cv-preview h4,
+#cv-preview h5,
+#cv-preview h6,
+#cv-preview [class*="font-bold"],
+#cv-preview [class*="font-semibold"],
+#cv-preview [class*="text-center"],
+#cv-preview [class*="text-left"],
+#cv-preview [class*="flex"],
+#cv-preview [class*="justify"],
+#cv-preview [class*="items"] {
+  text-align: left !important;
+  word-spacing: normal;
+  line-height: normal;
+}
+
+/* PDF generation compatibility - ensure justification works in print */
+@media print {
+  #cv-preview {
+    text-align: justify;
+    word-spacing: -0.05em;
+    line-height: 1.5;
+  }
+  
+  #cv-preview p,
+  #cv-preview li {
+    text-align: justify;
+    line-height: 1.5;
+    word-spacing: -0.05em;
+  }
+  
+  #cv-preview h1,
+  #cv-preview h2,
+  #cv-preview h3,
+  #cv-preview h4,
+  #cv-preview h5,
+  #cv-preview h6 {
+    text-align: left;
+    word-spacing: normal;
+  }
+}
+
+/* Semantic list styling for consistent bullet alignment */
+.cv-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cv-list li {
+  position: relative;
+  padding-left: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.cv-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #3b82f6; /* blue-500 */
+  font-weight: bold;
+  top: 0.1em; /* Better vertical alignment than mt-1 */
+}
+
+/* Specific list variants for different sections */
+.cv-list--skills li::before {
+  color: #3b82f6; /* blue-500 */
+}
+
+.cv-list--experience li::before {
+  color: #3b82f6; /* blue-500 */
+}
+
+.cv-list--optimization li::before {
+  color: inherit; /* Inherit from parent context */
+}
+
+/* Optimization analysis section specific styling */
+.optimization-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.optimization-list li {
+  position: relative;
+  padding-left: 1.2rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+}
+
+.optimization-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+  top: 0.15em; /* Optimized for smaller text in analysis sections */
+}
+
+/* Color variants for optimization sections */
+.optimization-list--blue li::before {
+  color: #3b82f6; /* blue-500 */
+}
+
+.optimization-list--purple li::before {
+  color: #8b5cf6; /* purple-500 */
+}
+
+.optimization-list--teal li::before {
+  color: #14b8a6; /* teal-500 */
+}
+
+.optimization-list--rose li::before {
+  color: #f43f5e; /* rose-500 */
+}
+
+.optimization-list--amber li::before {
+  color: #f59e0b; /* amber-500 */
+}
+
+/* Grid layout for skills section with proper list semantics */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 2rem;
+  align-items: start;
+}
+
+.skills-grid .cv-list {
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure proper bullet alignment in grid layout */
+.skills-grid .cv-list li {
+  padding-left: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.skills-grid .cv-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #3b82f6;
+  font-weight: bold;
+  top: 0.1em;
+}
+
+/* PDF generation compatibility fixes */
+@media print {
+  .cv-list li::before,
+  .optimization-list li::before {
+    top: 0.12em; /* Slightly adjusted for PDF rendering */
+    font-size: 95%; /* Better PDF compatibility */
+  }
+  
+  /* Ensure proper spacing in PDF */
+  .cv-list li {
+    page-break-inside: avoid;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cv-list li {
+    padding-left: 1rem;
+  }
+  
+  .optimization-list li {
+    padding-left: 1rem;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+  
+  /* Mobile-specific adjustments for two-column layout */
+  .skills-grid .cv-list li {
+    padding-left: 1rem;
+  }
+  
+  .skills-grid .cv-list li::before {
+    top: 0.12em;
+  }
+}
+
+/* High DPI screen adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .cv-list li::before,
+  .optimization-list li::before {
+    top: 0.13em; /* Fine-tuned for high DPI displays */
+  }
+}
+
+/* Fallback for browsers that don't support pseudo-elements well */
+.cv-list-fallback {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.cv-list-fallback__bullet {
+  color: #3b82f6;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 0.15em; /* Better than mt-1 for most scenarios */
+}
+
+.cv-list-fallback__content {
+  flex: 1;
+}
+/* Additional fine-tuning for full justification readability */
+#cv-preview {
+  hyphens: auto; /* Enable hyphenation for better word breaks */
+  -webkit-text-rendering: optimizeLegibility; /* Improve text rendering for WebKit */
+  text-rendering: optimizeLegibility; /* Improve text rendering */
+}
+
+/* Prevent justification from creating awkward spacing in short lines */
+#cv-preview p:last-child,
+#cv-preview li:last-child {
+  text-align-last: left; /* Left-align the last line for better appearance */
+}
+
+/* Ensure proper spacing in justified text with bullets */
+#cv-preview .cv-list li,
+#cv-preview .optimization-list li {
+  text-indent: -1.2rem; /* Compensate for bullet padding in justified text */
+  padding-left: 1.2rem;
+}
+
+/* Responsive adjustments for justified text */
+@media (max-width: 768px) {
+  #cv-preview {
+    word-spacing: -0.03em; /* Slightly less word spacing on mobile */
+    line-height: 1.4; /* Slightly tighter line height on mobile */
+  }
+  
+  #cv-preview p,
+  #cv-preview li {
+    word-spacing: -0.03em;
+    line-height: 1.4;
+  }
+}
+
+/* High DPI screen adjustments for justified text */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  #cv-preview {
+    word-spacing: -0.04em; /* Fine-tuned for high DPI displays */
+  }
+}

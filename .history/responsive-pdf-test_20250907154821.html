@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive & PDF Justification Test</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .test-result {
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            background-color: #d4edda !important;
+            color: #155724;
+            border-color: #c3e6cb !important;
+        }
+        .warning {
+            background-color: #fff3cd !important;
+            color: #856404;
+            border-color: #ffeaa7 !important;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .screen-size {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px;
+            font-family: monospace;
+        }
+        .cv-container {
+            border: 2px dashed #007bff;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: #f8f9fa;
+            overflow: auto;
+        }
+        .responsive-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Responsive & PDF Justification Test</h1>
+        <p>Test the full justification implementation across different screen sizes and verify PDF compatibility.</p>
+        
+        <button class="button" onclick="testResponsiveBehavior()">Test Responsive Behavior</button>
+        <button class="button" onclick="testPDFCompatibility()">Test PDF Compatibility</button>
+        <button class="button" onclick="testPrintMediaQueries()">Test Print Media Queries</button>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">Responsive Testing</div>
+        <div class="responsive-controls">
+            <button class="button" onclick="setScreenSize(1200)">Desktop (1200px)</button>
+            <button class="button" onclick="setScreenSize(768)">Tablet (768px)</button>
+            <button class="button" onclick="setScreenSize(480)">Mobile (480px)</button>
+            <button class="button" onclick="resetScreenSize()">Reset Size</button>
+        </div>
+        <div id="responsive-results" class="test-result">
+            Select a screen size to test responsive behavior...
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">PDF & Print Compatibility Test</div>
+        <div id="pdf-results" class="test-result">
+            Click "Test PDF Compatibility" to verify print media queries...
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">CV Preview (Resize to test responsive behavior)</div>
+        <div class="cv-container" id="responsive-cv-preview">
+            <div id="cv-preview">
+                <!-- CV content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample CV data
+        const sampleCvData = {
+            fullName: "John Doe",
+            professionalSummary: "Experienced software engineer with 8+ years in full-stack development, specializing in React, Node.js, and cloud infrastructure. Proven track record of delivering scalable solutions that improve performance and reduce operational costs. Strong background in agile methodologies and cross-functional team leadership.",
+            workExperience: [
+                {
+                    jobTitle: "Senior Software Engineer",
+                    company: "Tech Innovations Inc.",
+                    responsibilities: [
+                        "Led the development of a microservices architecture that improved system scalability by 200% and reduced response times by 40%",
+                        "Implemented CI/CD pipelines using Jenkins and Docker, reducing deployment time from 4 hours to 15 minutes",
+                        "Mentored junior developers and conducted code reviews, improving team productivity and code quality standards"
+                    ]
+                }
+            ],
+            skills: [
+                "JavaScript (ES6+)", "TypeScript", "React", "Node.js", "Python", 
+                "AWS", "Docker", "Kubernetes", "CI/CD", "Microservices"
+            ]
+        };
+
+        // Initialize CV preview
+        function initCVPreview() {
+            const preview = document.getElementById('cv-preview');
+            preview.innerHTML = `
+                <header style="text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
+                    <h1 style="font-size: 24px; font-weight: bold; margin: 0;">${sampleCvData.fullName}</h1>
+                </header>
+
+                <section style="margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Professional Summary</h2>
+                    <p class="text-justify">${sampleCvData.professionalSummary}</p>
+                </section>
+
+                <section style="margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Professional Experience</h2>
+                    ${sampleCvData.workExperience.map(job => `
+                        <div style="margin-bottom: 15px;">
+                            <h3 style="font-size: 16px; font-weight: bold; margin: 0;">${job.jobTitle}</h3>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-weight: bold;">${job.company}</span>
+                            </div>
+                            <ul class="cv-list cv-list--experience">
+                                ${job.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `).join('')}
+                </section>
+
+                <section style="margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Skills</h2>
+                    <ul class="cv-list cv-list--skills">
+                        ${sampleCvData.skills.map(skill => `<li>${skill}</li>`).join('')}
+                    </ul>
+                </section>
+            `;
+        }
+
+        // Test responsive behavior
+        function testResponsiveBehavior() {
+            const resultsDiv = document.getElementById('responsive-results');
+            resultsDiv.textContent = "Testing responsive behavior...\n\n";
+            
+            // Test different screen sizes
+            const sizes = [1200, 768, 480];
+            let allTestsPassed = true;
+            let testResults = "";
+            
+            sizes.forEach(size => {
+                setScreenSize(size);
+                
+                // Wait for resize to take effect
+                setTimeout(() => {
+                    const cvPreview = document.getElementById('cv-preview');
+                    const style = window.getComputedStyle(cvPreview);
+                    
+                    // Check if justification is maintained
+                    const isJustified = style.textAlign === 'justify';
+                    const wordSpacing = style.wordSpacing;
+                    const lineHeight = style.lineHeight;
+                    
+                    const testPassed = isJustified;
+                    allTestsPassed = allTestsPassed && testPassed;
+                    
+                    testResults += `Screen: ${size}px - Justified: ${testPassed ? '✓' : '✗'} | Word Spacing: ${wordSpacing} | Line Height: ${lineHeight}\n`;
+                    
+                    if (size === 480) {
+                        // Final results
+                        resultsDiv.textContent += testResults;
+                        resultsDiv.textContent += `\nOverall Result: ${allTestsPassed ? '✓ ALL TESTS PASSED' : '✗ SOME TESTS FAILED'}`;
+                        
+                        if (allTestsPassed) {
+                            resultsDiv.className = 'test-result success';
+                        } else {
+                            resultsDiv.className = 'test-result warning';
+                        }
+                        
+                        resetScreenSize();
+                    }
+                }, 100);
+            });
+        }
+
+        // Test PDF compatibility
+        function testPDFCompatibility() {
+            const resultsDiv = document.getElementById('pdf-results');
+            resultsDiv.textContent = "Testing PDF/Print compatibility...\n\n";
+            
+            // Check print media queries
+            const styleSheets = document.styleSheets;
+            let printMediaFound = false;
+            let printRules = [];
+            
+            for (let i = 0; i < styleSheets.length; i++) {
+                const sheet = styleSheets[i];
+                try {
+                    const rules = sheet.cssRules || sheet.rules;
+                    for (let j = 0; j < rules.length; j++) {
+                        const rule = rules[j];
+                        if (rule.media && rule.media.mediaText.includes('print')) {
+                            printMediaFound = true;
+                            printRules.push(`Found print media query with ${rule.cssRules.length} rules`);
+                        }
+                    }
+                } catch (e) {
+                    // Cross-origin stylesheet, skip
+                }
+            }
+            
+            if (printMediaFound) {
+                resultsDiv.textContent += "✓ Print media queries found\n";
+                printRules.forEach(rule => {
+                    resultsDiv.textContent += `  ${rule}\n`;
+                });
+                resultsDiv.textContent += "\n✓ PDF compatibility appears to be implemented";
+                resultsDiv.className = 'test-result success';
+            } else {
+                resultsDiv.textContent += "✗ No print media queries found\n";
+                resultsDiv.textContent += "✗ PDF compatibility may not work correctly";
+                resultsDiv.className = 'test-result warning';
+            }
+        }
+
+        // Test print media queries specifically
+        function testPrintMediaQueries() {
+            const resultsDiv = document.getElementById('pdf-results');
+            resultsDiv.textContent = "Testing specific print media query rules...\n\n";
+            
+            // Create a test element to check print styles
+            const testElement = document.createElement('div');
+            testElement.id = 'cv-preview-test';
+            testElement.style.display = 'none';
+            document.body.appendChild(testElement);
+            
+            // Check if print styles would apply
+            let testsPassed = 0;
+            let totalTests = 0;
+            
+            // Test specific print styles
+            const testStyles = [
+                'textAlign',
+                'wordSpacing', 
+                'lineHeight'
+            ];
+            
+            testStyles.forEach(styleProp => {
+                totalTests++;
+                // This is a simplified test - actual print styles would need print simulation
+                const hasPrintMedia = hasStyleForPrint(styleProp);
+                if (hasPrintMedia) {
+                    testsPassed++;
+                    resultsDiv.textContent += `✓ Print style for ${styleProp} is defined\n`;
+                } else {
+                    resultsDiv.textContent += `✗ No print style for ${styleProp}\n`;
+                }
+            });
+            
+            document.body.removeChild(testElement);
+            
+            resultsDiv.textContent += `\nResult: ${testsPassed}/${totalTests} print style tests passed`;
+            
+            if (testsPassed === totalTests) {
+                resultsDiv.className = 'test-result success';
+            } else {
+                resultsDiv.className = 'test-result warning';
+            }
+        }
+
+        function hasStyleForPrint(styleProp) {
+            // Check if the style sheet has print media queries for cv-preview
+            const styleSheets = document.styleSheets;
+            for (let i = 0; i < styleSheets.length; i++) {
+                const sheet = styleSheets[i];
+                try {
+                    const rules = sheet.cssRules || sheet.rules;
+                    for (let j = 0; j < rules.length; j++) {
+                        const rule = rules[j];
+                        if (rule.media && rule.media.mediaText.includes('print')) {
+                            for (let k = 0; k < rule.cssRules.length; k++) {
+                                const cssRule = rule.cssRules[k];
+                                if (cssRule.selectorText && cssRule.selectorText.includes('#cv-preview') && 
+                                    cssRule.style[styleProp]) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                } catch (e) {
+                    // Skip cross-origin stylesheets
+                }
+            }
+            return false;
+        }
+
+        function setScreenSize(width) {
+            const container = document.getElementById('responsive-cv-preview');
+            container.style.width = width + 'px';
+            container.style.margin = '20px auto';
+            document.getElementById('responsive-results').textContent = `Testing at ${width}px width...`;
+        }
+
+        function resetScreenSize() {
+            const container = document.getElementById('responsive-cv-preview');
+            container.style.width = '';
+            container.style.margin = '20px 0';
+            document.getElementById('responsive-results').textContent = 'Screen size reset to default';
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            initCVPreview();
+            console.log("Responsive and PDF test page loaded");
+        });
+    </script>
+</body>
+</html>

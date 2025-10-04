@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justification Test</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .test-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .justification-status {
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Full Justification Implementation Test</h1>
+        
+        <div class="test-section">
+            <div class="test-title">1. Professional Summary Section</div>
+            <div id="cv-preview">
+                <p class="text-justify">This is a test professional summary paragraph that should be fully justified. It contains enough text to demonstrate the justification behavior across multiple lines. The text should be evenly distributed between both margins, creating clean edges on both sides of the paragraph.</p>
+            </div>
+            <div class="justification-status success" id="summary-status">
+                Testing justification...
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">2. Professional Experience Section</div>
+            <div id="cv-preview">
+                <ul class="cv-list cv-list--experience">
+                    <li>Managed cross-functional teams to deliver complex software projects on time and within budget, ensuring high-quality standards and client satisfaction throughout the development lifecycle.</li>
+                    <li>Implemented agile methodologies and continuous integration practices, resulting in a 40% reduction in deployment time and improved team collaboration across distributed environments.</li>
+                    <li>Led the design and architecture of scalable microservices infrastructure, optimizing system performance and reducing operational costs by 25% through efficient resource allocation.</li>
+                </ul>
+            </div>
+            <div class="justification-status success" id="experience-status">
+                Testing justification...
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">3. Skills Section</div>
+            <div id="cv-preview">
+                <ul class="cv-list cv-list--skills">
+                    <li>JavaScript (ES6+), TypeScript, React, Node.js, Python, Java, SQL, NoSQL databases</li>
+                    <li>Cloud platforms: AWS, Azure, Google Cloud Platform with expertise in containerization and serverless architectures</li>
+                    <li>DevOps tools: Docker, Kubernetes, Jenkins, GitLab CI/CD, Terraform, Ansible for infrastructure automation</li>
+                </ul>
+            </div>
+            <div class="justification-status success" id="skills-status">
+                Testing justification...
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">4. Regular Paragraph Text</div>
+            <div id="cv-preview">
+                <p>This is a regular paragraph that should also be fully justified according to the CSS rules. It demonstrates how standard paragraph text behaves with the justification implementation, showing consistent spacing and alignment throughout the document structure.</p>
+            </div>
+            <div class="justification-status success" id="paragraph-status">
+                Testing justification...
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">5. Headers (Should Remain Left-Aligned)</div>
+            <div id="cv-preview">
+                <h2>This Header Should Be Left-Aligned</h2>
+                <h3>Subheader Also Left-Aligned</h3>
+                <p class="font-bold">Bold text that should remain left-aligned as well</p>
+            </div>
+            <div class="justification-status success" id="headers-status">
+                Testing left alignment...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testJustification() {
+            // Test professional summary
+            const summaryPara = document.querySelector('.text-justify');
+            const summaryStyle = window.getComputedStyle(summaryPara);
+            if (summaryStyle.textAlign === 'justify') {
+                document.getElementById('summary-status').textContent = '✓ Professional summary is properly justified';
+            } else {
+                document.getElementById('summary-status').textContent = '✗ Professional summary is not justified';
+                document.getElementById('summary-status').className = 'justification-status warning';
+            }
+
+            // Test experience list items
+            const experienceItems = document.querySelectorAll('.cv-list--experience li');
+            let experiencePass = true;
+            experienceItems.forEach(item => {
+                const style = window.getComputedStyle(item);
+                if (style.textAlign !== 'justify') {
+                    experiencePass = false;
+                }
+            });
+            document.getElementById('experience-status').textContent = experiencePass ? 
+                '✓ Experience items are properly justified' : 
+                '✗ Some experience items are not justified';
+            if (!experiencePass) {
+                document.getElementById('experience-status').className = 'justification-status warning';
+            }
+
+            // Test skills list items
+            const skillsItems = document.querySelectorAll('.cv-list--skills li');
+            let skillsPass = true;
+            skillsItems.forEach(item => {
+                const style = window.getComputedStyle(item);
+                if (style.textAlign !== 'justify') {
+                    skillsPass = false;
+                }
+            });
+            document.getElementById('skills-status').textContent = skillsPass ? 
+                '✓ Skills items are properly justified' : 
+                '✗ Some skills items are not justified';
+            if (!skillsPass) {
+                document.getElementById('skills-status').className = 'justification-status warning';
+            }
+
+            // Test regular paragraphs
+            const paragraphs = document.querySelectorAll('#cv-preview p:not([class])');
+            let paragraphPass = true;
+            paragraphs.forEach(p => {
+                const style = window.getComputedStyle(p);
+                if (style.textAlign !== 'justify') {
+                    paragraphPass = false;
+                }
+            });
+            document.getElementById('paragraph-status').textContent = paragraphPass ? 
+                '✓ Regular paragraphs are properly justified' : 
+                '✗ Some paragraphs are not justified';
+            if (!paragraphPass) {
+                document.getElementById('paragraph-status').className = 'justification-status warning';
+            }
+
+            // Test headers (should be left-aligned)
+            const headers = document.querySelectorAll('#cv-preview h2, #cv-preview h3, #cv-preview .font-bold');
+            let headersPass = true;
+            headers.forEach(header => {
+                const style = window.getComputedStyle(header);
+                if (style.textAlign !== 'left') {
+                    headersPass = false;
+                }
+            });
+            document.getElementById('headers-status').textContent = headersPass ? 
+                '✓ Headers are properly left-aligned' : 
+                '✗ Some headers are not left-aligned';
+            if (!headersPass) {
+                document.getElementById('headers-status').className = 'justification-status warning';
+            }
+        }
+
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', testJustification);
+    </script>
+</body>
+</html>

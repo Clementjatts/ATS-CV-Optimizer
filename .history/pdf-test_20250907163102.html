@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Generation Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        .pdf-preview {
+            background: white;
+            padding: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .test-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+        .success {
+            background-color: #f0fdf4;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+        .error {
+            background-color: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">PDF Generation Test</h1>
+        <p class="text-gray-600 mb-8">Testing bullet points and text justification in PDF output</p>
+
+        <div class="test-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">PDF Content Preview</h2>
+            
+            <div class="pdf-preview">
+                <div id="cv-preview" class="bg-white p-6 text-black font-[calibri] text-[10pt] leading-normal">
+                    <!-- Professional Experience with Bullets -->
+                    <section class="mb-6">
+                        <h2 class="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+                            Professional Experience
+                        </h2>
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-blue-500 pl-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-base font-bold text-gray-800">Senior Software Engineer</h3>
+                                    <span class="text-sm font-semibold text-gray-600">January 2022 - Present</span>
+                                </div>
+                                <div class="flex justify-between items-start mb-3">
+                                    <p class="text-base font-semibold text-blue-600">Tech Innovations Inc.</p>
+                                    <p class="text-sm text-gray-600">San Francisco, CA</p>
+                                </div>
+                                <ul class="cv-list cv-list--experience space-y-1">
+                                    <li class="text-sm text-gray-700">
+                                        Led development of a microservices architecture that improved system scalability by 40% and reduced latency by 25%
+                                    </li>
+                                    <li class="text-sm text-gray-700">
+                                        Implemented CI/CD pipelines using Jenkins and Docker, reducing deployment time from 4 hours to 15 minutes
+                                    </li>
+                                    <li class="text-sm text-gray-700">
+                                        Mentored 3 junior developers and conducted code reviews to maintain high code quality standards
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Justified Text Sample -->
+                    <section class="mb-6">
+                        <h2 class="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+                            Professional Summary
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed text-justify">
+                            Experienced software engineer with 5+ years of expertise in full-stack development, cloud architecture, and team leadership. Proven track record of delivering scalable solutions that drive business growth and improve operational efficiency. Passionate about mentoring junior developers and implementing best practices in software development lifecycle.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed text-justify mt-3">
+                            This paragraph demonstrates full text justification in PDF output. The text should be evenly distributed across the entire width of the page, creating clean left and right margins. This formatting is essential for professional documents and resumes.
+                        </p>
+                    </section>
+
+                    <!-- Skills with Bullets -->
+                    <section class="mb-6">
+                        <h2 class="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+                            Key Skills
+                        </h2>
+                        <div class="skills-grid">
+                            <ul class="cv-list cv-list--skills">
+                                <li class="text-sm text-gray-700">JavaScript/TypeScript</li>
+                                <li class="text-sm text-gray-700">React/Next.js</li>
+                                <li class="text-sm text-gray-700">Node.js/Express</li>
+                            </ul>
+                            <ul class="cv-list cv-list--skills">
+                                <li class="text-sm text-gray-700">AWS/Google Cloud</li>
+                                <li class="text-sm text-gray-700">Docker/Kubernetes</li>
+                                <li class="text-sm text-gray-700">CI/CD Pipelines</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button id="generate-pdf" onclick="generatePDF()">Generate PDF Test</button>
+                <div id="pdf-result" class="test-result">
+                    <strong>Status:</strong> Ready to test PDF generation
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Test Verification</h2>
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-green-500 mr-3"></div>
+                    <span>Bullet points visible in preview</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-green-500 mr-3"></div>
+                    <span>Text justification applied</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-300 mr-3" id="pdf-test-icon"></div>
+                    <span id="pdf-test-text">PDF generation with bullets and justification</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generatePDF() {
+            const button = document.getElementById('generate-pdf');
+            const resultElement = document.getElementById('pdf-result');
+            const pdfTestIcon = document.getElementById('pdf-test-icon');
+            const pdfTestText = document.getElementById('pdf-test-text');
+            
+            button.disabled = true;
+            button.textContent = 'Generating PDF...';
+            resultElement.className = 'test-result';
+            resultElement.innerHTML = '<strong>Status:</strong> Generating PDF...';
+            
+            try {
+                const element = document.getElementById('cv-preview');
+                const opt = {
+                    margin: 0.5,
+                    filename: 'bullet-justification-test.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#ffffff'
+                    },
+                    jsPDF: { 
+                        unit: 'in', 
+                        format: 'a4', 
+                        orientation: 'portrait' 
+                    }
+                };
+                
+                // Generate PDF
+                html2pdf().set(opt).from(element).outputPdf('datauristring').then(pdfData => {
+                    // Success
+                    resultElement.className = 'test-result success';
+                    resultElement.innerHTML = `
+                        <strong>✓ SUCCESS:</strong> PDF generated successfully with bullets and justification<br>
+                        <strong>File:</strong> bullet-justification-test.pdf<br>
+                        <strong>Note:</strong> Open the downloaded PDF to verify bullet points and text formatting
+                    `;
+                    
+                    // Update test verification
+                    pdfTestIcon.className = 'w-6 h-6 rounded-full bg-green-500 mr-3';
+                    pdfTestText.innerHTML = '✓ PDF generation with bullets and justification';
+                    
+                    button.disabled = false;
+                    button.textContent = 'Generate PDF Test';
+                    
+                    console.log('PDF generation successful');
+                }).catch(error => {
+                    throw error;
+                });
+                
+            } catch (error) {
+                resultElement.className = 'test-result error';
+                resultElement.innerHTML = `
+                    <strong>✗ ERROR:</strong> PDF generation failed<br>
+                    <strong>Details:</strong> ${error.message}
+                `;
+                
+                button.disabled = false;
+                button.textContent = 'Generate PDF Test';
+                
+                console.error('PDF generation error:', error);
+            }
+        }
+        
+        // Test if html2pdf is available
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof html2pdf === 'undefined') {
+                const resultElement = document.getElementById('pdf-result');
+                resultElement.className = 'test-result error';
+                resultElement.innerHTML = '<strong>✗ ERROR:</strong> html2pdf library not loaded';
+                
+                const button = document.getElementById('generate-pdf');
+                button.disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>

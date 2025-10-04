@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Layout Test - Skills Grid</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="skills-grid-test.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .content {
+            padding: 2.5rem;
+        }
+        
+        .test-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fafafa;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid #3b82f6;
+        }
+        
+        .layout-preview {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .control-button {
+            padding: 1rem 2rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .control-button:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+        
+        .control-button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+        }
+        
+        .control-button.test {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .control-button.test:hover {
+            background: #059669;
+            border-color: #059669;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+        }
+        
+        .results {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin: 0.75rem 0;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #dcfce7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .result-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .result-content {
+            flex: 1;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .result-desc {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        .result-time {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .feature-title {
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .control-button {
+                width: 100%;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Comprehensive Skills Grid Test</h1>
+            <p class="subtitle">Testing Two-Column Layout Implementation</p>
+        </div>
+
+        <div class="content">
+            <!-- Test Controls -->
+            <div class="controls">
+                <button class="control-button active" data-width="1200">Desktop (1200px)</button>
+                <button class="control-button" data-width="900">Tablet (900px)</button>
+                <button class="control-button" data-width="768">Breakpoint (768px)</button>
+                <button class="control-button" data-width="375">Mobile (375px)</button>
+                <button class="control-button test" id="run-tests">Run All Tests</button>
+            </div>
+
+            <!-- Test Section 1: Layout Preview -->
+            <div class="test-section">
+                <h2 class="section-title">Layout Preview</h2>
+                
+                <div class="layout-preview" id="preview-container">
+                    <!-- CV Skills Section -->
+                    <div id="cv-preview">
+                        <section class="mb-6">
+                            <h2 class="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+                                Key Skills & Competencies
+                            </h2>
+                            <div class="skills-grid">
+                                <ul class="cv-list cv-list--skills">
+                                    <li class="text-sm text-gray-700">JavaScript (ES6+)</li>
+                                    <li class="text-sm text-gray-700">React & React Hooks</li>
+                                    <li class="text-sm text-gray-700">TypeScript</li>
+                                    <li class="text-sm text-gray-700">Node.js</li>
+                                    <li class="text-sm text-gray-700">Express.js</li>
+                                    <li class="text-sm text-gray-700">MongoDB</li>
+                                </ul>
+                                <ul class="cv-list cv-list--skills">
+                                    <li class="text-sm text-gray-700">PostgreSQL</li>
+                                    <li class="text-sm text-gray-700">AWS Services</li>
+                                    <li class="text-sm text-gray-700">Docker & Kubernetes</li>
+                                    <li class="text-sm text-gray-700">CI/CD Pipelines</li>
+                                    <li class="text-sm text-gray-700">Git & GitHub</li>
+                                    <li class="text-sm text-gray-700">Agile Methodology</li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3 class="feature-title">📊 Grid Layout</h3>
+                        <ul class="feature-list">
+                            <li>✅ 2-column desktop layout</li>
+                            <li>✅ 1-column mobile layout</li>
+                            <li>✅ Proper gap spacing</li>
+                            <li>✅ Responsive breakpoints</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 class="feature-title">🎯 Bullet Alignment</h3>
+                        <ul class="feature-list">
+                            <li>✅ Consistent padding</li>
+                            <li>✅ Proper bullet positioning</li>
+                            <li>✅ Cross-browser compatibility</li>
+                            <li>✅ PDF generation ready</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 class="feature-title">⚡ Performance</h3>
+                        <ul class="feature-list">
+                            <li>✅ Semantic HTML structure</li>
+                            <li>✅ CSS-only implementation</li>
+                            <li>✅ No JavaScript required</li>
+                            <li>✅ ATS compatible</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Section 2: Results -->
+            <div class="test-section">
+                <h2 class="section-title">Test Results</h2>
+                
+                <div class="results">
+                    <h3 class="results-title">🧪 Automated Test Results</h3>
+                    <div id="test-results">
+                        <div class="result-item">
+                            <div class="result-icon success">✓</div>
+                            <div class="result-content">
+                                <div class="result-title">Ready to run tests</div>
+                                <div class="result-desc">Click "Run All Tests" button to start automated testing</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary">
+                    <div class="summary-title">Overall Score</div>
+                    <div class="summary-score" id="score">0/7</div>
+                    <div>Tests passed successfully</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Viewport simulation
+        const previewContainer = document.getElementById('preview-container');
+        const buttons = document.querySelectorAll('.control-button[data-width]');
+        const runTestsButton = document.getElementById('run-tests');
+        
+        function setViewportWidth(width) {
+            previewContainer.style.width = `${width}px`;
+            previewContainer.style.margin = '0 auto';
+            
+            // Update active button
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.width) === width) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Update UI for mobile/desktop
+            const isMobile = width <= 768;
+            document.body.classList.toggle('mobile-view', isMobile);
+        }
+        
+        // Set up button click handlers
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const width = parseInt(button.dataset.width);
+                setViewportWidth(width);
+            });
+        });
+        
+        // Run tests button
+        runTestsButton.addEventListener('click', () => {
+            const testSuite = new SkillsGridTest();
+            testSuite.runAllTests();
+            
+            // Update score after tests complete
+            setTimeout(() => {
+                const passed = testSuite.results.filter(r => r.passed).length;
+                const total = testSuite.results.length;
+                document.getElementById('score').textContent = `${passed}/${total}`;
+            }, 500);
+        });
+        
+        // Initial setup
+        setViewportWidth(1200);
+        
+        // Add resize listener for real responsiveness testing
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            console.log('Current viewport width:', width);
+            
+            // You could add automatic testing on resize here
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Bullet Test</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>CSS Bullet Styling Test</h1>
+        
+        <div class="test-item">
+            <h3>Testing Professional Experience Bullets</h3>
+            <div style="background: white; padding: 15px; margin: 10px 0;">
+                <ul class="cv-list cv-list--experience">
+                    <li class="text-sm text-gray-700">Test bullet point 1</li>
+                    <li class="text-sm text-gray-700">Test bullet point 2</li>
+                    <li class="text-sm text-gray-700">Test bullet point 3</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-item">
+            <h3>Testing Skills Bullets</h3>
+            <div style="background: white; padding: 15px; margin: 10px 0;">
+                <ul class="cv-list cv-list--skills">
+                    <li class="text-sm text-gray-700">JavaScript</li>
+                    <li class="text-sm text-gray-700">React</li>
+                    <li class="text-sm text-gray-700">Node.js</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-item">
+            <h3>CSS Load Status</h3>
+            <div id="css-status">Checking CSS loading...</div>
+        </div>
+
+        <div class="test-item">
+            <h3>Bullet Style Inspection</h3>
+            <div id="bullet-style">Inspecting bullet styles...</div>
+        </div>
+    </div>
+
+    <script>
+        function testCSS() {
+            // Check if CSS is loaded by testing specific styles
+            const testElement = document.createElement('div');
+            testElement.className = 'cv-list';
+            document.body.appendChild(testElement);
+            
+            const computedStyle = window.getComputedStyle(testElement);
+            const listStyle = computedStyle.listStyle;
+            
+            const statusElement = document.getElementById('css-status');
+            if (listStyle === 'none') {
+                statusElement.className = 'success';
+                statusElement.innerHTML = '✓ CSS loaded successfully - list-style: none detected';
+            } else {
+                statusElement.className = 'error';
+                statusElement.innerHTML = '✗ CSS not loaded properly - list-style: ' + listStyle;
+            }
+            
+            document.body.removeChild(testElement);
+            
+            // Test bullet pseudo-elements
+            const bulletElement = document.querySelector('.cv-list li');
+            if (bulletElement) {
+                const bulletStyle = window.getComputedStyle(bulletElement, '::before');
+                const content = bulletStyle.content;
+                const position = bulletStyle.position;
+                const color = bulletStyle.color;
+                
+                const styleElement = document.getElementById('bullet-style');
+                if (content && content !== 'none') {
+                    styleElement.className = 'success';
+                    styleElement.innerHTML = `
+                        ✓ Bullet styles applied successfully:<br>
+                        - Content: ${content}<br>
+                        - Position: ${position}<br>
+                        - Color: ${color}<br>
+                        - Left: ${bulletStyle.left}
+                    `;
+                } else {
+                    styleElement.className = 'error';
+                    styleElement.innerHTML = '✗ Bullet styles not applied - pseudo-element content: ' + content;
+                }
+            }
+        }
+
+        // Run test when page loads
+        document.addEventListener('DOMContentLoaded', testCSS);
+    </script>
+</body>
+</html>

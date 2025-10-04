@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATS CV Optimizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.12.0/html2pdf.bundle.min.js" integrity="sha512-1mNdP1A+ByJLWNZFNNRQWBfKKVmzxq8gBOgGO6fWLrMCzCgJdPL7Nqe3fLdKLHGjDLzKu1YYkw4I9QLZ/8u2Ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+      /* Hide scrollbar for the printable area to avoid it showing up in screenshots/PDFs */
+      #cv-preview::-webkit-scrollbar {
+        display: none;
+      }
+      #cv-preview {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.16.0",
+    "mammoth": "https://cdn.jsdelivr.net/npm/mammoth@1.8.0/+esm",
+    "pdfjs-dist": "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-slate-100 font-sans text-slate-800">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bullet Alignment Test - ATS CV Optimizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+        }
+        
+        .test-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .comparison-old, .comparison-new {
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        
+        .comparison-old {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .comparison-new {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .comparison-label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .comparison-old .comparison-label {
+            color: #dc2626;
+        }
+        
+        .comparison-new .comparison-label {
+            color: #16a34a;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="test-container">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Bullet Alignment Test - ATS CV Optimizer</h1>
+        
+        <!-- Test 1: Professional Experience Section -->
+        <div class="test-section">
+            <div class="test-title">Professional Experience - Bullet Alignment</div>
+            <div class="comparison-grid">
+                <div class="comparison-old">
+                    <div class="comparison-label">Old Implementation (with mt-1)</div>
+                    <ul class="space-y-1">
+                        <li class="text-sm text-gray-700 flex items-start">
+                            <span class="text-blue-500 mr-2 mt-1">•</span>
+                            <span>Managed team of 10 developers and delivered projects on time</span>
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start">
+                            <span class="text-blue-500 mr-2 mt-1">•</span>
+                            <span>Implemented CI/CD pipeline reducing deployment time by 40%</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comparison-new">
+                    <div class="comparison-label">New Implementation (CSS pseudo-elements)</div>
+                    <ul class="cv-list cv-list--experience space-y-1">
+                        <li class="text-sm text-gray-700">Managed team of 10 developers and delivered projects on time</li>
+                        <li class="text-sm text-gray-700">Implemented CI/CD pipeline reducing deployment time by 40%</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 2: Skills Section -->
+        <div class="test-section">
+            <div class="test-title">Skills Section - Grid Layout</div>
+            <div class="comparison-grid">
+                <div class="comparison-old">
+                    <div class="comparison-label">Old Implementation (div grid with mt-1)</div>
+                    <div class="grid grid-cols-2 gap-x-8 gap-y-1">
+                        <div class="text-sm text-gray-700 flex items-start">
+                            <span class="text-blue-500 mr-2 mt-1">•</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="text-sm text-gray-700 flex items-start">
+                            <span class="text-blue-500 mr-2 mt-1">•</span>
+                            <span>React</span>
+                        </div>
+                        <div class="text-sm text-gray-700 flex items-start">
+                            <span class="text-blue-500 mr-2 mt-1">•</span>
+                            <span>Node.js</span>
+                        </div>
+                        <div class="text-sm text-gray-700 flex items-start">
+                            <span class="text-blue-500 mr-2 mt-1">•</span>
+                            <span>TypeScript</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-new">
+                    <div class="comparison-label">New Implementation (semantic ul with CSS grid)</div>
+                    <div class="skills-grid">
+                        <ul class="cv-list cv-list--skills">
+                            <li class="text-sm text-gray-700">JavaScript</li>
+                            <li class="text-sm text-gray-700">React</li>
+                            <li class="text-sm text-gray-700">Node.js</li>
+                            <li class="text-sm text-gray-700">TypeScript</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 3: Optimization Analysis Sections -->
+        <div class="test-section">
+            <div class="test-title">Optimization Analysis - Color Variants</div>
+            
+            <div class="comparison-grid mb-4">
+                <div class="comparison-old">
+                    <div class="comparison-label">Old - Blue Section (mt-1)</div>
+                    <ul class="space-y-2 text-sm text-blue-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-500 mt-1">•</span>
+                            <span>Clean, scannable format</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comparison-new">
+                    <div class="comparison-label">New - Blue Section (CSS)</div>
+                    <ul class="optimization-list optimization-list--blue space-y-2 text-sm text-blue-700">
+                        <li>Clean, scannable format</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="comparison-grid mb-4">
+                <div class="comparison-old">
+                    <div class="comparison-label">Old - Purple Section (mt-1)</div>
+                    <ul class="space-y-2 text-sm text-purple-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-500 mt-1">•</span>
+                            <span>Professional language</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comparison-new">
+                    <div class="comparison-label">New - Purple Section (CSS)</div>
+                    <ul class="optimization-list optimization-list--purple space-y-2 text-sm text-purple-700">
+                        <li>Professional language</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-old">
+                    <div class="comparison-label">Old - Teal Section (mt-1)</div>
+                    <ul class="space-y-2 text-sm text-teal-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-teal-500 mt-1">•</span>
+                            <span>Cloud Architecture</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comparison-new">
+                    <div class="comparison-label">New - Teal Section (CSS)</div>
+                    <ul class="optimization-list optimization-list--teal space-y-2 text-sm text-teal-700">
+                        <li>Cloud Architecture</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Responsive Test Note -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mt-6">
+            <p class="text-sm text-blue-800">
+                <strong>Testing Instructions:</strong> Resize your browser window to test responsive behavior across different screen sizes. 
+                The new implementation should maintain consistent bullet alignment while the old implementation may show misalignment issues.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

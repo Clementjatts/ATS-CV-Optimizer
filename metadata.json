@@ -1,0 +1,5 @@
+{
+  "name": "ATS CV Optimizer",
+  "description": "Optimize your CV for Applicant Tracking Systems (ATS) by providing your current CV, a job description, and a style template. The application intelligently integrates keywords and restructures your CV to match the template, providing a final PDF-ready version.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functionality Breakage Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .test-result {
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            background-color: #d4edda !important;
+            color: #155724;
+            border-color: #c3e6cb !important;
+        }
+        .warning {
+            background-color: #fff3cd !important;
+            color: #856404;
+            border-color: #ffeaa7 !important;
+        }
+        .error {
+            background-color: #f8d7da !important;
+            color: #721c24;
+            border-color: #f5c6cb !important;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 4px solid #e9ecef;
+        }
+        .test-item.pass {
+            border-left-color: #28a745;
+        }
+        .test-item.fail {
+            border-left-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Functionality Breakage Test</h1>
+        <p>Test that the full justification implementation doesn't break existing functionality.</p>
+        
+        <button class="button" onclick="runFunctionalityTests()">Run Functionality Tests</button>
+        <button class="button" onclick="testCSSConflicts()">Test CSS Conflicts</button>
+        <button class="button" onclick="testPerformance()">Test Performance</button>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">Functionality Test Results</div>
+        <div id="functionality-results" class="test-result">
+            Click "Run Functionality Tests" to check for breakage...
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">Individual Test Results</div>
+        <div id="detailed-results"></div>
+    </div>
+
+    <script>
+        async function runFunctionalityTests() {
+            const resultsDiv = document.getElementById('functionality-results');
+            const detailedDiv = document.getElementById('detailed-results');
+            resultsDiv.textContent = "Running functionality tests...\n\n";
+            detailedDiv.innerHTML = "";
+            
+            let allTestsPassed = true;
+            const testResults = [];
+            
+            // Test 1: Basic CSS loading
+            const cssTest = testCSSLoading();
+            testResults.push(cssTest);
+            if (!cssTest.passed) allTestsPassed = false;
+            
+            // Test 2: Selector specificity
+            const specificityTest = testSelectorSpecificity();
+            testResults.push(specificityTest);
+            if (!specificityTest.passed) allTestsPassed = false;
+            
+            // Test 3: Responsive behavior
+            const responsiveTest = testResponsiveBehavior();
+            testResults.push(responsiveTest);
+            if (!responsiveTest.passed) allTestsPassed = false;
+            
+            // Test 4: Print media queries
+            const printTest = testPrintMediaQueries();
+            testResults.push(printTest);
+            if (!printTest.passed) allTestsPassed = false;
+            
+            // Test 5: Performance impact
+            const performanceTest = await testPerformanceImpact();
+            testResults.push(performanceTest);
+            if (!performanceTest.passed) allTestsPassed = false;
+            
+            // Display results
+            resultsDiv.textContent = `=== FUNCTIONALITY TEST RESULTS ===\n\n`;
+            resultsDiv.textContent += `Overall Result: ${allTestsPassed ? '✓ NO BREAKAGE DETECTED' : '✗ POTENTIAL BREAKAGE DETECTED'}\n\n`;
+            
+            testResults.forEach(test => {
+                resultsDiv.textContent += `${test.passed ? '✓' : '✗'} ${test.name}: ${test.message}\n`;
+                
+                const testItem = document.createElement('div');
+                testItem.className = `test-item ${test.passed ? 'pass' : 'fail'}`;
+                testItem.innerHTML = `
+                    <strong>${test.name}</strong>: ${test.passed ? 'PASS' : 'FAIL'}<br>
+                    <small>${test.message}</small>
+                    ${test.details ? `<br><small>${test.details}</small>` : ''}
+                `;
+                detailedDiv.appendChild(testItem);
+            });
+            
+            if (allTestsPassed) {
+                resultsDiv.className = 'test-result success';
+            } else {
+                resultsDiv.className = 'test-result warning';
+            }
+        }
+        
+        function testCSSLoading() {
+            const styleSheets = document.styleSheets;
+            let cssLoaded = false;
+            
+            for (let i = 0; i < styleSheets.length; i++) {
+                const sheet = styleSheets[i];
+                if (sheet.href && sheet.href.includes('index.css')) {
+                    cssLoaded = true;
+                    break;
+                }
+            }
+            
+            return {
+                name: 'CSS File Loading',
+                passed: cssLoaded,
+                message: cssLoaded ? 'CSS file loaded successfully' : 'CSS file not loaded',
+                details: cssLoaded ? '' : 'Check if index.css is properly linked'
+            };
+        }
+        
+        function testSelectorSpecificity() {
+            // Test that our selectors don't conflict with other potential styles
+            const testElement = document.createElement('div');
+            testElement.id = 'cv-preview';
+            testElement.innerHTML = `
+                <p class="text-justify">Test paragraph</p>
+                <ul class="cv-list cv-list--experience">
+                    <li>Test item</li>
+                </ul>
+                <h2>Test header</h2>
+            `;
+            document.body.appendChild(testElement);
+            
+            let allTestsPassed = true;
+            const details = [];
+            
+            // Test text-justify class
+            const justifyPara = testElement.querySelector('.text-justify');
+            const justifyStyle = window.getComputedStyle(justifyPara);
+            if (justifyStyle.textAlign !== 'justify') {
+                allTestsPassed = false;
+                details.push('text-justify class not working');
+            }
+            
+            // Test list items
+            const listItem = testElement.querySelector('.cv-list--experience li');
+            const listStyle = window.getComputedStyle(listItem);
+            if (listStyle.textAlign !== 'justify') {
+                allTestsPassed = false;
+                details.push('list item justification not working');
+            }
+            
+            // Test headers (should remain left-aligned)
+            const header = testElement.querySelector('h2');
+            const headerStyle = window.getComputedStyle(header);
+            if (headerStyle.textAlign !== 'left') {
+                allTestsPassed = false;
+                details.push('headers not left-aligned');
+            }
+            
+            document.body.removeChild(testElement);
+            
+            return {
+                name: 'Selector Specificity',
+                passed: allTestsPassed,
+                message: allTestsPassed ? 'Selectors work correctly' : 'Selector conflicts detected',
+                details: details.join(', ')
+            };
+        }
+        
+        function testResponsiveBehavior() {
+            // Test responsive adjustments
+            const testElement = document.createElement('div');
+            testElement.id = 'cv-preview';
+            testElement.style.width = '480px'; // Mobile size
+            document.body.appendChild(testElement);
+            
+            const style = window.getComputedStyle(testElement);
+            const isJustified = style.textAlign === 'justify';
+            const wordSpacing = style.wordSpacing;
+            const lineHeight = style.lineHeight;
+            
+            document.body.removeChild(testElement);
+            
+            const passed = isJustified && wordSpacing && lineHeight;
+            
+            return {
+                name: 'Responsive Behavior',
+                passed: passed,
+                message: passed ? 'Responsive behavior works' : 'Responsive issues detected',
+                details: `Justified: ${isJustified}, Word Spacing: ${wordSpacing}, Line Height: ${lineHeight}`
+            };
+        }
+        
+        function testPrintMediaQueries() {
+            const styleSheets = document.styleSheets;
+            let printMediaFound = false;
+            let printRuleCount = 0;
+            
+            for (let i = 0; i < styleSheets.length; i++) {
+                const sheet = styleSheets[i];
+                try {
+                    const rules = sheet.cssRules || sheet.rules;
+                    for (let j = 0; j < rules.length; j++) {
+                        const rule = rules[j];
+                        if (rule.media && rule.media.mediaText.includes('print')) {
+                            printMediaFound = true;
+                            printRuleCount += rule.cssRules.length;
+                        }
+                    }
+                } catch (e) {
+                    // Skip cross-origin stylesheets
+                }
+            }
+            
+            return {
+                name: 'Print Media Queries',
+                passed: printMediaFound,
+                message: printMediaFound ? 'Print media queries found' : 'No print media queries',
+                details: printMediaFound ? `${printRuleCount} print rules configured` : 'PDF generation may not preserve justification'
+            };
+        }
+        
+        async function testPerformanceImpact() {
+            // Test that the CSS doesn't cause performance issues
+            const startTime = performance.now();
+            
+            // Create multiple elements to test rendering performance
+            const testContainer = document.createElement('div');
+            testContainer.id = 'cv-preview';
+            
+            for (let i = 0; i < 100; i++) {
+                const p = document.createElement('p');
+                p.className = 'text-justify';
+                p.textContent = 'Test paragraph '.repeat(10);
+                testContainer.appendChild(p);
+            }
+            
+            document.body.appendChild(testContainer);
+            
+            // Force layout calculation
+            testContainer.offsetHeight;
+            
+            const endTime = performance.now();
+            const renderTime = endTime - startTime;
+            
+            document.body.removeChild(testContainer);
+            
+            const passed = renderTime < 100; // Should render in under 100ms
+            
+            return {
+                name: 'Performance Impact',
+                passed: passed,
+                message: passed ? 'Good performance' : 'Potential performance issue',
+                details: `Render time: ${renderTime.toFixed(2)}ms ${passed ? '(good)' : '(slow)'}`
+            };
+        }
+        
+        function testCSSConflicts() {
+            const resultsDiv = document.getElementById('functionality-results');
+            resultsDiv.textContent = "Testing for CSS conflicts...\n\n";
+            
+            // This would require more comprehensive testing of actual application styles
+            resultsDiv.textContent += "CSS conflict testing requires manual inspection of the actual application.\n";
+            resultsDiv.textContent += "Please check the main application at http://localhost:5173 to ensure:\n";
+            resultsDiv.textContent += "1. All UI elements display correctly\n";
+            resultsDiv.textContent += "2. Buttons and forms work properly\n";
+            resultsDiv.textContent += "3. No visual glitches or layout issues\n";
+            resultsDiv.className = 'test-result';
+        }
+        
+        function testPerformance() {
+            const resultsDiv = document.getElementById('functionality-results');
+            resultsDiv.textContent = "Performance testing requires manual verification.\n\n";
+            resultsDiv.textContent += "Please test the main application and check:\n";
+            resultsDiv.textContent += "1. Page load time is acceptable\n";
+            resultsDiv.textContent += "2. CV rendering is smooth\n";
+            resultsDiv.textContent += "3. No lag when interacting with the application\n";
+            resultsDiv.className = 'test-result';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Functionality test page loaded");
+        });
+    </script>
+</body>
+</html>
