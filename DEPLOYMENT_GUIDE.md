@@ -19,7 +19,7 @@ This guide will walk you through deploying your ATS CV Optimizer to a subdomain 
 
 ### 1.1 Create Environment File
 
-Create a `.env` file in your project root with your Firebase configuration:
+Create a `.env` file in your project root with your Firebase and Gemini configuration:
 
 ```bash
 # Firebase Configuration
@@ -30,9 +30,11 @@ VITE_FIREBASE_STORAGE_BUCKET=ats-cv-optimizer-3a741.firebasestorage.app
 VITE_FIREBASE_MESSAGING_SENDER_ID=621330035833
 VITE_FIREBASE_APP_ID=1:621330035833:web:2272ebeb6e25de9dd110a8
 
-# Gemini API Key
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
+# Gemini API Key (replace with your actual key)
+VITE_GEMINI_API_KEY=your_actual_gemini_api_key_here
 ```
+
+**Note:** Replace `your_actual_gemini_api_key_here` with your real Gemini API key.
 
 ### 1.2 Update Firebase Configuration
 
