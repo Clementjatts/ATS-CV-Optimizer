@@ -104,21 +104,37 @@ class FileStorageService {
   // Download a file
   async downloadFile(downloadURL: string, fileName: string): Promise<void> {
     try {
+      console.log('Attempting to download file:', fileName, 'from URL:', downloadURL);
+      
+      // Validate URL
+      if (!downloadURL || !downloadURL.startsWith('http')) {
+        throw new Error('Invalid download URL');
+      }
+      
       const response = await fetch(downloadURL);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const blob = await response.blob();
+      console.log('Blob created successfully, size:', blob.size);
       
       // Create download link
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       link.download = fileName;
+      link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
+      
+      console.log('Download initiated successfully');
     } catch (error) {
       console.error('Error downloading file:', error);
-      throw new Error('Failed to download file');
+      throw new Error(`Failed to download file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 

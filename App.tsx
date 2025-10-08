@@ -746,14 +746,50 @@ Please provide a modified version that incorporates the user's request while kee
     setIsCVManagerOpen(false);
   };
 
+  // Extract job title from job description
+  const extractJobTitle = (jobDescription: string): string => {
+    if (!jobDescription.trim()) return 'CV';
+    
+    // Common patterns for job titles in job descriptions
+    const patterns = [
+      /(?:position|role|job|opening|opportunity)[\s:]+([A-Z][A-Za-z\s&]+?)(?:\n|$|\.|,|;)/i,
+      /(?:seeking|looking for|hiring)[\s:]+([A-Z][A-Za-z\s&]+?)(?:\n|$|\.|,|;)/i,
+      /(?:title|position)[\s:]+([A-Z][A-Za-z\s&]+?)(?:\n|$|\.|,|;)/i,
+      /^([A-Z][A-Za-z\s&]+?)(?:\n|$|\.|,|;)/, // First line if it looks like a title
+    ];
+    
+    for (const pattern of patterns) {
+      const match = jobDescription.match(pattern);
+      if (match && match[1]) {
+        let title = match[1].trim();
+        // Clean up the title
+        title = title.replace(/[^\w\s&]/g, '').trim();
+        // Limit length to avoid too long names
+        if (title.length > 50) {
+          title = title.substring(0, 47) + '...';
+        }
+        if (title.length > 3) {
+          return title;
+        }
+      }
+    }
+    
+    // Fallback: use first few words from the description
+    const words = jobDescription.trim().split(/\s+/).slice(0, 4);
+    const fallback = words.join(' ').replace(/[^\w\s]/g, '');
+    return fallback.length > 3 ? fallback : 'CV';
+  };
+
   const handleSaveCurrentCV = async () => {
     if (!optimizedCvData) return;
     
     try {
+      const jobTitle = extractJobTitle(jobDescriptionText);
+      
       await cvService.saveCV({
-        name: `${optimizedCvData.fullName} - ${new Date().toLocaleDateString()}`,
+        name: jobTitle,
         content: JSON.stringify(optimizedCvData),
-        jobTitle: '',
+        jobTitle: jobTitle,
         company: '',
         industry: '',
         skills: optimizedCvData.skills,
