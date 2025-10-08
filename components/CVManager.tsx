@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { cvService, SavedCV, CVSearchFilters, CVSource } from '../services/cvService';
+import { cvService, SavedCV, CVSource } from '../services/cvService';
 import { fileStorageService, UploadedFile } from '../services/fileStorageService';
 import { CvData } from '../services/geminiService';
 import { 
@@ -27,7 +27,6 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
   const [filteredCVs, setFilteredCVs] = useState<CVSource[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState<CVSearchFilters>({});
   const [showSaveForm, setShowSaveForm] = useState(false);
   const [selectedCV, setSelectedCV] = useState<CVSource | null>(null);
   const [activeTab, setActiveTab] = useState<'optimized' | 'uploaded'>('optimized');
@@ -53,7 +52,7 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
 
   useEffect(() => {
     filterCVs();
-  }, [savedCVs, uploadedFiles, searchTerm, filters, activeTab]);
+  }, [savedCVs, uploadedFiles, searchTerm, activeTab]);
 
   const loadCVs = async () => {
     setLoading(true);
@@ -92,17 +91,6 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
                  file.description?.toLowerCase().includes(searchTerm.toLowerCase());
         }
       });
-    }
-
-    // Apply filters (only for optimized CVs)
-    if (activeTab === 'optimized') {
-      const cvFiltered = filtered as SavedCV[];
-      if (filters.jobTitle) {
-        filtered = cvFiltered.filter(cv => cv.jobTitle === filters.jobTitle);
-      }
-      if (filters.industry) {
-        filtered = cvFiltered.filter(cv => cv.industry === filters.industry);
-      }
     }
 
     setFilteredCVs(filtered);
@@ -309,29 +297,6 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
               </button>
             </div>
 
-            {/* Filters */}
-            <div className="flex gap-4">
-              <select
-                value={filters.jobTitle || ''}
-                onChange={(e) => setFilters(prev => ({ ...prev, jobTitle: e.target.value || undefined }))}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="">All Job Titles</option>
-                {[...new Set(savedCVs.map(cv => cv.jobTitle).filter(Boolean))].map(title => (
-                  <option key={title} value={title}>{title}</option>
-                ))}
-              </select>
-              <select
-                value={filters.industry || ''}
-                onChange={(e) => setFilters(prev => ({ ...prev, industry: e.target.value || undefined }))}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="">All Industries</option>
-                {[...new Set(savedCVs.map(cv => cv.industry).filter(Boolean))].map(industry => (
-                  <option key={industry} value={industry}>{industry}</option>
-                ))}
-              </select>
-            </div>
           </div>
 
           {/* CV Grid */}
@@ -364,7 +329,8 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
                 </div>
               )}
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="max-h-96 overflow-y-auto pr-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredCVs.map((item) => {
                 const isOptimizedCV = 'content' in item;
                 const cv = item as SavedCV;
@@ -491,7 +457,8 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
                   </div>
                 );
               })}
-            </div>
+                </div>
+              </div>
             </>
           )}
 
