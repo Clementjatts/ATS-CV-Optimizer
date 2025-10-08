@@ -2,123 +2,123 @@
 /* Comprehensive solution for consistent bullet alignment across screen sizes and PDF generation */
 
 /* Base CV styling with improved bullet alignment and full text justification */
-#cv-preview {
+#cv-container {
   font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 10pt;
   line-height: 1.4;
 }
 
 /* Full text justification for all body text content */
-#cv-preview {
+#cv-container {
   text-align: justify;
   word-spacing: -0.05em; /* Slightly reduce word spacing for better readability */
   line-height: 1.5; /* Improved line height for readability */
 }
 
 /* Professional summary - already has text-justify class in component */
-#cv-preview .text-justify {
+#cv-container .text-justify {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* Professional experience descriptions - ensure left alignment with high specificity */
-#cv-preview .cv-list--experience li {
+#cv-container .cv-list--experience li {
   text-align: left !important;
   line-height: 1.5;
   word-spacing: normal !important;
 }
 
 /* Skills section text */
-#cv-preview .cv-list--skills li {
+#cv-container .cv-list--skills li {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* All paragraph text throughout the CV */
-#cv-preview p:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
+#cv-container p:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* List items throughout the CV - exclude professional experience */
-#cv-preview li:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]):not(.cv-list--experience li) {
+#cv-container li:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]):not(.cv-list--experience li) {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* Education, certifications, and other section text */
-#cv-preview section > div > p,
-#cv-preview section > div > div > p,
-#cv-preview .text-sm:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]),
-#cv-preview .text-xs:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
+#cv-container section > div > p,
+#cv-container section > div > div > p,
+#cv-container .text-sm:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]),
+#cv-container .text-xs:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* Headers and structural elements remain left-aligned for better readability, except for explicitly centered header */
-#cv-preview h2,
-#cv-preview h3,
-#cv-preview h4,
-#cv-preview h5,
-#cv-preview h6,
-#cv-preview [class*="font-bold"]:not(header h1),
-#cv-preview [class*="font-semibold"]:not(header h1),
-#cv-preview [class*="text-left"],
-#cv-preview [class*="flex"]:not(header),
-#cv-preview [class*="justify"]:not(header),
-#cv-preview [class*="items"]:not(header) {
+#cv-container h2,
+#cv-container h3,
+#cv-container h4,
+#cv-container h5,
+#cv-container h6,
+#cv-container [class*="font-bold"]:not(header h1),
+#cv-container [class*="font-semibold"]:not(header h1),
+#cv-container [class*="text-left"],
+#cv-container [class*="flex"]:not(header),
+#cv-container [class*="justify"]:not(header),
+#cv-container [class*="items"]:not(header) {
   text-align: left !important;
   word-spacing: normal;
   line-height: normal;
 }
 
 /* Allow the main header to be centered */
-#cv-preview header h1 {
+#cv-container header h1 {
   text-align: center !important;
 }
 
-#cv-preview header [class*="text-center"] {
+#cv-container header [class*="text-center"] {
   text-align: center !important;
 }
 
 /* PDF generation compatibility - ensure justification works in print */
 @media print {
-  #cv-preview {
+  #cv-container {
     text-align: justify;
     word-spacing: -0.05em;
     line-height: 1.5;
   }
   
-  #cv-preview p,
-  #cv-preview li {
+  #cv-container p,
+  #cv-container li {
     text-align: justify;
     line-height: 1.5;
     word-spacing: -0.05em;
   }
   
-  #cv-preview h1,
-  #cv-preview h2,
-  #cv-preview h3,
-  #cv-preview h4,
-  #cv-preview h5,
-  #cv-preview h6 {
+  #cv-container h1,
+  #cv-container h2,
+  #cv-container h3,
+  #cv-container h4,
+  #cv-container h5,
+  #cv-container h6 {
     text-align: left;
     word-spacing: normal;
   }
   
   /* Professional experience should remain left-aligned in PDF with proper spacing */
-  #cv-preview .cv-list--experience li {
+  #cv-container .cv-list--experience li {
     text-align: left !important;
     word-spacing: normal !important;
   }
   
   /* Explicitly preserve header underlines in PDF */
-  #cv-preview h2 {
+  #cv-container h2 {
     border-bottom: 1px solid #9ca3af !important;
     padding-bottom: 0.25rem !important;
     margin-bottom: 0.75rem !important;
@@ -296,7 +296,7 @@
   flex: 1;
 }
 /* Additional fine-tuning for full justification readability */
-#cv-preview {
+#cv-container {
   hyphens: none; /* Disable hyphenation */
   -webkit-hyphens: none; /* Disable hyphenation for WebKit */
   -moz-hyphens: none; /* Disable hyphenation for Firefox */
@@ -306,26 +306,26 @@
 }
 
 /* Prevent justification from creating awkward spacing in short lines */
-#cv-preview p:last-child,
-#cv-preview li:last-child {
+#cv-container p:last-child,
+#cv-container li:last-child {
   text-align-last: left; /* Left-align the last line for better appearance */
 }
 
 /* Ensure proper spacing in justified text with bullets */
-#cv-preview .cv-list li,
-#cv-preview .optimization-list li {
+#cv-container .cv-list li,
+#cv-container .optimization-list li {
   padding-left: 1.2rem;
 }
 
 /* Responsive adjustments for justified text */
 @media (max-width: 768px) {
-  #cv-preview {
+  #cv-container {
     word-spacing: -0.03em; /* Slightly less word spacing on mobile */
     line-height: 1.4; /* Slightly tighter line height on mobile */
   }
   
-  #cv-preview p,
-  #cv-preview li {
+  #cv-container p,
+  #cv-container li {
     word-spacing: -0.03em;
     line-height: 1.4;
   }
@@ -333,7 +333,7 @@
 
 /* High DPI screen adjustments for justified text */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  #cv-preview {
+  #cv-container {
     word-spacing: -0.04em; /* Fine-tuned for high DPI displays */
   }
 }
