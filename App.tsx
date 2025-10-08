@@ -556,8 +556,20 @@ export default function App() {
         }
       }
 
-      const result = await optimizeCvWithGemini(cvContent, jobDescriptionText);
-      setOptimizedCvData(result);
+      // Use the new enhanceCVWithGemini function to get both job title and optimized CV
+      const { title, cvData } = await enhanceCVWithGemini(cvContent, jobDescriptionText);
+      
+      // Set the extracted job title
+      setJobTitle(title);
+      
+      // Set the optimized CV data
+      if (cvData) {
+        setOptimizedCvData(cvData);
+      } else {
+        // Fallback to original function if the new one fails
+        const result = await optimizeCvWithGemini(cvContent, jobDescriptionText);
+        setOptimizedCvData(result);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'An unknown error occurred. The AI may have returned an invalid format.');
     } finally {

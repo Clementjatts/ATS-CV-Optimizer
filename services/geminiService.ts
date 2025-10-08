@@ -276,15 +276,15 @@ export async function extractTextFromImagesWithGemini(
 }
 
 // New function to extract job title and return structured response
-export const enhanceCVWithGemini = async (cv: string, jobDescription: string): Promise<{ title: string; cv: string }> => {
+export const enhanceCVWithGemini = async (cv: string, jobDescription: string): Promise<{ title: string; cvData: CvData }> => {
     const prompt = `  
         Based on the following CV and job description, please perform two tasks:  
         1. Extract the job title from the job description. If no specific title is found, infer a suitable one (e.g., "Software Developer").  
-        2. Optimize the CV to align perfectly with the job description.
+        2. Optimize the CV to align perfectly with the job description using the same structured format as the main optimization function.
 
-        Return the result as a single JSON object with two keys: "title" and "cv".  
+        Return the result as a single JSON object with two keys: "title" and "cvData".  
         - The "title" key should contain only the job title string.  
-        - The "cv" key should contain the full, optimized CV text as a single string.
+        - The "cvData" key should contain the full, optimized CV in the same structured format as the main function.
 
         CV:  
         ---  
@@ -302,7 +302,15 @@ export const enhanceCVWithGemini = async (cv: string, jobDescription: string): P
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
-                responseMimeType: "application/json"
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        title: { type: Type.STRING, description: "The extracted job title" },
+                        cvData: cvSchema
+                    },
+                    required: ["title", "cvData"]
+                }
             }
         });
         
@@ -314,14 +322,14 @@ export const enhanceCVWithGemini = async (cv: string, jobDescription: string): P
 
         return {  
             title: parsedResponse.title || 'Optimized_CV',  
-            cv: parsedResponse.cv || 'Error: Could not generate CV.'  
+            cvData: parsedResponse.cvData || null
         };
 
     } catch (error) {  
         console.error("Error calling Gemini API:", error);  
         return {  
             title: 'Error_CV',  
-            cv: 'Failed to generate CV. Please check the console for details.'  
+            cvData: null
         };  
     }  
 };
