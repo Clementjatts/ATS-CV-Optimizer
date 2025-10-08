@@ -7,6 +7,7 @@ import {
   MagnifyingGlassIcon, 
   TrashIcon, 
   PencilIcon,
+  EyeIcon,
   TagIcon,
   CalendarIcon,
   BuildingOfficeIcon,
@@ -145,7 +146,6 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
       await fileStorageService.downloadFile(file.downloadURL, file.fileName);
     } catch (error) {
       console.error('Failed to download file:', error);
-      alert('Failed to download file. Please try again.');
     }
   };
 
