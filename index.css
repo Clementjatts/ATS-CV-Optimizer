@@ -337,3 +337,23 @@
     word-spacing: -0.04em; /* Fine-tuned for high DPI displays */
   }
 }
+
+/* Page Break Control for PDF Generation */
+/* Ensure that the main sections of the CV are not split across pages */
+.cv-section {
+    page-break-inside: avoid;
+}
+
+/* It's also a good idea to avoid breaking inside individual job/education entries */
+.job-entry, .education-entry {
+    page-break-inside: avoid;
+}
+
+/* You can also force a break before a major new section if needed,
+   but 'avoid' is usually sufficient. */
+h2, h3 {
+   /* Give some space before a new heading after a page break */
+    padding-top: 1rem;
+    /* Try to keep headings with the content that follows them */
+    page-break-after: avoid;
+}
