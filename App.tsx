@@ -626,10 +626,13 @@ Please provide a modified version that incorporates the user's request while kee
         throw new Error('PDF library not loaded');
       }
 
+      // Reset scroll position to the top of the page to prevent blank pages
+      window.scrollTo(0, 0);
+
       // Wait for any dynamic content to load
       await new Promise(resolve => setTimeout(resolve, 200));
 
-      // Improved html2pdf configuration based on CV formatting document
+      // Final fix configuration based on CV formatting document
       const opt = {
         margin: [0.5, 0.5, 0.5, 0.5], // inches
         filename: `${optimizedCvData.fullName.replace(/\s+/g, '_')}_CV_Preview.pdf`,
@@ -648,8 +651,8 @@ Please provide a modified version that incorporates the user's request while kee
           format: 'a4',
           orientation: 'portrait'
         },
-        // This pagebreak configuration offers better control
-        pagebreak: { mode: ['css', 'avoid-all'] }
+        // Simplify the pagebreak mode to rely on CSS
+        pagebreak: { mode: 'css' }
       };
 
       // Generate PDF from the original element
