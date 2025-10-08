@@ -7,7 +7,6 @@ import {
   MagnifyingGlassIcon, 
   TrashIcon, 
   PencilIcon,
-  EyeIcon,
   TagIcon,
   CalendarIcon,
   BuildingOfficeIcon,
@@ -28,7 +27,6 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSaveForm, setShowSaveForm] = useState(false);
-  const [selectedCV, setSelectedCV] = useState<CVSource | null>(null);
   const [activeTab, setActiveTab] = useState<'optimized' | 'uploaded'>('optimized');
   const [selectedCVs, setSelectedCVs] = useState<CVSource[]>([]); // New state for multi-select
   const [isMultiSelectMode, setIsMultiSelectMode] = useState(false); // New state for multi-select mode
@@ -147,6 +145,7 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
       await fileStorageService.downloadFile(file.downloadURL, file.fileName);
     } catch (error) {
       console.error('Failed to download file:', error);
+      alert('Failed to download file. Please try again.');
     }
   };
 
@@ -361,13 +360,6 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
                         </h3>
                       </div>
                       <div className="flex gap-2">
-                        <button
-                          onClick={() => setSelectedCV(item)}
-                          className="text-blue-600 hover:text-blue-800"
-                          title="View Details"
-                        >
-                          <EyeIcon className="w-4 h-4" />
-                        </button>
                         {isOptimizedCV ? (
                           <button
                             onClick={() => handleDeleteCV(cv.id!)}
