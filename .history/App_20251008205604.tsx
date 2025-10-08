@@ -609,7 +609,7 @@ Please provide a modified version that incorporates the user's request while kee
   };
 
   const generatePdfPreview = async () => {
-    const element = document.getElementById('cv-container');
+    const element = document.getElementById('cv-preview');
     if (!element || !optimizedCvData) return;
 
     setPdfGenerationStatus({

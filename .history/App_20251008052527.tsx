@@ -13,7 +13,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dis
 // Modern Professional CV Display Component
 const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, keywords }) => {
   return (
-    <div id="cv-container" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
+    <div id="cv-preview" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
 
       {/* PROFILE HEADER */}
       <header className="text-center border-b-2 border-gray-300 pb-4 mb-6">
@@ -42,8 +42,8 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </header>
 
       {/* PROFESSIONAL SUMMARY */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
+      <section className="cv-section mb-4">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-2">
           Professional Summary
         </h2>
         <p className="text-gray-700 leading-relaxed text-justify">{cvData.professionalSummary}</p>
@@ -57,13 +57,13 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </section>
 
       {/* PROFESSIONAL EXPERIENCE */}
-      <section className="cv-section mb-6">
+      <section className="mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Professional Experience
         </h2>
         <div className="space-y-6">
           {cvData.workExperience.map((job, index) => (
-            <div key={index} className="job-entry pr-4">
+            <div key={index} className="pr-4">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
                 <span className="text-sm font-semibold text-gray-600">{job.dates}</span>
@@ -85,13 +85,13 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </section>
 
       {/* EDUCATION */}
-      <section className="cv-section mb-6">
+      <section className="mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Education
         </h2>
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start">
+            <div key={index} className="flex justify-between items-start">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -104,7 +104,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
 
       {/* PROFESSIONAL CERTIFICATIONS */}
       {cvData.certifications && cvData.certifications.length > 0 && (
-        <section className="cv-section mb-6">
+        <section className="mb-6">
           <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
             Professional Certifications
           </h2>
@@ -131,7 +131,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       )}
 
       {/* KEY SKILLS & COMPETENCIES */}
-      <section className="cv-section mb-6">
+      <section className="mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Key Skills & Competencies
         </h2>
@@ -609,7 +609,7 @@ Please provide a modified version that incorporates the user's request while kee
   };
 
   const generatePdfPreview = async () => {
-    const element = document.getElementById('cv-container');
+    const element = document.getElementById('cv-preview');
     if (!element || !optimizedCvData) return;
 
     setPdfGenerationStatus({

@@ -2,123 +2,123 @@
 /* Comprehensive solution for consistent bullet alignment across screen sizes and PDF generation */
 
 /* Base CV styling with improved bullet alignment and full text justification */
-#cv-container {
+#cv-preview {
   font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 10pt;
   line-height: 1.4;
 }
 
 /* Full text justification for all body text content */
-#cv-container {
+#cv-preview {
   text-align: justify;
   word-spacing: -0.05em; /* Slightly reduce word spacing for better readability */
   line-height: 1.5; /* Improved line height for readability */
 }
 
 /* Professional summary - already has text-justify class in component */
-#cv-container .text-justify {
+#cv-preview .text-justify {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* Professional experience descriptions - ensure left alignment with high specificity */
-#cv-container .cv-list--experience li {
+#cv-preview .cv-list--experience li {
   text-align: left !important;
   line-height: 1.5;
   word-spacing: normal !important;
 }
 
 /* Skills section text */
-#cv-container .cv-list--skills li {
+#cv-preview .cv-list--skills li {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* All paragraph text throughout the CV */
-#cv-container p:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
+#cv-preview p:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* List items throughout the CV - exclude professional experience */
-#cv-container li:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]):not(.cv-list--experience li) {
+#cv-preview li:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]):not(.cv-list--experience li) {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* Education, certifications, and other section text */
-#cv-container section > div > p,
-#cv-container section > div > div > p,
-#cv-container .text-sm:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]),
-#cv-container .text-xs:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
+#cv-preview section > div > p,
+#cv-preview section > div > div > p,
+#cv-preview .text-sm:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]),
+#cv-preview .text-xs:not([class*="flex"]):not([class*="center"]):not([class*="left"]):not([class*="between"]):not([class*="items"]) {
   text-align: justify;
   line-height: 1.5;
   word-spacing: -0.05em;
 }
 
 /* Headers and structural elements remain left-aligned for better readability, except for explicitly centered header */
-#cv-container h2,
-#cv-container h3,
-#cv-container h4,
-#cv-container h5,
-#cv-container h6,
-#cv-container [class*="font-bold"]:not(header h1),
-#cv-container [class*="font-semibold"]:not(header h1),
-#cv-container [class*="text-left"],
-#cv-container [class*="flex"]:not(header),
-#cv-container [class*="justify"]:not(header),
-#cv-container [class*="items"]:not(header) {
+#cv-preview h2,
+#cv-preview h3,
+#cv-preview h4,
+#cv-preview h5,
+#cv-preview h6,
+#cv-preview [class*="font-bold"]:not(header h1),
+#cv-preview [class*="font-semibold"]:not(header h1),
+#cv-preview [class*="text-left"],
+#cv-preview [class*="flex"]:not(header),
+#cv-preview [class*="justify"]:not(header),
+#cv-preview [class*="items"]:not(header) {
   text-align: left !important;
   word-spacing: normal;
   line-height: normal;
 }
 
 /* Allow the main header to be centered */
-#cv-container header h1 {
+#cv-preview header h1 {
   text-align: center !important;
 }
 
-#cv-container header [class*="text-center"] {
+#cv-preview header [class*="text-center"] {
   text-align: center !important;
 }
 
 /* PDF generation compatibility - ensure justification works in print */
 @media print {
-  #cv-container {
+  #cv-preview {
     text-align: justify;
     word-spacing: -0.05em;
     line-height: 1.5;
   }
   
-  #cv-container p,
-  #cv-container li {
+  #cv-preview p,
+  #cv-preview li {
     text-align: justify;
     line-height: 1.5;
     word-spacing: -0.05em;
   }
   
-  #cv-container h1,
-  #cv-container h2,
-  #cv-container h3,
-  #cv-container h4,
-  #cv-container h5,
-  #cv-container h6 {
+  #cv-preview h1,
+  #cv-preview h2,
+  #cv-preview h3,
+  #cv-preview h4,
+  #cv-preview h5,
+  #cv-preview h6 {
     text-align: left;
     word-spacing: normal;
   }
   
   /* Professional experience should remain left-aligned in PDF with proper spacing */
-  #cv-container .cv-list--experience li {
+  #cv-preview .cv-list--experience li {
     text-align: left !important;
     word-spacing: normal !important;
   }
   
   /* Explicitly preserve header underlines in PDF */
-  #cv-container h2 {
+  #cv-preview h2 {
     border-bottom: 1px solid #9ca3af !important;
     padding-bottom: 0.25rem !important;
     margin-bottom: 0.75rem !important;
@@ -296,7 +296,7 @@
   flex: 1;
 }
 /* Additional fine-tuning for full justification readability */
-#cv-container {
+#cv-preview {
   hyphens: none; /* Disable hyphenation */
   -webkit-hyphens: none; /* Disable hyphenation for WebKit */
   -moz-hyphens: none; /* Disable hyphenation for Firefox */
@@ -306,26 +306,26 @@
 }
 
 /* Prevent justification from creating awkward spacing in short lines */
-#cv-container p:last-child,
-#cv-container li:last-child {
+#cv-preview p:last-child,
+#cv-preview li:last-child {
   text-align-last: left; /* Left-align the last line for better appearance */
 }
 
 /* Ensure proper spacing in justified text with bullets */
-#cv-container .cv-list li,
-#cv-container .optimization-list li {
+#cv-preview .cv-list li,
+#cv-preview .optimization-list li {
   padding-left: 1.2rem;
 }
 
 /* Responsive adjustments for justified text */
 @media (max-width: 768px) {
-  #cv-container {
+  #cv-preview {
     word-spacing: -0.03em; /* Slightly less word spacing on mobile */
     line-height: 1.4; /* Slightly tighter line height on mobile */
   }
   
-  #cv-container p,
-  #cv-container li {
+  #cv-preview p,
+  #cv-preview li {
     word-spacing: -0.03em;
     line-height: 1.4;
   }
@@ -333,7 +333,7 @@
 
 /* High DPI screen adjustments for justified text */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  #cv-container {
+  #cv-preview {
     word-spacing: -0.04em; /* Fine-tuned for high DPI displays */
   }
 }
@@ -352,8 +352,197 @@
 /* You can also force a break before a major new section if needed,
    but 'avoid' is usually sufficient. */
 h2, h3 {
-   /* Give some space before a new heading after a page break */
+    /* Give some space before a new heading after a page break */
     padding-top: 1rem;
     /* Try to keep headings with the content that follows them */
     page-break-after: avoid;
+}
+
+/* Additional spacing optimization for 2-page limit */
+.cv-section {
+    margin-bottom: 1rem; /* Reduced from default larger margins */
+}
+
+.job-entry, .education-entry {
+    margin-bottom: 0.75rem; /* Reduced spacing between entries */
+}
+
+/* Optimize line heights and spacing for compact layout */
+#cv-preview {
+    line-height: 1.3; /* Slightly tighter line height */
+}
+
+#cv-preview .space-y-6 > * + * {
+    margin-top: 1rem; /* Reduced from 1.5rem */
+}
+
+#cv-preview .space-y-4 > * + * {
+    margin-top: 0.75rem; /* Reduced from 1rem */
+}
+
+#cv-preview .space-y-3 > * + * {
+    margin-top: 0.5rem; /* Reduced from 0.75rem */
+}
+
+/* Reduce padding in sections for more compact layout */
+#cv-preview section {
+    margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+#cv-preview .mb-6 {
+    margin-bottom: 1rem !important; /* Override Tailwind's mb-6 */
+}
+
+#cv-preview .mb-4 {
+    margin-bottom: 0.75rem !important; /* Override Tailwind's mb-4 */
+}
+
+/* Additional compact layout optimizations for 2-page limit */
+#cv-preview .mb-3 {
+    margin-bottom: 0.5rem !important; /* Override Tailwind's mb-3 */
+}
+
+#cv-preview .mb-2 {
+    margin-bottom: 0.375rem !important; /* Override Tailwind's mb-2 */
+}
+
+/* Reduce header spacing */
+#cv-preview header {
+    padding-bottom: 1rem !important; /* Reduced from 1.5rem */
+    margin-bottom: 1rem !important; /* Reduced from 1.5rem */
+}
+
+/* Optimize list item spacing */
+#cv-preview .cv-list li {
+    margin-bottom: 0.125rem !important; /* Very tight spacing between list items */
+}
+
+#cv-preview .space-y-1 > * + * {
+    margin-top: 0.125rem !important; /* Minimal spacing for space-y-1 */
+}
+
+/* Reduce padding in job entries */
+#cv-preview .job-entry {
+    padding-right: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Optimize skills grid spacing */
+#cv-preview .skills-grid {
+    gap: 0.25rem 1rem !important; /* Reduced gap between columns and rows */
+}
+
+/* Reduce border spacing */
+#cv-preview h2 {
+    padding-bottom: 0.25rem !important; /* Reduced from 0.5rem */
+    margin-bottom: 0.5rem !important; /* Reduced from 0.75rem */
+}
+
+/* Optimize professional summary spacing */
+#cv-preview .text-justify {
+    margin-bottom: 0.5rem !important; /* Reduced spacing after summary */
+}
+
+/* Reduce space between job title and company */
+#cv-preview .job-entry .flex.justify-between.items-start.mb-2 {
+    margin-bottom: 0.25rem !important; /* Reduced from 0.5rem */
+}
+
+#cv-preview .job-entry .flex.justify-between.items-start.mb-3 {
+    margin-bottom: 0.375rem !important; /* Reduced from 0.75rem */
+}
+
+/* Ensure job title and dates stay on same line */
+#cv-preview .job-entry .flex.justify-between {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    flex-wrap: nowrap !important;
+}
+
+#cv-preview .job-entry h3 {
+    flex: 1 !important;
+    padding-right: 1rem !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+#cv-preview .job-entry .whitespace-nowrap {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+/* Ensure education entries stay on same line */
+#cv-preview .education-entry {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    flex-wrap: nowrap !important;
+}
+
+#cv-preview .education-entry > div {
+    flex: 1 !important;
+    padding-right: 1rem !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+#cv-preview .education-entry .whitespace-nowrap {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+/* Ensure certification entries stay on same line */
+#cv-preview .education-entry.flex.justify-between.items-center {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+}
+
+#cv-preview .education-entry h3 {
+    flex: 1 !important;
+    padding-right: 1rem !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Optimize education entry spacing */
+#cv-preview .education-entry {
+    margin-bottom: 0.5rem !important; /* Reduced spacing between education entries */
+}
+
+/* Reduce overall container padding */
+#cv-preview {
+    padding: 1rem !important; /* Reduced from 1.5rem/2rem */
+}
+
+/* Optimize font sizes for more compact layout */
+#cv-preview .text-base {
+    font-size: 9pt !important; /* Slightly smaller than 10pt */
+}
+
+#cv-preview .text-sm {
+    font-size: 8.5pt !important; /* Slightly smaller */
+}
+
+#cv-preview .text-xs {
+    font-size: 8pt !important; /* Slightly smaller */
+}
+
+/* Ensure proper page break behavior in PDF */
+@media print {
+    .cv-section {
+        page-break-inside: avoid !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .job-entry, .education-entry {
+        page-break-inside: avoid !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    h2, h3 {
+        page-break-after: avoid !important;
+        padding-top: 0.5rem !important; /* Reduced padding for print */
+    }
 }

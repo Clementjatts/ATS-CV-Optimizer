@@ -13,7 +13,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dis
 // Modern Professional CV Display Component
 const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, keywords }) => {
   return (
-    <div id="cv-container" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
+    <div id="cv-preview" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
 
       {/* PROFILE HEADER */}
       <header className="text-center border-b-2 border-gray-300 pb-4 mb-6">
@@ -65,12 +65,12 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4">
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
-                <span className="text-sm font-semibold text-gray-600">{job.dates}</span>
+                <h3 className="text-base font-bold text-gray-800 flex-1 pr-4">{job.jobTitle}</h3>
+                <span className="text-sm font-semibold text-gray-600 whitespace-nowrap">{job.dates}</span>
               </div>
               <div className="flex justify-between items-start mb-3">
-                <p className="text-base font-semibold text-blue-600">{job.company}</p>
-                <p className="text-sm text-gray-600">{job.location}</p>
+                <p className="text-base font-semibold text-blue-600 flex-1 pr-4">{job.company}</p>
+                <p className="text-sm text-gray-600 whitespace-nowrap">{job.location}</p>
               </div>
               <ul className="cv-list cv-list--experience space-y-1">
                 {job.responsibilities.slice(0, 5).map((resp, i) => (
@@ -92,11 +92,11 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
             <div key={index} className="education-entry flex justify-between items-start">
-              <div>
+              <div className="flex-1 pr-4">
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
               </div>
-              <span className="text-sm font-semibold text-gray-600">{edu.dates}</span>
+              <span className="text-sm font-semibold text-gray-600 whitespace-nowrap">{edu.dates}</span>
             </div>
           ))}
         </div>
@@ -112,7 +112,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             {/* Split certifications into two columns for better space utilization */}
             <div className="space-y-3">
               {cvData.certifications.slice(0, Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center">
+                <div key={index} className="education-entry flex justify-between items-center">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>
@@ -120,7 +120,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             </div>
             <div className="space-y-3">
               {cvData.certifications.slice(Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center">
+                <div key={index} className="education-entry flex justify-between items-center">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>
@@ -609,7 +609,7 @@ Please provide a modified version that incorporates the user's request while kee
   };
 
   const generatePdfPreview = async () => {
-    const element = document.getElementById('cv-container');
+    const element = document.getElementById('cv-preview');
     if (!element || !optimizedCvData) return;
 
     setPdfGenerationStatus({

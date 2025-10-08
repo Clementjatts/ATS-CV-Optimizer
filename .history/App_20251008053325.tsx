@@ -13,12 +13,12 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dis
 // Modern Professional CV Display Component
 const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, keywords }) => {
   return (
-    <div id="cv-container" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
+    <div id="cv-preview" className="bg-white p-4 md:p-6 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
 
       {/* PROFILE HEADER */}
-      <header className="text-center border-b-2 border-gray-300 pb-4 mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 uppercase tracking-wide mb-2">{cvData.fullName}</h1>
-        <div className="flex flex-wrap justify-center items-center gap-3 text-sm text-gray-600">
+      <header className="text-center border-b-2 border-gray-300 pb-3 mb-4">
+        <h1 className="text-2xl font-bold text-gray-800 uppercase tracking-wide mb-1">{cvData.fullName}</h1>
+        <div className="flex flex-wrap justify-center items-center gap-2 text-sm text-gray-600">
           <span className="flex items-center gap-1">
             <span className="text-gray-600">📍</span>
             {cvData.contactInfo.location}
@@ -42,11 +42,11 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </header>
 
       {/* PROFESSIONAL SUMMARY */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
+      <section className="cv-section mb-4">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-2">
           Professional Summary
         </h2>
-        <p className="text-gray-700 leading-relaxed text-justify">{cvData.professionalSummary}</p>
+        <p className="text-gray-700 text-justify">{cvData.professionalSummary}</p>
         
         {/* Hidden Keywords for ATS - Mid-document - Invisible to human eye */}
         {keywords && keywords.length > 0 && (
@@ -57,23 +57,23 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </section>
 
       {/* PROFESSIONAL EXPERIENCE */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+      <section className="cv-section mb-4">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
           Professional Experience
         </h2>
-        <div className="space-y-6">
+        <div className="space-y-4">
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4">
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex justify-between items-start mb-1">
                 <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
                 <span className="text-sm font-semibold text-gray-600">{job.dates}</span>
               </div>
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex justify-between items-start mb-2">
                 <p className="text-base font-semibold text-blue-600">{job.company}</p>
                 <p className="text-sm text-gray-600">{job.location}</p>
               </div>
               <ul className="cv-list cv-list--experience space-y-1">
-                {job.responsibilities.slice(0, 5).map((resp, i) => (
+                {job.responsibilities.slice(0, 4).map((resp, i) => (
                   <li key={i} className="text-sm text-gray-700">
                     {resp}
                   </li>
@@ -85,11 +85,11 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </section>
 
       {/* EDUCATION */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
+      <section className="cv-section mb-4">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
           Education
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {cvData.education.map((edu, index) => (
             <div key={index} className="education-entry flex justify-between items-start">
               <div>
@@ -609,7 +609,7 @@ Please provide a modified version that incorporates the user's request while kee
   };
 
   const generatePdfPreview = async () => {
-    const element = document.getElementById('cv-container');
+    const element = document.getElementById('cv-preview');
     if (!element || !optimizedCvData) return;
 
     setPdfGenerationStatus({

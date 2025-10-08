@@ -13,12 +13,12 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dis
 // Modern Professional CV Display Component
 const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, keywords }) => {
   return (
-    <div id="cv-container" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
+    <div id="cv-preview" className="bg-white p-4 md:p-6 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
 
       {/* PROFILE HEADER */}
-      <header className="text-center border-b-2 border-gray-300 pb-4 mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 uppercase tracking-wide mb-2">{cvData.fullName}</h1>
-        <div className="flex flex-wrap justify-center items-center gap-3 text-sm text-gray-600">
+      <header className="text-center border-b-2 border-gray-300 pb-3 mb-4">
+        <h1 className="text-2xl font-bold text-gray-800 uppercase tracking-wide mb-1">{cvData.fullName}</h1>
+        <div className="flex flex-wrap justify-center items-center gap-2 text-sm text-gray-600">
           <span className="flex items-center gap-1">
             <span className="text-gray-600">📍</span>
             {cvData.contactInfo.location}
@@ -609,7 +609,7 @@ Please provide a modified version that incorporates the user's request while kee
   };
 
   const generatePdfPreview = async () => {
-    const element = document.getElementById('cv-container');
+    const element = document.getElementById('cv-preview');
     if (!element || !optimizedCvData) return;
 
     setPdfGenerationStatus({
