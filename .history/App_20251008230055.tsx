@@ -785,12 +785,12 @@ Please provide a modified version that incorporates the user's request while kee
     if (!optimizedCvData) return;
     
     try {
-      const extractedJobTitle = jobTitle || extractJobTitle(jobDescriptionText);
+      const jobTitle = extractJobTitle(jobDescriptionText);
       
       await cvService.saveCV({
-        name: extractedJobTitle,
+        name: jobTitle,
         content: JSON.stringify(optimizedCvData),
-        jobTitle: extractedJobTitle,
+        jobTitle: jobTitle,
         company: '',
         industry: '',
         skills: optimizedCvData.skills,

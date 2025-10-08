@@ -2,11 +2,12 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 // Ensure the API key is available, but do not hardcode it.
 // It's expected to be set in the environment variables.
-if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable not set.");
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY;
+if (!apiKey) {
+  throw new Error("VITE_GEMINI_API_KEY environment variable not set.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey });
 
 // Define TypeScript interfaces for the modern CV template
 export interface ContactInfo {
@@ -53,7 +54,7 @@ export interface CvData {
 const cvSchema = {
     type: Type.OBJECT,
     properties: {
-        fullName: { type: Type.STRING, description: "The candidate's full name." },
+        fullName: { type: Type.STRING, description: "The candidate's full name EXACTLY as it appears in the original CV - preserve exact spelling and formatting." },
         contactInfo: {
             type: Type.OBJECT,
             properties: {
@@ -110,7 +111,7 @@ const cvSchema = {
         },
         skills: {
             type: Type.ARRAY,
-            description: "A comprehensive list of technical and soft skills, prioritized based on the job description requirements.",
+            description: "A comprehensive list of technical and soft skills, prioritized based on the job description requirements. DO NOT include certifications, licenses, or qualifications - these belong in the certifications section only.",
             items: { type: Type.STRING }
         },
         optimizationDetails: {
@@ -150,14 +151,14 @@ export async function optimizeCvWithGemini(
 ): Promise<CvData> {
 
   const prompt = `
-You are a world-class professional CV writer and Applicant Tracking System (ATS) optimization expert. Your task is to create a modern, professional CV using a standardized template that perfectly aligns with a specific job description.
+You are a world-class professional CV writer and Applicant Tracking System (ATS) optimization expert. Your task is to create a modern, professional CV using a standardized template that perfectly aligns with a specific job description. **CRITICAL: Use British English spelling and terminology throughout the entire CV (organised, realised, colour, centre, etc.).**
 
 **You will be given two inputs:**
 1.  **[CURRENT CV]**: The user's existing CV content.
 2.  **[JOB DESCRIPTION]**: The target job description.
 
 **CRITICAL INSTRUCTIONS:**
-1.  **Extract and Transform:** Analyze the [CURRENT CV] to extract all relevant information and transform it into a modern, professional format using the standardized template structure.
+1.  **Extract and Transform:** Analyze the [CURRENT CV] to extract all relevant information and transform it into a modern, professional format using the standardized template structure. **IMPORTANT: Extract the candidate's full name EXACTLY as it appears in the original CV - do not modify, correct, or change the spelling in any way.**
 2.  **Optimize for Job Match:** Thoroughly analyze the [JOB DESCRIPTION] to identify key skills, qualifications, technologies, and responsibilities. Strategically integrate these keywords throughout the CV.
 3.  **Use Modern Template Structure:** Organize the CV into these specific sections in this exact order:
    - PROFILE HEADER (Name + Contact Information)
@@ -165,10 +166,40 @@ You are a world-class professional CV writer and Applicant Tracking System (ATS)
    - PROFESSIONAL EXPERIENCE (Chronological work history)
    - EDUCATION (Academic background)
    - PROFESSIONAL CERTIFICATIONS (Relevant certifications)
-   - KEY SKILLS & COMPETENCIES (Technical and soft skills)
+   - KEY SKILLS & COMPETENCIES (Technical and soft skills - DO NOT include certifications here)
 
 4.  **Enhance Content:** Transform bullet points with action verbs, quantify achievements where possible, and ensure all content is truthful and accurately reflects the user's experience.
-5.  **Prioritize Relevance:** Focus on experiences, skills, and achievements most relevant to the target job. If the user has certifications, projects, or other qualifications mentioned in their original CV, include them in the appropriate template sections.
+5.  **Prioritize Relevance:** Focus on experiences, skills, and achievements most relevant to the target job. If the user has certifications, projects, or other qualifications mentioned in their original CV, include them in the appropriate template sections. **CRITICAL: Keep certifications and skills completely separate - never mix certification names or qualification titles into the skills section.**
+6.  **Document Optimization:** Provide specific details about what was optimized, including exact keywords integrated, skills aligned, experience optimizations made, and how the summary was tailored.
+7.  **Direct Language Requirement:** Use direct, concrete language. Replace any prohibited terms with simpler, more common alternatives. Retain only essential keywords. **IMPORTANT: Use British English spelling and terminology throughout (e.g., "organised" not "organized", "realised" not "realized", "colour" not "color", "centre" not "center").**
+8.  **Prohibited Language Styles:** Strictly avoid the following:
+   - Juxtapositions (state preferred concepts directly)
+   - Em-dashes (use periods for separate sentences)
+   - Introductory phrases ("picture this", "in the realm of", etc.)
+   - False urgency ("you need to", "you must", "essential")
+   - Vague qualifiers ("very", "really", "quite", "actually")
+   - Cliché transitions ("at the end of the day", etc.)
+   - Command phrases ("remember", "keep in mind", etc.)
+   - Overachiever vocabulary ("plethora", "myriad", "utilise", etc.)
+   - Wishy-washy qualifiers ("to some extent", "in many cases", etc.)
+   - Forced transitions ("moreover", "furthermore", etc.)
+   - Overly formal phrasing ("one might consider", etc.)
+   - Explainer phrases ("in other words", etc.)
+   - Overeager emphasis ("it is important to note", etc.)
+   - Pseudo-expert stance ("studies have shown", etc.)
+   - Awkward idioms ("hit the nail on the head", etc.)
+   - Conclusion crutches ("in conclusion", etc.)
+9.  **Prohibited Words List:** Avoid these specific terms and phrases:
+   - "Synergy", "Leverage", "Paradigm", "Game-changer", "Disruptive"
+   - "Thought leadership", "Value-add", "Core competency", "Best practice"
+   - "Circle back", "Touch base", "Deep dive", "Low-hanging fruit"
+   - "Move the needle", "Drill down", "Bandwidth", "Ping me"
+   - "Think outside the box", "Win-win", "Actionable insights"
+   - "Scalable solutions", "Holistic approach", "Seamless integration"
+   - "Cutting-edge", "State-of-the-art", "Next-generation", "Innovative"
+   - Any buzzwords, jargon, or corporate clichés
+
+**STYLE ENFORCEMENT:** The optimized content MUST strictly adhere to these stylistic rules. Any violation will result in rejection of the CV. Use clear, concise, professional language that focuses on concrete achievements and measurable results.
 
 **IMPORTANT:** Do not invent experience or skills the user does not possess. Extract information from their existing CV and enhance it for the target role.
 
@@ -243,3 +274,54 @@ export async function extractTextFromImagesWithGemini(
     throw new Error("Failed to extract text from the document image using AI.");
   }
 }
+
+// New function to extract job title and return structured response
+export const enhanceCVWithGemini = async (cv: string, jobDescription: string): Promise<{ title: string; cv: string }> => {
+    const prompt = `  
+        Based on the following CV and job description, please perform two tasks:  
+        1. Extract the job title from the job description. If no specific title is found, infer a suitable one (e.g., "Software Developer").  
+        2. Optimize the CV to align perfectly with the job description.
+
+        Return the result as a single JSON object with two keys: "title" and "cv".  
+        - The "title" key should contain only the job title string.  
+        - The "cv" key should contain the full, optimized CV text as a single string.
+
+        CV:  
+        ---  
+        ${cv}  
+        ---
+
+        Job Description:  
+        ---  
+        ${jobDescription}  
+        ---  
+    `;  
+      
+    try {  
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json"
+            }
+        });
+        
+        const text = response.text;
+
+        // Clean and parse the JSON response  
+        const sanitizedText = text.replace(/```json/g, '').replace(/```/g, '').trim();  
+        const parsedResponse = JSON.parse(sanitizedText);
+
+        return {  
+            title: parsedResponse.title || 'Optimized_CV',  
+            cv: parsedResponse.cv || 'Error: Could not generate CV.'  
+        };
+
+    } catch (error) {  
+        console.error("Error calling Gemini API:", error);  
+        return {  
+            title: 'Error_CV',  
+            cv: 'Failed to generate CV. Please check the console for details.'  
+        };  
+    }  
+};

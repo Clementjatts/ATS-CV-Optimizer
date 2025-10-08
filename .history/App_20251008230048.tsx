@@ -306,7 +306,6 @@ export default function App() {
   const [userCvText, setUserCvText] = useState('');
   const [jobDescriptionText, setJobDescriptionText] = useState('');
   const [optimizedCvData, setOptimizedCvData] = useState<CvData | null>(null);
-  const [jobTitle, setJobTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -636,7 +635,7 @@ Please provide a modified version that incorporates the user's request while kee
       // Final fix configuration based on CV formatting document
       const opt = {
         margin: [0.5, 0.5, 0.5, 0.5], // inches
-        filename: `${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`,
+        filename: `${optimizedCvData.fullName.replace(/\s+/g, '_')}_CV_Preview.pdf`,
         image: { 
           type: 'jpeg', 
           quality: 0.98 
@@ -785,12 +784,12 @@ Please provide a modified version that incorporates the user's request while kee
     if (!optimizedCvData) return;
     
     try {
-      const extractedJobTitle = jobTitle || extractJobTitle(jobDescriptionText);
+      const jobTitle = extractJobTitle(jobDescriptionText);
       
       await cvService.saveCV({
-        name: extractedJobTitle,
+        name: jobTitle,
         content: JSON.stringify(optimizedCvData),
-        jobTitle: extractedJobTitle,
+        jobTitle: jobTitle,
         company: '',
         industry: '',
         skills: optimizedCvData.skills,

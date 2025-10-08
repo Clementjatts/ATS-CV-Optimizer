@@ -274,3 +274,54 @@ export async function extractTextFromImagesWithGemini(
     throw new Error("Failed to extract text from the document image using AI.");
   }
 }
+
+// New function to extract job title and return structured response
+export const enhanceCVWithGemini = async (cv: string, jobDescription: string): Promise<{ title: string; cv: string }> => {
+    const prompt = `  
+        Based on the following CV and job description, please perform two tasks:  
+        1. Extract the job title from the job description. If no specific title is found, infer a suitable one (e.g., "Software Developer").  
+        2. Optimize the CV to align perfectly with the job description.
+
+        Return the result as a single JSON object with two keys: "title" and "cv".  
+        - The "title" key should contain only the job title string.  
+        - The "cv" key should contain the full, optimized CV text as a single string.
+
+        CV:  
+        ---  
+        ${cv}  
+        ---
+
+        Job Description:  
+        ---  
+        ${jobDescription}  
+        ---  
+    `;  
+      
+    try {  
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json"
+            }
+        });
+        
+        const text = response.text;
+
+        // Clean and parse the JSON response  
+        const sanitizedText = text.replace(/```json/g, '').replace(/```/g, '').trim();  
+        const parsedResponse = JSON.parse(sanitizedText);
+
+        return {  
+            title: parsedResponse.title || 'Optimized_CV',  
+            cv: parsedResponse.cv || 'Error: Could not generate CV.'  
+        };
+
+    } catch (error) {  
+        console.error("Error calling Gemini API:", error);  
+        return {  
+            title: 'Error_CV',  
+            cv: 'Failed to generate CV. Please check the console for details.'  
+        };  
+    }  
+};
