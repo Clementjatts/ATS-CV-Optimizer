@@ -64,11 +64,11 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         <div className="space-y-6">
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4">
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex justify-between items-start mb-2 flex-nowrap">
                 <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
                 <span className="text-sm font-semibold text-gray-600">{job.dates}</span>
               </div>
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex justify-between items-start mb-3 flex-nowrap">
                 <p className="text-base font-semibold text-blue-600">{job.company}</p>
                 <p className="text-sm text-gray-600">{job.location}</p>
               </div>
@@ -91,7 +91,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         </h2>
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start">
+            <div key={index} className="education-entry flex justify-between items-start flex-nowrap">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -112,7 +112,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             {/* Split certifications into two columns for better space utilization */}
             <div className="space-y-3">
               {cvData.certifications.slice(0, Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center">
+                <div key={index} className="flex justify-between items-center flex-nowrap">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>
@@ -120,7 +120,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             </div>
             <div className="space-y-3">
               {cvData.certifications.slice(Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center">
+                <div key={index} className="flex justify-between items-center flex-nowrap">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>
@@ -629,36 +629,27 @@ Please provide a modified version that incorporates the user's request while kee
       // Wait for any dynamic content to load
       await new Promise(resolve => setTimeout(resolve, 200));
 
-        // High-quality PDF generation - improved quality settings
-        const opt = {
-          margin: 0.5,
-          filename: `${optimizedCvData.fullName.replace(/\s+/g, '_')}_CV_Preview.pdf`,
-          image: { 
-            type: 'png',  // Changed from 'jpeg' to 'png' for lossless compression
-            quality: 1.0  // Changed from 0.98 to 1.0 for maximum quality
-          },
-          html2canvas: {
-            scale: 2.5,   // Reverted from 2.5 to 1.5 for proper centering
+      // Improved html2pdf configuration based on CV formatting document
+      const opt = {
+        margin: [0.5, 0.5, 0.5, 0.5], // inches
+        filename: `${optimizedCvData.fullName.replace(/\s+/g, '_')}_CV_Preview.pdf`,
+        image: { 
+          type: 'jpeg', 
+          quality: 0.98 
+        },
+        html2canvas: {
+          scale: 2,
           useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#ffffff',
-          logging: false,
-          scrollX: 0,
-          scrollY: 0,
-          x: Math.max(0, (element.scrollWidth - 560) / 2),
-          y: 0,
-          width: Math.min(element.scrollWidth, 700),
-          height: element.scrollHeight,
-          windowWidth: Math.min(element.scrollWidth, 700),
-          windowHeight: element.scrollHeight,
-          foreignObjectRendering: true,
-          letterRendering: true
+          logging: true,
+          letterRendering: true,
         },
         jsPDF: {
           unit: 'in',
           format: 'a4',
           orientation: 'portrait'
-        }
+        },
+        // This pagebreak configuration offers better control
+        pagebreak: { mode: ['css', 'avoid-all'] }
       };
 
       // Generate PDF from the original element
