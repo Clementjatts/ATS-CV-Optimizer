@@ -142,7 +142,13 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
 
   const handleDownloadFile = async (file: UploadedFile) => {
     try {
-      await fileStorageService.downloadFile(file.downloadURL, file.fileName);
+      const url = await fileStorageService.getCVDownloadUrl(file.storagePath);
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank'; // Open in a new tab for reliability
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch (error) {
       console.error('Failed to download file:', error);
       alert('Failed to download file. Please try again.');

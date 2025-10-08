@@ -165,6 +165,18 @@ class FileStorageService {
     if (fileType.includes('text')) return '📃';
     return '📁';
   }
+
+  // Get download URL for a file
+  async getCVDownloadUrl(filePath: string): Promise<string> {
+    const storageRef = ref(storage, filePath);
+    try {
+      const url = await getDownloadURL(storageRef);
+      return url;
+    } catch (error) {
+      console.error("Error getting download URL:", error);
+      throw new Error("Could not get download URL for the file.");
+    }
+  }
 }
 
 export const fileStorageService = new FileStorageService();
