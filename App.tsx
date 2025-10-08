@@ -42,7 +42,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </header>
 
       {/* PROFESSIONAL SUMMARY */}
-      <section className="mb-6">
+      <section className="cv-section mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
           Professional Summary
         </h2>
@@ -57,13 +57,13 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </section>
 
       {/* PROFESSIONAL EXPERIENCE */}
-      <section className="mb-6">
+      <section className="cv-section mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Professional Experience
         </h2>
         <div className="space-y-6">
           {cvData.workExperience.map((job, index) => (
-            <div key={index} className="pr-4">
+            <div key={index} className="job-entry pr-4">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
                 <span className="text-sm font-semibold text-gray-600">{job.dates}</span>
@@ -85,13 +85,13 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </section>
 
       {/* EDUCATION */}
-      <section className="mb-6">
+      <section className="cv-section mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Education
         </h2>
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
-            <div key={index} className="flex justify-between items-start">
+            <div key={index} className="education-entry flex justify-between items-start">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -104,7 +104,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
 
       {/* PROFESSIONAL CERTIFICATIONS */}
       {cvData.certifications && cvData.certifications.length > 0 && (
-        <section className="mb-6">
+        <section className="cv-section mb-6">
           <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
             Professional Certifications
           </h2>
@@ -113,16 +113,16 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             <div className="space-y-3">
               {cvData.certifications.slice(0, Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
                 <div key={index} className="flex justify-between items-center">
-                  <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
-                  <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
+                  <p className="text-sm text-gray-800">{cert.name}</p>
+                  <span className="text-xs text-gray-600">{cert.date}</span>
                 </div>
               ))}
             </div>
             <div className="space-y-3">
               {cvData.certifications.slice(Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
                 <div key={index} className="flex justify-between items-center">
-                  <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
-                  <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
+                  <p className="text-sm text-gray-800">{cert.name}</p>
+                  <span className="text-xs text-gray-600">{cert.date}</span>
                 </div>
               ))}
             </div>
@@ -131,7 +131,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       )}
 
       {/* KEY SKILLS & COMPETENCIES */}
-      <section className="mb-6">
+      <section className="cv-section mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Key Skills & Competencies
         </h2>
