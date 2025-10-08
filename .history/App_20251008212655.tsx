@@ -64,11 +64,11 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         <div className="space-y-6">
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4">
-              <div className="flex justify-between items-start mb-2 flex-nowrap">
+              <div className="flex justify-between items-start mb-2">
                 <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
                 <span className="text-sm font-semibold text-gray-600">{job.dates}</span>
               </div>
-              <div className="flex justify-between items-start mb-3 flex-nowrap">
+              <div className="flex justify-between items-start mb-3">
                 <p className="text-base font-semibold text-blue-600">{job.company}</p>
                 <p className="text-sm text-gray-600">{job.location}</p>
               </div>
@@ -91,7 +91,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         </h2>
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start flex-nowrap">
+            <div key={index} className="education-entry flex justify-between items-start">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -112,7 +112,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             {/* Split certifications into two columns for better space utilization */}
             <div className="space-y-3">
               {cvData.certifications.slice(0, Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center flex-nowrap">
+                <div key={index} className="flex justify-between items-center">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>
@@ -120,7 +120,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             </div>
             <div className="space-y-3">
               {cvData.certifications.slice(Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center flex-nowrap">
+                <div key={index} className="flex justify-between items-center">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>

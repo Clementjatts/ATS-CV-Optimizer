@@ -112,7 +112,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             {/* Split certifications into two columns for better space utilization */}
             <div className="space-y-3">
               {cvData.certifications.slice(0, Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center flex-nowrap">
+                <div key={index} className="flex justify-between items-center">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>
@@ -120,7 +120,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             </div>
             <div className="space-y-3">
               {cvData.certifications.slice(Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center flex-nowrap">
+                <div key={index} className="flex justify-between items-center">
                   <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
                   <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
                 </div>
