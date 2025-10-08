@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { cvService, SavedCV, CVSource } from '../services/cvService';
+import { cvService, SavedCV, CVSearchFilters, CVSource } from '../services/cvService';
 import { fileStorageService, UploadedFile } from '../services/fileStorageService';
 import { CvData } from '../services/geminiService';
 import { 
