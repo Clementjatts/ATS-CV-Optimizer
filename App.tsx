@@ -11,6 +11,38 @@ import * as pdfjsLib from 'pdfjs-dist';
 // Configure PDF.js worker to ensure it can run in the background.
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
 
+// Clean up job titles to show only the primary role
+const cleanJobTitle = (title: string): string => {
+  if (!title) return title;
+  
+  // Remove everything after common separators
+  const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
+  
+  for (const separator of separators) {
+    const index = title.indexOf(separator);
+    if (index > 0) {
+      title = title.substring(0, index).trim();
+    }
+  }
+  
+  // Remove common suffixes
+  const suffixes = [
+    ' | Transferable Skills',
+    ' - Transferable Skills',
+    ' (Transferable Skills)',
+    ' | Additional Qualifications',
+    ' - Additional Qualifications'
+  ];
+  
+  for (const suffix of suffixes) {
+    if (title.includes(suffix)) {
+      title = title.replace(suffix, '').trim();
+    }
+  }
+  
+  return title;
+};
+
 // Modern Professional CV Display Component
 const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, keywords }) => {
   return (
@@ -693,38 +725,6 @@ Please provide a modified version that incorporates the user's request while kee
     setSelectedCVFromDB(combinedCV);
     setUseDatabaseCV(true);
     setIsCVManagerOpen(false);
-  };
-
-  // Clean up job titles to show only the primary role
-  const cleanJobTitle = (title: string): string => {
-    if (!title) return title;
-    
-    // Remove everything after common separators
-    const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
-    
-    for (const separator of separators) {
-      const index = title.indexOf(separator);
-      if (index > 0) {
-        title = title.substring(0, index).trim();
-      }
-    }
-    
-    // Remove common suffixes
-    const suffixes = [
-      ' | Transferable Skills',
-      ' - Transferable Skills',
-      ' (Transferable Skills)',
-      ' | Additional Qualifications',
-      ' - Additional Qualifications'
-    ];
-    
-    for (const suffix of suffixes) {
-      if (title.includes(suffix)) {
-        title = title.replace(suffix, '').trim();
-      }
-    }
-    
-    return title;
   };
 
   // Extract job title from job description
