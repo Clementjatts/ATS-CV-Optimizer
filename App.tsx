@@ -172,16 +172,16 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             
             return (
               <>
-                <ul className="cv-list cv-list--skills">
+                <ul className="cv-list cv-list--skills text-left">
                   {leftColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 break-inside-avoid">
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
                       {skill}
                     </li>
                   ))}
                 </ul>
-                <ul className="cv-list cv-list--skills">
+                <ul className="cv-list cv-list--skills text-left">
                   {rightColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 break-inside-avoid">
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
                       {skill}
                     </li>
                   ))}
