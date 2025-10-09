@@ -96,7 +96,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Professional Experience
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4 break-inside-avoid">
               {/* Flex container for the main heading */}
@@ -105,11 +105,11 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
                 <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
               </div>
               {/* Sub-heading for the company */}
-              <p className="text-base font-semibold text-blue-600 mb-2">{job.company}</p>
+              <p className="text-base font-semibold text-blue-600 mb-3">{job.company}</p>
               {/* Responsibilities list */}
               <ul className="cv-list cv-list--experience space-y-1">
                 {job.responsibilities.slice(0, 5).map((resp, i) => (
-                  <li key={i} className="text-sm text-gray-700 break-inside-avoid">
+                  <li key={i} className="text-sm text-gray-700">
                     {resp}
                   </li>
                 ))}
