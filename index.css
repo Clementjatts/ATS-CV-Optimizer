@@ -451,7 +451,6 @@ h2 {
 }
 
 /* Page break utilities for better PDF generation */
-.break-inside-avoid {
-  break-inside: avoid;
-  page-break-inside: avoid; /* Legacy property for broader compatibility */
+.avoid-break {
+  /* Class for targeted page break control via JavaScript */
 }

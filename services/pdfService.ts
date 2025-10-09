@@ -66,8 +66,8 @@ class PdfService {
           orientation: 'portrait'
         },
         pagebreak: {
-          mode: ['css', 'avoid-all'],
-          avoid: ['h3', 'p', 'li']
+          mode: 'css',
+          before: '.avoid-break'
         }
       };
 
