@@ -971,53 +971,6 @@ Please provide a modified version that incorporates the user's request while kee
 
             {optimizedCvData && (
               <div className="mt-6 space-y-4">
-                {/* Template Selection for PDF Download */}
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Choose PDF Template</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <button
-                      onClick={() => setSelectedTemplate('Classic')}
-                      className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                        selectedTemplate === 'Classic' 
-                          ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                      }`}
-                    >
-                      📄 Classic
-                    </button>
-                    <button
-                      onClick={() => setSelectedTemplate('Modern')}
-                      className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                        selectedTemplate === 'Modern' 
-                          ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                      }`}
-                    >
-                      🎨 Modern
-                    </button>
-                    <button
-                      onClick={() => setSelectedTemplate('Creative')}
-                      className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                        selectedTemplate === 'Creative' 
-                          ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                      }`}
-                    >
-                      ✨ Creative
-                    </button>
-                    <button
-                      onClick={() => setSelectedTemplate('Minimal')}
-                      className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                        selectedTemplate === 'Minimal' 
-                          ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                      }`}
-                    >
-                      🔲 Minimal
-                    </button>
-                  </div>
-                </div>
-                
                 <div className="flex gap-3">
                   <PDFDownloadLink
                     document={<TemplateRenderer template={selectedTemplate} cvData={optimizedCvData} />}
