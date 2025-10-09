@@ -449,3 +449,9 @@ h2 {
 .education-entry:last-child {
   border-bottom: none;
 }
+
+/* Page break utilities for better PDF generation */
+.break-inside-avoid {
+  break-inside: avoid;
+  page-break-inside: avoid; /* Legacy property for broader compatibility */
+}
