@@ -1,6 +1,56 @@
 /* ATS CV Optimizer - Bullet Point Alignment Fixes */
 /* Comprehensive solution for consistent bullet alignment across screen sizes and PDF generation */
 
+/* Performance optimizations for smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize scrolling performance */
+.scroll-container {
+  will-change: scroll-position;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Reduce repaints during scrolling */
+.cv-section, .job-entry, .education-entry {
+  contain: layout style paint;
+  will-change: auto;
+}
+
+/* Optimize main content area for smooth scrolling */
+main {
+  contain: layout style;
+  will-change: scroll-position;
+}
+
+/* Optimize CV container for better performance */
+#cv-container {
+  contain: layout style paint;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Reduce layout thrashing during scroll */
+.cv-list li {
+  contain: layout style;
+}
+
+/* Optimize PDF component rendering */
+.scroll-container {
+  contain: layout style paint;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
 /* Base CV styling with improved typography and spacing */
 #cv-container {
   font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, sans-serif;

@@ -45,8 +45,8 @@ class PDFErrorBoundary extends React.Component<
   }
 }
 
-// Helper component to render the correct template based on state
-const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
+// Helper component to render the correct template based on state - Memoized for performance
+const TemplateRenderer = React.memo(({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
   const fallbackTemplate = <ClassicTemplate cvData={cvData} />;
   
   return (
@@ -66,7 +66,7 @@ const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData
       })()}
     </PDFErrorBoundary>
   );
-};
+});
 
 // Clean up job titles to show only the primary role
 const cleanJobTitle = (title: string): string => {
@@ -101,7 +101,7 @@ const cleanJobTitle = (title: string): string => {
 };
 
 // Modern Professional CV Display Component
-const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, keywords }) => {
+const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = React.memo(({ cvData, keywords }) => {
   return (
     <div id="cv-container" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
 
@@ -257,7 +257,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       )}
     </div>
   );
-};
+});
 
 
 const LabeledTextarea: React.FC<{
@@ -408,6 +408,28 @@ export default function App() {
   // Template selection state
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('Classic');
   const [templateChangeCounter, setTemplateChangeCounter] = useState(0);
+  
+  // Performance optimization state
+  const [isScrolling, setIsScrolling] = useState(false);
+  
+  // Debounced scroll handler for performance
+  const scrollHandler = useCallback(() => {
+    setIsScrolling(true);
+    const timeout = setTimeout(() => {
+      setIsScrolling(false);
+    }, 150);
+    return () => clearTimeout(timeout);
+  }, []);
+  
+  // Add scroll listener for performance optimization
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollHandler();
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrollHandler]);
 
   const [isParsing, setIsParsing] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -1034,7 +1056,7 @@ Please provide a modified version that incorporates the user's request while kee
             </div>
 
             {optimizedCvData && (
-              <div className="mt-6 space-y-4">
+              <div className={`mt-6 space-y-4 scroll-container ${isScrolling ? 'opacity-95' : 'opacity-100'} transition-opacity duration-100`}>
                 <div className="flex gap-3">
                   <PDFDownloadLink
                     key={`pdf-${selectedTemplate}-${templateChangeCounter}`}
