@@ -144,21 +144,51 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           Key Skills & Competencies
         </h2>
         <div className="skills-grid">
-          {/* Split skills into two columns for better space utilization */}
-          <ul className="cv-list cv-list--skills">
-            {cvData.skills.slice(0, Math.ceil(cvData.skills.length / 2)).map((skill, index) => (
-              <li key={index} className="text-sm text-gray-700 break-inside-avoid">
-                {skill}
-              </li>
-            ))}
-          </ul>
-          <ul className="cv-list cv-list--skills">
-            {cvData.skills.slice(Math.ceil(cvData.skills.length / 2)).map((skill, index) => (
-              <li key={index} className="text-sm text-gray-700 break-inside-avoid">
-                {skill}
-              </li>
-            ))}
-          </ul>
+          {(() => {
+            // Ensure even number of skills between 12-14
+            let skillsToShow = cvData.skills.slice(0, 14); // Take first 14 skills max
+            
+            // If we have less than 12 skills, pad with empty items to reach 12
+            while (skillsToShow.length < 12) {
+              skillsToShow.push('');
+            }
+            
+            // Ensure even number
+            if (skillsToShow.length % 2 !== 0) {
+              skillsToShow = skillsToShow.slice(0, -1); // Remove last item to make even
+            }
+            
+            // If we have more than 14, trim to 14 and ensure even
+            if (skillsToShow.length > 14) {
+              skillsToShow = skillsToShow.slice(0, 14);
+              if (skillsToShow.length % 2 !== 0) {
+                skillsToShow = skillsToShow.slice(0, -1);
+              }
+            }
+            
+            const halfLength = skillsToShow.length / 2;
+            const leftColumn = skillsToShow.slice(0, halfLength);
+            const rightColumn = skillsToShow.slice(halfLength);
+            
+            return (
+              <>
+                <ul className="cv-list cv-list--skills">
+                  {leftColumn.map((skill, index) => (
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid">
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+                <ul className="cv-list cv-list--skills">
+                  {rightColumn.map((skill, index) => (
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid">
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            );
+          })()}
         </div>
       </section>
 
