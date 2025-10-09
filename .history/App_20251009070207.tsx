@@ -1004,12 +1004,11 @@ Please provide a modified version that incorporates the user's request while kee
             </div>
           </div>
 
-          {isPdfGenerated && (
-            <div className="bg-gradient-to-br from-white/95 via-pink-50/95 to-purple-50/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border border-pink-200/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 flex flex-col">
-              <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-3">
-                <span className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
-                Your Optimized CV
-              </h2>
+          <div className="bg-gradient-to-br from-white/95 via-pink-50/95 to-purple-50/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border border-pink-200/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 flex flex-col">
+            <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-3">
+              <span className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
+              Your Optimized CV
+            </h2>
             <div className="flex-grow bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 rounded-xl border border-purple-200/50 min-h-[40rem] flex flex-col overflow-hidden shadow-inner">
               {isLoading && (
                 <div className="m-auto text-center text-slate-500">
@@ -1056,9 +1055,6 @@ Please provide a modified version that incorporates the user's request while kee
                             PDF Error - Try Another Template
                           </div>
                         );
-                      }
-                      if (blob && !loading) {
-                        setIsPdfGenerated(true);
                       }
                       return (
                         <>
@@ -1159,40 +1155,22 @@ Please provide a modified version that incorporates the user's request while kee
                 )}
               </div>
             )}
-            </div>
-          )}
+
+          </div>
 
           {/* Optimization Analysis Section */}
           {optimizedCvData && (
             <div className="bg-gradient-to-br from-white/95 via-emerald-50/95 to-teal-50/95 p-8 rounded-2xl shadow-xl border border-emerald-200/50 backdrop-blur-sm hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] hover:-translate-y-2">
               {/* Header */}
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <span className="text-white text-lg font-bold">3</span>
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">Optimization Analysis</h2>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-white text-lg font-bold">3</span>
                 </div>
-                <button
-                  onClick={() => setIsAnalysisMinimized(!isAnalysisMinimized)}
-                  className="text-emerald-600 hover:text-emerald-800 transition-colors duration-200 p-2 rounded-lg hover:bg-emerald-50"
-                  title={isAnalysisMinimized ? 'Expand Analysis' : 'Minimize Analysis'}
-                >
-                  {isAnalysisMinimized ? (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                    </svg>
-                  )}
-                </button>
+                <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">Optimization Analysis</h2>
               </div>
 
               {/* Success Banner */}
-              {!isAnalysisMinimized && (
-                <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-6 mb-8 shadow-sm">
+              <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-6 mb-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1339,7 +1317,6 @@ Please provide a modified version that incorporates the user's request while kee
                   </div>
                 </div>
               </div>
-              )}
             </div>
           )}
         </div>
