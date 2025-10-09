@@ -5,6 +5,8 @@ import { fileStorageService, UploadedFile } from './services/fileStorageService'
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { ClassicTemplate } from './components/templates/ClassicTemplate';
 import { ModernTemplate } from './components/templates/ModernTemplate';
+import { CreativeTemplate } from './components/templates/CreativeTemplate';
+import { MinimalTemplate } from './components/templates/MinimalTemplate';
 import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 import mammoth from 'mammoth';
@@ -14,13 +16,17 @@ import * as pdfjsLib from 'pdfjs-dist';
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
 
 // Template types
-type TemplateType = 'Classic' | 'Modern';
+type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
 
 // Helper component to render the correct template based on state
 const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
   switch (template) {
     case 'Modern':
       return <ModernTemplate cvData={cvData} />;
+    case 'Creative':
+      return <CreativeTemplate cvData={cvData} />;
+    case 'Minimal':
+      return <MinimalTemplate cvData={cvData} />;
     case 'Classic':
     default:
       return <ClassicTemplate cvData={cvData} />;
@@ -805,6 +811,53 @@ Please provide a modified version that incorporates the user's request while kee
                 <p>Upload your CV (including scanned PDFs) and paste the job description. The content will be extracted and optimized.</p>
               </div>
               
+              {/* Template Selection UI */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Choose CV Template</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button
+                    onClick={() => setSelectedTemplate('Classic')}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
+                      selectedTemplate === 'Classic' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                    }`}
+                  >
+                    📄 Classic
+                  </button>
+                  <button
+                    onClick={() => setSelectedTemplate('Modern')}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
+                      selectedTemplate === 'Modern' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                    }`}
+                  >
+                    🎨 Modern
+                  </button>
+                  <button
+                    onClick={() => setSelectedTemplate('Creative')}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
+                      selectedTemplate === 'Creative' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                    }`}
+                  >
+                    ✨ Creative
+                  </button>
+                  <button
+                    onClick={() => setSelectedTemplate('Minimal')}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
+                      selectedTemplate === 'Minimal' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                    }`}
+                  >
+                    🔲 Minimal
+                  </button>
+                </div>
+              </div>
+              
               {/* Merged Layout: CV Upload + Job Description */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* CV Upload Section - Top Left */}
@@ -918,30 +971,6 @@ Please provide a modified version that incorporates the user's request while kee
 
             {optimizedCvData && (
               <div className="mt-6 space-y-4">
-                {/* Template Selection UI */}
-                <div className="flex justify-center gap-4 mb-6">
-                  <button
-                    onClick={() => setSelectedTemplate('Classic')}
-                    className={`px-6 py-2 rounded-md font-semibold text-white transition-transform transform hover:scale-105 ${
-                      selectedTemplate === 'Classic' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg' 
-                        : 'bg-gray-400 hover:bg-gray-500'
-                    }`}
-                  >
-                    Classic Template
-                  </button>
-                  <button
-                    onClick={() => setSelectedTemplate('Modern')}
-                    className={`px-6 py-2 rounded-md font-semibold text-white transition-transform transform hover:scale-105 ${
-                      selectedTemplate === 'Modern' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg' 
-                        : 'bg-gray-400 hover:bg-gray-500'
-                    }`}
-                  >
-                    Modern Template
-                  </button>
-                </div>
-                
                 <div className="flex gap-3">
                   <PDFDownloadLink
                     document={<TemplateRenderer template={selectedTemplate} cvData={optimizedCvData} />}
