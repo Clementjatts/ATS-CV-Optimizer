@@ -151,7 +151,7 @@ export const CVDocument = ({ cvData }: { cvData: CvData }) => (
       <View style={styles.header}>
         <Text style={styles.name}>{cvData.fullName}</Text>
         <Text style={styles.contactInfo}>
-          {cvData.contactInfo.location} | clement@clementadegbenro.com | {cvData.contactInfo.phone}
+          {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
         </Text>
       </View>
 

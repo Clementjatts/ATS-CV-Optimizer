@@ -63,7 +63,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           </span>
           <span className="flex items-center gap-1">
             <span className="text-gray-600">📞</span>
-            {cvData.contactInfo.phone}
+            +447838681955
           </span>
         </div>
         
