@@ -96,7 +96,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Professional Experience
         </h2>
-        <div className="space-y-6">
+        <div className="space-y-4">
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4 break-inside-avoid">
               {/* Flex container for the main heading */}
@@ -105,11 +105,11 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
                 <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
               </div>
               {/* Sub-heading for the company */}
-              <p className="text-base font-semibold text-blue-600 mb-3">{job.company}</p>
+              <p className="text-base font-semibold text-blue-600 mb-2">{job.company}</p>
               {/* Responsibilities list */}
               <ul className="cv-list cv-list--experience space-y-1">
                 {job.responsibilities.slice(0, 5).map((resp, i) => (
-                  <li key={i} className="text-sm text-gray-700">
+                  <li key={i} className="text-sm text-gray-700 break-inside-avoid">
                     {resp}
                   </li>
                 ))}
@@ -935,29 +935,25 @@ Please provide a modified version that incorporates the user's request while kee
                   />
                 </div>
               </div>
-              
-              {/* Optimize CV Button - Aligned with Select CV button */}
-              <div className="mt-4 flex gap-2">
-                <div className="flex-1"></div> {/* Spacer to align with Select CV button */}
-                <button
-                  onClick={handleOptimize}
-                  disabled={!isFormValid || isLoading || isParsing || isScanning}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-xl hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform hover:scale-[1.02] disabled:transform-none"
-                >
-                  {isLoading ? (
-                    <>
-                      <LoadingSpinner />
-                      Optimizing...
-                    </>
-                  ) : (
-                    <>
-                      <SparkleIcon className="h-4 w-4" />
-                      Optimize CV
-                    </>
-                  )}
-                </button>
-              </div>
-              </div>
+            </div>
+            <div className="flex justify-center">
+              <button
+                onClick={handleOptimize}
+                disabled={!isFormValid || isLoading || isParsing || isScanning}
+                className="w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-xl hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform hover:scale-[1.02] disabled:transform-none"
+              >
+                {isLoading ? (
+                  <>
+                    <LoadingSpinner />
+                    Optimizing...
+                  </>
+                ) : (
+                  <>
+                    <SparkleIcon className="h-4 w-4" />
+                    Optimize CV
+                  </>
+                )}
+              </button>
             </div>
           </div>
 
@@ -1295,6 +1291,7 @@ Please provide a modified version that incorporates the user's request while kee
               </div>
             </div>
           )}
+        </div>
       </main>
       
       {/* CV Manager Modal */}
