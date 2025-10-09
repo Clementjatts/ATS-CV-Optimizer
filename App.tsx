@@ -411,7 +411,6 @@ export default function App() {
   
   // UI state for sections
   const [isAnalysisMinimized, setIsAnalysisMinimized] = useState(true);
-  const [isPdfGenerated, setIsPdfGenerated] = useState(false);
 
   const [isParsing, setIsParsing] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -1004,7 +1003,7 @@ Please provide a modified version that incorporates the user's request while kee
             </div>
           </div>
 
-          {isPdfGenerated && (
+          {optimizedCvData && (
             <div className="bg-gradient-to-br from-white/95 via-pink-50/95 to-purple-50/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border border-pink-200/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 flex flex-col">
               <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-3">
                 <span className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
@@ -1056,9 +1055,6 @@ Please provide a modified version that incorporates the user's request while kee
                             PDF Error - Try Another Template
                           </div>
                         );
-                      }
-                      if (blob && !loading) {
-                        setIsPdfGenerated(true);
                       }
                       return (
                         <>
