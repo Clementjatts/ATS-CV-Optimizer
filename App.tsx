@@ -98,7 +98,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         </h2>
         <div className="space-y-6">
           {cvData.workExperience.map((job, index) => (
-            <div key={index} className="job-entry pr-4 break-inside-avoid">
+            <div key={index} className="job-entry pr-4">
               {/* Flex container for the main heading */}
               <div className="flex justify-between items-baseline mb-2">
                 <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
