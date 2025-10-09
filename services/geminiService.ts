@@ -98,7 +98,7 @@ const cvSchema = {
         },
         certifications: {
             type: Type.ARRAY,
-            description: "ONLY include professional certifications that are directly relevant to the job description. Filter out generic or unrelated certifications. Focus on industry-specific, technical, or role-specific certifications that demonstrate expertise for the target position.",
+            description: "Professional certifications relevant to the job description",
             items: {
                 type: Type.OBJECT,
                 properties: {
@@ -164,15 +164,15 @@ You are a world-class professional CV writer and Applicant Tracking System (ATS)
    - PROFILE HEADER (Name + Contact Information)
    - PROFESSIONAL SUMMARY (3-4 compelling sentences)
    - PROFESSIONAL EXPERIENCE (Chronological work history)
-   - EDUCATION & CERTIFICATIONS (Academic background + ONLY job-relevant certifications)
+   - EDUCATION (Academic background)
+   - PROFESSIONAL CERTIFICATIONS (Relevant certifications)
    - KEY SKILLS & COMPETENCIES (Technical and soft skills - DO NOT include certifications here)
 
 4.  **Enhance Content:** Transform bullet points with action verbs, quantify achievements where possible, and ensure all content is truthful and accurately reflects the user's experience.
 5.  **Prioritize Relevance:** Focus on experiences, skills, and achievements most relevant to the target job. If the user has certifications, projects, or other qualifications mentioned in their original CV, include them in the appropriate template sections. **CRITICAL: Keep certifications and skills completely separate - never mix certification names or qualification titles into the skills section.**
-6.  **Certification Filtering:** ONLY include certifications that are directly relevant to the job description. Filter out generic certifications (like basic computer skills, first aid, etc.) unless specifically mentioned in the job requirements. Focus on industry-specific, technical, or role-specific certifications that demonstrate expertise for the target position.
-7.  **Document Optimization:** Provide specific details about what was optimized, including exact keywords integrated, skills aligned, experience optimizations made, and how the summary was tailored.
-8.  **Direct Language Requirement:** Use direct, concrete language. Replace any prohibited terms with simpler, more common alternatives. Retain only essential keywords. **IMPORTANT: Use British English spelling and terminology throughout (e.g., "organised" not "organized", "realised" not "realized", "colour" not "color", "centre" not "center").**
-9.  **Prohibited Language Styles:** Strictly avoid the following:
+6.  **Document Optimization:** Provide specific details about what was optimized, including exact keywords integrated, skills aligned, experience optimizations made, and how the summary was tailored.
+7.  **Direct Language Requirement:** Use direct, concrete language. Replace any prohibited terms with simpler, more common alternatives. Retain only essential keywords. **IMPORTANT: Use British English spelling and terminology throughout (e.g., "organised" not "organized", "realised" not "realized", "colour" not "color", "centre" not "center").**
+8.  **Prohibited Language Styles:** Strictly avoid the following:
    - Juxtapositions (state preferred concepts directly)
    - Em-dashes (use periods for separate sentences)
    - Introductory phrases ("picture this", "in the realm of", etc.)

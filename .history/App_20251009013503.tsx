@@ -81,14 +81,15 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         </div>
       </section>
 
-      {/* EDUCATION */}
+      {/* EDUCATION & CERTIFICATIONS */}
       <section className="cv-section mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
-          Education
+          Education & Certifications
         </h2>
         <div className="space-y-4">
+          {/* Education entries */}
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start flex-nowrap">
+            <div key={`edu-${index}`} className="education-entry flex justify-between items-start flex-nowrap">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -96,9 +97,23 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
               <span className="text-sm font-semibold text-gray-600">{edu.dates}</span>
             </div>
           ))}
+          
+          {/* Relevant certifications */}
+          {cvData.certifications && cvData.certifications.length > 0 && (
+            <div className="mt-3">
+              <p className="text-sm text-gray-700">
+                <span className="font-semibold">Relevant certifications include </span>
+                {cvData.certifications.map((cert, index) => (
+                  <span key={`cert-${index}`}>
+                    {cert.name.toLowerCase()}
+                    {index < cvData.certifications.length - 1 ? ', ' : '.'}
+                  </span>
+                ))}
+              </p>
+            </div>
+          )}
         </div>
       </section>
-
 
       {/* KEY SKILLS & COMPETENCIES */}
       <section className="cv-section mb-6">
