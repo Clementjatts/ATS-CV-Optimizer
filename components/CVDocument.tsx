@@ -2,64 +2,74 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { CvData } from '../services/geminiService';
 
-// Create styles using a StyleSheet object - this is like CSS-in-JS
+// --- STYLESHEET: Translating Tailwind CSS to React-PDF ---
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    paddingTop: 35,
+    paddingBottom: 65,
+    paddingHorizontal: 35,
     fontFamily: 'Helvetica',
     fontSize: 10,
-    lineHeight: 1.4,
+    color: '#1f2937', // Equivalent to text-gray-800
   },
+  // Header Styles
   header: {
     textAlign: 'center',
     marginBottom: 20,
   },
   name: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
   },
   contactInfo: {
-    fontSize: 10,
-    color: '#666',
+    fontSize: 9,
+    color: '#4b5563', // text-gray-600
+    marginTop: 4,
   },
+  // Section Styles
   section: {
-    marginBottom: 15,
+    marginBottom: 12,
   },
   sectionTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    borderBottomWidth: 1,
-    borderBottomColor: '#666',
-    marginBottom: 8,
+    borderBottomWidth: 1.5,
+    borderBottomColor: '#9ca3af', // border-gray-400
     paddingBottom: 2,
+    marginBottom: 8,
     textTransform: 'uppercase',
   },
-  jobEntry: {
+  // Professional Experience Styles
+  entry: {
     marginBottom: 12,
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'baseline',
     marginBottom: 2,
   },
   jobTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: 'bold',
   },
   date: {
-    fontSize: 10,
-    color: '#333',
+    fontSize: 9,
+    color: '#4b5563',
+    fontWeight: 'medium',
   },
   company: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#2563eb',
-    marginBottom: 4,
+    fontSize: 10,
+    fontStyle: 'italic',
+  },
+  responsibilitiesList: {
+    marginTop: 4,
   },
   responsibility: {
     flexDirection: 'row',
-    marginBottom: 2,
+    marginBottom: 3,
   },
   bullet: {
     width: 10,
@@ -67,30 +77,33 @@ const styles = StyleSheet.create({
   },
   responsibilityText: {
     flex: 1,
-    fontSize: 10,
   },
+  // Education Styles
   educationEntry: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
+    alignItems: 'baseline',
+    marginBottom: 5,
   },
+  degreeInfo: {},
   institution: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: 'bold',
   },
   degree: {
-    fontSize: 10,
-    color: '#666',
+    fontStyle: 'italic',
   },
+  // Key Skills Styles
   skillsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginTop: 4,
   },
   skill: {
     width: '50%',
-    marginBottom: 2,
-    fontSize: 10,
+    marginBottom: 3,
   },
+  // Professional Summary Styles
   summary: {
     fontSize: 10,
     textAlign: 'justify',
@@ -130,13 +143,13 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// This is your new PDF template component
+// --- THE FULLY STYLED CV DOCUMENT COMPONENT ---
 export const CVDocument = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.name}>{cvData.fullName.toUpperCase()}</Text>
+        <Text style={styles.name}>{cvData.fullName}</Text>
         <Text style={styles.contactInfo}>
           {cvData.contactInfo.location} | {cvData.contactInfo.email} | {cvData.contactInfo.phone}
         </Text>
@@ -144,39 +157,38 @@ export const CVDocument = ({ cvData }: { cvData: CvData }) => (
 
       {/* Professional Summary */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Professional Summary</Text>
+        <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
         <Text style={styles.summary}>{cvData.professionalSummary}</Text>
       </View>
 
       {/* Professional Experience */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Professional Experience</Text>
+        <Text style={styles.sectionTitle}>PROFESSIONAL EXPERIENCE</Text>
         {cvData.workExperience.map((job, index) => (
-          // The `wrap={false}` prop on this View is KEY.
-          // It prevents this job entry from being split. But because the list items
-          // below are individual Text elements, the list itself CAN break cleanly between items.
-          <View key={index} style={styles.jobEntry} wrap={false}>
+          <View key={index} style={styles.entry} wrap={false}>
             <View style={styles.entryHeader}>
               <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
               <Text style={styles.date}>{job.dates}</Text>
             </View>
             <Text style={styles.company}>{job.company}</Text>
-            {job.responsibilities.slice(0, 4).map((resp, i) => (
-              <View key={i} style={styles.responsibility}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.responsibilityText}>{resp}</Text>
-              </View>
-            ))}
+            <View style={styles.responsibilitiesList}>
+              {job.responsibilities.slice(0, 4).map((resp, i) => (
+                <View key={i} style={styles.responsibility}>
+                  <Text style={styles.bullet}>• </Text>
+                  <Text style={styles.responsibilityText}>{resp}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         ))}
       </View>
-
+        
       {/* Education */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Education</Text>
+        <Text style={styles.sectionTitle}>EDUCATION</Text>
         {cvData.education.map((edu, index) => (
           <View key={index} style={styles.educationEntry}>
-            <View>
+            <View style={styles.degreeInfo}>
               <Text style={styles.institution}>{edu.institution}</Text>
               <Text style={styles.degree}>{edu.degree}</Text>
             </View>
@@ -187,7 +199,7 @@ export const CVDocument = ({ cvData }: { cvData: CvData }) => (
 
       {/* Key Skills */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
+        <Text style={styles.sectionTitle}>KEY SKILLS & COMPETENCIES</Text>
         <View style={styles.skillsGrid}>
           {(() => {
             // Ensure even number of skills between 12-14
@@ -212,9 +224,9 @@ export const CVDocument = ({ cvData }: { cvData: CvData }) => (
             }
             
             return skillsToShow.map((skill, index) => (
-              <Text key={index} style={styles.skill}>
-                {skill ? `• ${skill}` : ''}
-              </Text>
+              <View key={index} style={styles.skill}>
+                <Text>{skill ? `• ${skill}` : ''}</Text>
+              </View>
             ));
           })()}
         </View>
