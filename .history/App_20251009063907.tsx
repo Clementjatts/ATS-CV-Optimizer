@@ -20,22 +20,16 @@ type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
 
 // Helper component to render the correct template based on state
 const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
-  try {
-    switch (template) {
-      case 'Modern':
-        return <ModernTemplate cvData={cvData} />;
-      case 'Creative':
-        return <CreativeTemplate cvData={cvData} />;
-      case 'Minimal':
-        return <MinimalTemplate cvData={cvData} />;
-      case 'Classic':
-      default:
-        return <ClassicTemplate cvData={cvData} />;
-    }
-  } catch (error) {
-    console.error('Template rendering error:', error);
-    // Fallback to Classic template if there's an error
-    return <ClassicTemplate cvData={cvData} />;
+  switch (template) {
+    case 'Modern':
+      return <ModernTemplate cvData={cvData} />;
+    case 'Creative':
+      return <CreativeTemplate cvData={cvData} />;
+    case 'Minimal':
+      return <MinimalTemplate cvData={cvData} />;
+    case 'Classic':
+    default:
+      return <ClassicTemplate cvData={cvData} />;
   }
 };
 
@@ -822,13 +816,7 @@ Please provide a modified version that incorporates the user's request while kee
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Choose CV Template</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <button
-                    onClick={() => {
-                      try {
-                        setSelectedTemplate('Classic');
-                      } catch (error) {
-                        console.error('Template selection error:', error);
-                      }
-                    }}
+                    onClick={() => setSelectedTemplate('Classic')}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Classic' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
@@ -838,13 +826,7 @@ Please provide a modified version that incorporates the user's request while kee
                     📄 Classic
                   </button>
                   <button
-                    onClick={() => {
-                      try {
-                        setSelectedTemplate('Modern');
-                      } catch (error) {
-                        console.error('Template selection error:', error);
-                      }
-                    }}
+                    onClick={() => setSelectedTemplate('Modern')}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Modern' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
@@ -854,13 +836,7 @@ Please provide a modified version that incorporates the user's request while kee
                     🎨 Modern
                   </button>
                   <button
-                    onClick={() => {
-                      try {
-                        setSelectedTemplate('Creative');
-                      } catch (error) {
-                        console.error('Template selection error:', error);
-                      }
-                    }}
+                    onClick={() => setSelectedTemplate('Creative')}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Creative' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
@@ -870,13 +846,7 @@ Please provide a modified version that incorporates the user's request while kee
                     ✨ Creative
                   </button>
                   <button
-                    onClick={() => {
-                      try {
-                        setSelectedTemplate('Minimal');
-                      } catch (error) {
-                        console.error('Template selection error:', error);
-                      }
-                    }}
+                    onClick={() => setSelectedTemplate('Minimal')}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Minimal' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 

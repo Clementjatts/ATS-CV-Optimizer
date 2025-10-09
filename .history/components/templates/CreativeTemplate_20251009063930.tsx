@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     color: '#374151',
     padding: 12,
-    backgroundColor: '#f9f9f9', // Light gray background
-    borderRadius: 2,
-    borderLeftWidth: 2,
-    borderLeftColor: '#cccccc', // Gray accent
+    backgroundColor: '#fef3c7', // Light yellow background
+    borderRadius: 3,
+    borderLeftWidth: 4,
+    borderLeftColor: '#f59e0b', // Orange accent
   },
   educationEntry: {
     flexDirection: 'row',
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     marginBottom: 8,
     padding: 8,
-    backgroundColor: '#f5f5f5', // Light gray background
-    borderRadius: 2,
-    borderLeftWidth: 2,
-    borderLeftColor: '#999999', // Gray accent
+    backgroundColor: '#f0f9ff', // Light blue background
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: '#06b6d4', // Cyan accent
   },
   institution: {
     fontSize: 11,
@@ -144,11 +144,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   skill: {
-    backgroundColor: '#e8e8e8', // Light gray background
-    color: '#333333', // Dark gray text
+    backgroundColor: '#ddd6fe', // Light purple background
+    color: '#5b21b6', // Dark purple text
     padding: 4,
     margin: 2,
-    borderRadius: 2,
+    borderRadius: 4,
     fontSize: 9,
     fontWeight: 'normal',
   },

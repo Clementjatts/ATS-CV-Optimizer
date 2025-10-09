@@ -144,11 +144,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   skill: {
-    backgroundColor: '#e8e8e8', // Light gray background
-    color: '#333333', // Dark gray text
+    backgroundColor: '#ddd6fe', // Light purple background
+    color: '#5b21b6', // Dark purple text
     padding: 4,
     margin: 2,
-    borderRadius: 2,
+    borderRadius: 4,
     fontSize: 9,
     fontWeight: 'normal',
   },
