@@ -144,7 +144,7 @@ const cleanJobTitle = (title: string): string => {
 };
 
 // --- THE FULLY STYLED CV DOCUMENT COMPONENT ---
-export const CVDocument = ({ cvData }: { cvData: CvData }) => (
+export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
