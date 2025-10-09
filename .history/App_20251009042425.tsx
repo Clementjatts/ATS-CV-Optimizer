@@ -93,23 +93,23 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
 
       {/* PROFESSIONAL EXPERIENCE */}
       <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4 avoid-break">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Professional Experience
         </h2>
         <div className="space-y-6">
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4">
               {/* Flex container for the main heading */}
-              <div className="flex justify-between items-baseline mb-2 avoid-break">
+              <div className="flex justify-between items-baseline mb-2">
                 <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
                 <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
               </div>
               {/* Sub-heading for the company */}
-              <p className="text-base font-semibold text-blue-600 mb-3 avoid-break">{job.company}</p>
+              <p className="text-base font-semibold text-blue-600 mb-3">{job.company}</p>
               {/* Responsibilities list */}
               <ul className="cv-list cv-list--experience space-y-1">
                 {job.responsibilities.slice(0, 4).map((resp, i) => (
-                  <li key={i} className="text-sm text-gray-700 avoid-break">
+                  <li key={i} className="text-sm text-gray-700">
                     {resp}
                   </li>
                 ))}
@@ -121,12 +121,12 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
 
       {/* EDUCATION */}
       <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4 avoid-break">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Education
         </h2>
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start flex-nowrap avoid-break">
+            <div key={index} className="education-entry flex justify-between items-start flex-nowrap break-inside-avoid">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -140,7 +140,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
 
       {/* KEY SKILLS & COMPETENCIES */}
       <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4 avoid-break">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Key Skills & Competencies
         </h2>
         <div className="skills-grid">
@@ -174,14 +174,14 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
               <>
                 <ul className="cv-list cv-list--skills text-left">
                   {leftColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 text-left avoid-break">
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
                       {skill}
                     </li>
                   ))}
                 </ul>
                 <ul className="cv-list cv-list--skills text-left">
                   {rightColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 text-left avoid-break">
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
                       {skill}
                     </li>
                   ))}

@@ -121,12 +121,12 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
 
       {/* EDUCATION */}
       <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4 avoid-break">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Education
         </h2>
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start flex-nowrap avoid-break">
+            <div key={index} className="education-entry flex justify-between items-start flex-nowrap break-inside-avoid">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -140,7 +140,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
 
       {/* KEY SKILLS & COMPETENCIES */}
       <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4 avoid-break">
+        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
           Key Skills & Competencies
         </h2>
         <div className="skills-grid">
@@ -174,14 +174,14 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
               <>
                 <ul className="cv-list cv-list--skills text-left">
                   {leftColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 text-left avoid-break">
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
                       {skill}
                     </li>
                   ))}
                 </ul>
                 <ul className="cv-list cv-list--skills text-left">
                   {rightColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 text-left avoid-break">
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
                       {skill}
                     </li>
                   ))}
