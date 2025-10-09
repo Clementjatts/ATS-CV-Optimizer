@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 10,
     backgroundColor: '#f8fafc', // Light gray background
-    borderRadius: 3,
+    borderRadius: 6,
     borderLeftWidth: 4,
     borderLeftColor: '#3b82f6', // Blue accent
   },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     color: '#374151',
     padding: 12,
     backgroundColor: '#fef3c7', // Light yellow background
-    borderRadius: 3,
+    borderRadius: 6,
     borderLeftWidth: 4,
     borderLeftColor: '#f59e0b', // Orange accent
   },
@@ -148,9 +148,9 @@ const styles = StyleSheet.create({
     color: '#5b21b6', // Dark purple text
     padding: 4,
     margin: 2,
-    borderRadius: 4,
+    borderRadius: 12,
     fontSize: 9,
-    fontWeight: 'normal',
+    fontWeight: 'medium',
   },
 });
 

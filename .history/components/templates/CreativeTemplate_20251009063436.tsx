@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     color: '#5b21b6', // Dark purple text
     padding: 4,
     margin: 2,
-    borderRadius: 4,
+    borderRadius: 8,
     fontSize: 9,
     fontWeight: 'normal',
   },
