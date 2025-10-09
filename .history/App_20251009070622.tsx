@@ -411,6 +411,7 @@ export default function App() {
   
   // UI state for sections
   const [isAnalysisMinimized, setIsAnalysisMinimized] = useState(true);
+  const [isPdfGenerated, setIsPdfGenerated] = useState(false);
 
   const [isParsing, setIsParsing] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -1055,6 +1056,12 @@ Please provide a modified version that incorporates the user's request while kee
                             PDF Error - Try Another Template
                           </div>
                         );
+                      }
+                      if (!loading && blob) {
+                        // PDF has been successfully generated
+                        if (!isPdfGenerated) {
+                          setIsPdfGenerated(true);
+                        }
                       }
                       return (
                         <>

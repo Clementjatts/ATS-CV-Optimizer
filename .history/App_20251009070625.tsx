@@ -1056,6 +1056,12 @@ Please provide a modified version that incorporates the user's request while kee
                           </div>
                         );
                       }
+                      if (!loading && blob) {
+                        // PDF has been successfully generated
+                        if (!isPdfGenerated) {
+                          setIsPdfGenerated(true);
+                        }
+                      }
                       return (
                         <>
                           <DownloadIcon className="h-4 w-4" />
