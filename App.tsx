@@ -936,7 +936,7 @@ Please provide a modified version that incorporates the user's request while kee
                 </div>
               </div>
               
-              {/* Optimize CV Button - In line with Select CV button */}
+              {/* Optimize CV Button - Aligned with Select CV button */}
               <div className="mt-4 flex gap-2">
                 <div className="flex-1"></div> {/* Spacer to align with Select CV button */}
                 <button
@@ -956,6 +956,7 @@ Please provide a modified version that incorporates the user's request while kee
                     </>
                   )}
                 </button>
+              </div>
               </div>
             </div>
           </div>
