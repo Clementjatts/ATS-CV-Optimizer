@@ -108,7 +108,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
               <p className="text-base font-semibold text-blue-600 mb-3 break-inside-avoid">{job.company}</p>
               {/* Responsibilities list */}
               <ul className="cv-list cv-list--experience space-y-1">
-                {job.responsibilities.slice(0, 5).map((resp, i) => (
+                {job.responsibilities.slice(0, 4).map((resp, i) => (
                   <li key={i} className="text-sm text-gray-700 break-inside-avoid">
                     {resp}
                   </li>
