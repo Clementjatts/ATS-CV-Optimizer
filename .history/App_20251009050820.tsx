@@ -1005,6 +1005,41 @@ Please provide a modified version that incorporates the user's request while kee
               </div>
             )}
 
+            {(pdfGenerationStatus.progress || pdfGenerationStatus.error) && (
+              <div className="mt-4">
+                {pdfGenerationStatus.progress && (
+                  <div className="text-sm text-green-600 bg-green-50 p-3 rounded-md">
+                    {pdfGenerationStatus.progress}
+                  </div>
+                )}
+                {pdfGenerationStatus.error && (
+                  <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+                    Error: {pdfGenerationStatus.error}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {showPreview && pdfPreview.url && (
+              <div className="mt-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-lg font-semibold text-slate-800">PDF Preview</h3>
+                  <button
+                    onClick={() => setShowPreview(false)}
+                    className="text-slate-500 hover:text-slate-700"
+                  >
+                    <XCircleIcon className="h-5 w-5" />
+                  </button>
+                </div>
+                <div className="border border-slate-300 rounded-lg overflow-hidden">
+                  <iframe
+                    src={pdfPreview.url}
+                    className="w-full h-96"
+                    title="PDF Preview"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Optimization Analysis Section */}

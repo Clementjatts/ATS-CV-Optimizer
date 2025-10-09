@@ -364,7 +364,44 @@ export default function App() {
   const [selectedCVFromDB, setSelectedCVFromDB] = useState<CVSource | null>(null);
   const [useDatabaseCV, setUseDatabaseCV] = useState<boolean>(false);
   const [isUploadingFile, setIsUploadingFile] = useState<boolean>(false);
+  const [pdfGenerationStatus, setPdfGenerationStatus] = useState<{
+    isGenerating: boolean;
+    progress: string;
+    error: string | null;
+  }>({
+    isGenerating: false,
+    progress: '',
+    error: null
+  });
 
+  const [pdfPreview, setPdfPreview] = useState<{
+    blob: Blob | null;
+    url: string | null;
+    quality: any | null;
+  }>({
+    blob: null,
+    url: null,
+    quality: null
+  });
+  const [showPreview, setShowPreview] = useState(false);
+
+  // Cleanup preview URL when CV data changes
+  React.useEffect(() => {
+    if (pdfPreview.url) {
+      URL.revokeObjectURL(pdfPreview.url);
+      setPdfPreview({ blob: null, url: null, quality: null });
+      setShowPreview(false);
+    }
+  }, [optimizedCvData]);
+
+  // Cleanup preview URL on unmount
+  React.useEffect(() => {
+    return () => {
+      if (pdfPreview.url) {
+        URL.revokeObjectURL(pdfPreview.url);
+      }
+    };
+  }, [pdfPreview.url]);
 
   const parseFile = useCallback(async (file: File): Promise<{ text: string; isScanned: boolean }> => {
     if (file.type === 'application/pdf') {
@@ -623,6 +660,62 @@ Please provide a modified version that incorporates the user's request while kee
     }
   };
 
+  const generatePdfPreview = async () => {
+    const element = document.getElementById('cv-container');
+    if (!element || !optimizedCvData) return;
+
+    setPdfGenerationStatus({
+      isGenerating: true,
+      progress: 'Generating PDF preview...',
+      error: null
+    });
+
+    try {
+      const result = await pdfService.generatePdfPreview(element, jobTitle);
+
+      if (result.success && result.blob && result.url) {
+        setPdfPreview({
+          blob: result.blob,
+          url: result.url,
+          quality: { fileSize: result.blob.size }
+        });
+
+        setShowPreview(false);
+
+        setPdfGenerationStatus({
+          isGenerating: false,
+          progress: 'Preview generated successfully!',
+          error: null
+        });
+
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          setPdfGenerationStatus(prev => ({
+            ...prev,
+            progress: ''
+          }));
+        }, 3000);
+      } else {
+        throw new Error(result.error || 'PDF generation failed');
+      }
+
+    } catch (error) {
+      console.error('PDF preview error:', error);
+      setPdfGenerationStatus({
+        isGenerating: false,
+        progress: '',
+        error: error instanceof Error ? error.message : 'Preview generation failed'
+      });
+
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        setPdfGenerationStatus(prev => ({
+          ...prev,
+          error: null
+        }));
+      }, 5000);
+    }
+  };
 
   // CV Management handlers
   const handleSelectCVFromDB = (cv: CVSource) => {
@@ -901,18 +994,14 @@ Please provide a modified version that incorporates the user's request while kee
             {optimizedCvData && (
               <div className="mt-6 space-y-4">
                 <div className="flex gap-3">
-                  <PDFDownloadLink
-                    document={<CVDocument cvData={optimizedCvData} />}
-                    fileName={`${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`}
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-cyan-600 hover:via-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-[1.02]"
+                  <button
+                    onClick={generatePdfPreview}
+                    disabled={pdfGenerationStatus.isGenerating}
+                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-cyan-600 hover:via-blue-600 hover:to-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-[1.02] disabled:transform-none"
                   >
-                    {({ blob, url, loading, error }) => (
-                      <>
-                        <DownloadIcon className="h-4 w-4" />
-                        {loading ? 'Generating PDF...' : 'Download PDF'}
-                      </>
-                    )}
-                  </PDFDownloadLink>
+                    <DownloadIcon className="h-4 w-4" />
+                    {pdfGenerationStatus.isGenerating ? 'Generating...' : 'Generate PDF'}
+                  </button>
                   
                   <button
                     onClick={handleSaveCurrentCV}
@@ -1005,6 +1094,41 @@ Please provide a modified version that incorporates the user's request while kee
               </div>
             )}
 
+            {(pdfGenerationStatus.progress || pdfGenerationStatus.error) && (
+              <div className="mt-4">
+                {pdfGenerationStatus.progress && (
+                  <div className="text-sm text-green-600 bg-green-50 p-3 rounded-md">
+                    {pdfGenerationStatus.progress}
+                  </div>
+                )}
+                {pdfGenerationStatus.error && (
+                  <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+                    Error: {pdfGenerationStatus.error}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {showPreview && pdfPreview.url && (
+              <div className="mt-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-lg font-semibold text-slate-800">PDF Preview</h3>
+                  <button
+                    onClick={() => setShowPreview(false)}
+                    className="text-slate-500 hover:text-slate-700"
+                  >
+                    <XCircleIcon className="h-5 w-5" />
+                  </button>
+                </div>
+                <div className="border border-slate-300 rounded-lg overflow-hidden">
+                  <iframe
+                    src={pdfPreview.url}
+                    className="w-full h-96"
+                    title="PDF Preview"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Optimization Analysis Section */}
