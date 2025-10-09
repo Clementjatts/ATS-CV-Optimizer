@@ -18,54 +18,25 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dis
 // Template types
 type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
 
-// Error boundary component for PDF templates
-class PDFErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error: any) {
-    console.error('PDF Template Error:', error);
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: any, errorInfo: any) {
-    console.error('PDF Template Error Details:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
-
 // Helper component to render the correct template based on state
 const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
-  const fallbackTemplate = <ClassicTemplate cvData={cvData} />;
-  
-  return (
-    <PDFErrorBoundary fallback={fallbackTemplate}>
-      {(() => {
-        switch (template) {
-          case 'Modern':
-            return <ModernTemplate cvData={cvData} />;
-          case 'Creative':
-            return <CreativeTemplate cvData={cvData} />;
-          case 'Minimal':
-            return <MinimalTemplate cvData={cvData} />;
-          case 'Classic':
-          default:
-            return <ClassicTemplate cvData={cvData} />;
-        }
-      })()}
-    </PDFErrorBoundary>
-  );
+  try {
+    switch (template) {
+      case 'Modern':
+        return <ModernTemplate cvData={cvData} />;
+      case 'Creative':
+        return <CreativeTemplate cvData={cvData} />;
+      case 'Minimal':
+        return <MinimalTemplate cvData={cvData} />;
+      case 'Classic':
+      default:
+        return <ClassicTemplate cvData={cvData} />;
+    }
+  } catch (error) {
+    console.error('Template rendering error:', error);
+    // Fallback to Classic template if there's an error
+    return <ClassicTemplate cvData={cvData} />;
+  }
 };
 
 // Clean up job titles to show only the primary role
@@ -855,7 +826,6 @@ Please provide a modified version that incorporates the user's request while kee
                     onClick={() => {
                       try {
                         setSelectedTemplate('Classic');
-                        setTemplateChangeCounter(prev => prev + 1);
                       } catch (error) {
                         console.error('Template selection error:', error);
                       }
@@ -872,7 +842,6 @@ Please provide a modified version that incorporates the user's request while kee
                     onClick={() => {
                       try {
                         setSelectedTemplate('Modern');
-                        setTemplateChangeCounter(prev => prev + 1);
                       } catch (error) {
                         console.error('Template selection error:', error);
                       }
@@ -889,7 +858,6 @@ Please provide a modified version that incorporates the user's request while kee
                     onClick={() => {
                       try {
                         setSelectedTemplate('Creative');
-                        setTemplateChangeCounter(prev => prev + 1);
                       } catch (error) {
                         console.error('Template selection error:', error);
                       }
@@ -906,7 +874,6 @@ Please provide a modified version that incorporates the user's request while kee
                     onClick={() => {
                       try {
                         setSelectedTemplate('Minimal');
-                        setTemplateChangeCounter(prev => prev + 1);
                       } catch (error) {
                         console.error('Template selection error:', error);
                       }
@@ -1037,7 +1004,7 @@ Please provide a modified version that incorporates the user's request while kee
               <div className="mt-6 space-y-4">
                 <div className="flex gap-3">
                   <PDFDownloadLink
-                    key={`pdf-${selectedTemplate}-${templateChangeCounter}`}
+                    key={`pdf-${selectedTemplate}-${Date.now()}`}
                     document={<TemplateRenderer template={selectedTemplate} cvData={optimizedCvData} />}
                     fileName={`${selectedTemplate.toLowerCase()}_${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`}
                     className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-cyan-600 hover:via-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-[1.02]"

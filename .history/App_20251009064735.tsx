@@ -18,54 +18,25 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dis
 // Template types
 type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
 
-// Error boundary component for PDF templates
-class PDFErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error: any) {
-    console.error('PDF Template Error:', error);
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: any, errorInfo: any) {
-    console.error('PDF Template Error Details:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
-
 // Helper component to render the correct template based on state
 const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
-  const fallbackTemplate = <ClassicTemplate cvData={cvData} />;
-  
-  return (
-    <PDFErrorBoundary fallback={fallbackTemplate}>
-      {(() => {
-        switch (template) {
-          case 'Modern':
-            return <ModernTemplate cvData={cvData} />;
-          case 'Creative':
-            return <CreativeTemplate cvData={cvData} />;
-          case 'Minimal':
-            return <MinimalTemplate cvData={cvData} />;
-          case 'Classic':
-          default:
-            return <ClassicTemplate cvData={cvData} />;
-        }
-      })()}
-    </PDFErrorBoundary>
-  );
+  try {
+    switch (template) {
+      case 'Modern':
+        return <ModernTemplate cvData={cvData} />;
+      case 'Creative':
+        return <CreativeTemplate cvData={cvData} />;
+      case 'Minimal':
+        return <MinimalTemplate cvData={cvData} />;
+      case 'Classic':
+      default:
+        return <ClassicTemplate cvData={cvData} />;
+    }
+  } catch (error) {
+    console.error('Template rendering error:', error);
+    // Fallback to Classic template if there's an error
+    return <ClassicTemplate cvData={cvData} />;
+  }
 };
 
 // Clean up job titles to show only the primary role
