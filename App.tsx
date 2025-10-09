@@ -81,14 +81,15 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         </div>
       </section>
 
-      {/* EDUCATION */}
+      {/* EDUCATION & CERTIFICATIONS */}
       <section className="cv-section mb-6">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
-          Education
+          Education & Certifications
         </h2>
         <div className="space-y-4">
+          {/* Education entries */}
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start flex-nowrap">
+            <div key={`edu-${index}`} className="education-entry flex justify-between items-start flex-nowrap">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -96,36 +97,23 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
               <span className="text-sm font-semibold text-gray-600">{edu.dates}</span>
             </div>
           ))}
+          
+          {/* Relevant certifications */}
+          {cvData.certifications && cvData.certifications.length > 0 && (
+            <>
+              {cvData.certifications.map((cert, index) => (
+                <div key={`cert-${index}`} className="certification-entry flex justify-between items-center flex-nowrap">
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
+                    <p className="text-xs text-gray-600">{cert.issuer}</p>
+                  </div>
+                  <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </section>
-
-      {/* PROFESSIONAL CERTIFICATIONS */}
-      {cvData.certifications && cvData.certifications.length > 0 && (
-        <section className="cv-section mb-6">
-          <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
-            Professional Certifications
-          </h2>
-          <div className="skills-grid">
-            {/* Split certifications into two columns for better space utilization */}
-            <div className="space-y-3">
-              {cvData.certifications.slice(0, Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center flex-nowrap">
-                  <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
-                  <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
-                </div>
-              ))}
-            </div>
-            <div className="space-y-3">
-              {cvData.certifications.slice(Math.ceil(cvData.certifications.length / 2)).map((cert, index) => (
-                <div key={index} className="flex justify-between items-center flex-nowrap">
-                  <h3 className="text-sm font-bold text-gray-800">{cert.name}</h3>
-                  <span className="text-xs font-semibold text-gray-600">{cert.date}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* KEY SKILLS & COMPETENCIES */}
       <section className="cv-section mb-6">
