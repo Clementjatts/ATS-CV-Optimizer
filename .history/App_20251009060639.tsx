@@ -363,9 +363,6 @@ export default function App() {
   const [jobTitle, setJobTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Template selection state
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('Classic');
 
   const [isParsing, setIsParsing] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -918,34 +915,10 @@ Please provide a modified version that incorporates the user's request while kee
 
             {optimizedCvData && (
               <div className="mt-6 space-y-4">
-                {/* Template Selection UI */}
-                <div className="flex justify-center gap-4 mb-6">
-                  <button
-                    onClick={() => setSelectedTemplate('Classic')}
-                    className={`px-6 py-2 rounded-md font-semibold text-white transition-transform transform hover:scale-105 ${
-                      selectedTemplate === 'Classic' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg' 
-                        : 'bg-gray-400 hover:bg-gray-500'
-                    }`}
-                  >
-                    Classic Template
-                  </button>
-                  <button
-                    onClick={() => setSelectedTemplate('Modern')}
-                    className={`px-6 py-2 rounded-md font-semibold text-white transition-transform transform hover:scale-105 ${
-                      selectedTemplate === 'Modern' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg' 
-                        : 'bg-gray-400 hover:bg-gray-500'
-                    }`}
-                  >
-                    Modern Template
-                  </button>
-                </div>
-                
                 <div className="flex gap-3">
                   <PDFDownloadLink
-                    document={<TemplateRenderer template={selectedTemplate} cvData={optimizedCvData} />}
-                    fileName={`${selectedTemplate.toLowerCase()}_${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`}
+                    document={<CVDocument cvData={optimizedCvData} />}
+                    fileName={`${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`}
                     className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-cyan-600 hover:via-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-[1.02]"
                   >
                     {({ blob, url, loading, error }) => (
