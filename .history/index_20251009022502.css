@@ -441,8 +441,8 @@ h2 {
 
 /* Better education entries */
 .education-entry {
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid #f3f4f6;
 }
 
