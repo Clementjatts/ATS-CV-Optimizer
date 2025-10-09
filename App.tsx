@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { optimizeCvWithGemini, CvData, extractTextFromImagesWithGemini, enhanceCVWithGemini } from './services/geminiService';
 import { cvService, SavedCV, CVSource } from './services/cvService';
 import { fileStorageService, UploadedFile } from './services/fileStorageService';
+import { pdfService } from './services/pdfService';
 import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 import mammoth from 'mammoth';
@@ -42,11 +43,13 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
       </header>
 
       {/* PROFESSIONAL SUMMARY */}
-      <section className="cv-section mb-6">
+      <section className="cv-section">
         <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
           Professional Summary
         </h2>
-        <p className="text-gray-700 leading-relaxed text-justify">{cvData.professionalSummary}</p>
+        <div className="professional-summary">
+          <p className="text-gray-700 leading-relaxed text-justify">{cvData.professionalSummary}</p>
+        </div>
         
         {/* Hidden Keywords for ATS - Mid-document - Invisible to human eye */}
         {keywords && keywords.length > 0 && (
@@ -602,73 +605,33 @@ Please provide a modified version that incorporates the user's request while kee
     });
 
     try {
-      // Use html2pdf.js directly for more reliable generation
-      const html2pdf = (window as any).html2pdf;
+      const result = await pdfService.generatePdfPreview(element, jobTitle);
 
-      if (!html2pdf) {
-        throw new Error('PDF library not loaded');
+      if (result.success && result.blob && result.url) {
+        setPdfPreview({
+          blob: result.blob,
+          url: result.url,
+          quality: { fileSize: result.blob.size }
+        });
+
+        setShowPreview(false);
+
+        setPdfGenerationStatus({
+          isGenerating: false,
+          progress: 'Preview generated successfully!',
+          error: null
+        });
+
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          setPdfGenerationStatus(prev => ({
+            ...prev,
+            progress: ''
+          }));
+        }, 3000);
+      } else {
+        throw new Error(result.error || 'PDF generation failed');
       }
-
-      // Reset scroll position to the top of the page to prevent blank pages
-      window.scrollTo(0, 0);
-
-      // Wait for any dynamic content to load
-      await new Promise(resolve => setTimeout(resolve, 200));
-
-      // Final fix configuration based on CV formatting document
-      const opt = {
-        margin: [0.5, 0.5, 0.5, 0.5], // inches
-        filename: `${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`,
-        image: { 
-          type: 'jpeg', 
-          quality: 0.98 
-        },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          logging: true,
-          letterRendering: true,
-        },
-        jsPDF: {
-          unit: 'in',
-          format: 'a4',
-          orientation: 'portrait'
-        },
-        // Simplify the pagebreak mode to rely on CSS
-        pagebreak: { mode: 'css' }
-      };
-
-      // Generate PDF from the original element
-      const pdfBlob = await html2pdf().set(opt).from(element).outputPdf('blob');
-
-      // Create preview URL and open in new tab
-      const url = URL.createObjectURL(pdfBlob);
-
-      // Open PDF in new tab
-      window.open(url, '_blank');
-
-      setPdfPreview({
-        blob: pdfBlob,
-        url,
-        quality: { fileSize: pdfBlob.size }
-      });
-
-      // Don't show inline preview since we opened in new tab
-      setShowPreview(false);
-
-      setPdfGenerationStatus({
-        isGenerating: false,
-        progress: 'Preview generated successfully!',
-        error: null
-      });
-
-      // Clear success message after 3 seconds
-      setTimeout(() => {
-        setPdfGenerationStatus(prev => ({
-          ...prev,
-          progress: ''
-        }));
-      }, 3000);
 
     } catch (error) {
       console.error('PDF preview error:', error);
