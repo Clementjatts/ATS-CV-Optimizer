@@ -26,31 +26,6 @@ body {
   will-change: auto;
 }
 
-/* Optimize main content area for smooth scrolling */
-main {
-  contain: layout style;
-  will-change: scroll-position;
-}
-
-/* Optimize CV container for better performance */
-#cv-container {
-  contain: layout style paint;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
-/* Reduce layout thrashing during scroll */
-.cv-list li {
-  contain: layout style;
-}
-
-/* Optimize PDF component rendering */
-.scroll-container {
-  contain: layout style paint;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
 /* Base CV styling with improved typography and spacing */
 #cv-container {
   font-family: 'Inter', 'Lato', 'Helvetica Neue', Arial, sans-serif;

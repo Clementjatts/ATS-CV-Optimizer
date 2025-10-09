@@ -1056,7 +1056,7 @@ Please provide a modified version that incorporates the user's request while kee
             </div>
 
             {optimizedCvData && (
-              <div className={`mt-6 space-y-4 scroll-container ${isScrolling ? 'opacity-95' : 'opacity-100'} transition-opacity duration-100`}>
+              <div className="mt-6 space-y-4 scroll-container">
                 <div className="flex gap-3">
                   <PDFDownloadLink
                     key={`pdf-${selectedTemplate}-${templateChangeCounter}`}
