@@ -455,3 +455,11 @@ h2 {
   break-inside: avoid;
   page-break-inside: avoid; /* Legacy property for broader compatibility */
 }
+
+/* Prevent page breaks within job entries */
+.job-entry {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  orphans: 3; /* Minimum lines before break */
+  widows: 3; /* Minimum lines after break */
+}
