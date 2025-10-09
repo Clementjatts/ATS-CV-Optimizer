@@ -449,29 +449,3 @@ h2 {
 .education-entry:last-child {
   border-bottom: none;
 }
-
-/* Page break utilities for better PDF generation */
-.break-inside-avoid {
-  break-inside: avoid;
-  page-break-inside: avoid; /* Legacy property for broader compatibility */
-}
-
-/* Prevent page breaks within job entries but allow natural flow */
-.job-entry {
-  break-inside: avoid;
-  page-break-inside: avoid;
-  orphans: 2; /* Minimum lines before break */
-  widows: 2; /* Minimum lines after break */
-}
-
-/* Allow breaks between job entries */
-.job-entry + .job-entry {
-  break-before: auto;
-  page-break-before: auto;
-}
-
-/* Ensure sections can break naturally */
-.cv-section {
-  break-inside: auto;
-  page-break-inside: auto;
-}
