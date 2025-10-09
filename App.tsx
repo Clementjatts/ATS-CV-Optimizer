@@ -933,28 +933,29 @@ Please provide a modified version that incorporates the user's request while kee
                     onChange={(e) => setJobDescriptionText(e.target.value)}
                     placeholder="Paste the complete job description here..."
                   />
-                  
-                  {/* Optimize CV Button - Full Width */}
-                  <div className="pt-2">
-                    <button
-                      onClick={handleOptimize}
-                      disabled={!isFormValid || isLoading || isParsing || isScanning}
-                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-xl hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform hover:scale-[1.02] disabled:transform-none"
-                    >
-                      {isLoading ? (
-                        <>
-                          <LoadingSpinner />
-                          Optimizing...
-                        </>
-                      ) : (
-                        <>
-                          <SparkleIcon className="h-4 w-4" />
-                          Optimize CV
-                        </>
-                      )}
-                    </button>
-                  </div>
                 </div>
+              </div>
+              
+              {/* Optimize CV Button - In line with Select CV button */}
+              <div className="mt-4 flex gap-2">
+                <div className="flex-1"></div> {/* Spacer to align with Select CV button */}
+                <button
+                  onClick={handleOptimize}
+                  disabled={!isFormValid || isLoading || isParsing || isScanning}
+                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-xl hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform hover:scale-[1.02] disabled:transform-none"
+                >
+                  {isLoading ? (
+                    <>
+                      <LoadingSpinner />
+                      Optimizing...
+                    </>
+                  ) : (
+                    <>
+                      <SparkleIcon className="h-4 w-4" />
+                      Optimize CV
+                    </>
+                  )}
+                </button>
               </div>
             </div>
           </div>
