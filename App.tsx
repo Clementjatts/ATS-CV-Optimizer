@@ -20,16 +20,22 @@ type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
 
 // Helper component to render the correct template based on state
 const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
-  switch (template) {
-    case 'Modern':
-      return <ModernTemplate cvData={cvData} />;
-    case 'Creative':
-      return <CreativeTemplate cvData={cvData} />;
-    case 'Minimal':
-      return <MinimalTemplate cvData={cvData} />;
-    case 'Classic':
-    default:
-      return <ClassicTemplate cvData={cvData} />;
+  try {
+    switch (template) {
+      case 'Modern':
+        return <ModernTemplate cvData={cvData} />;
+      case 'Creative':
+        return <CreativeTemplate cvData={cvData} />;
+      case 'Minimal':
+        return <MinimalTemplate cvData={cvData} />;
+      case 'Classic':
+      default:
+        return <ClassicTemplate cvData={cvData} />;
+    }
+  } catch (error) {
+    console.error('Template rendering error:', error);
+    // Fallback to Classic template if there's an error
+    return <ClassicTemplate cvData={cvData} />;
   }
 };
 
@@ -816,7 +822,13 @@ Please provide a modified version that incorporates the user's request while kee
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Choose CV Template</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <button
-                    onClick={() => setSelectedTemplate('Classic')}
+                    onClick={() => {
+                      try {
+                        setSelectedTemplate('Classic');
+                      } catch (error) {
+                        console.error('Template selection error:', error);
+                      }
+                    }}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Classic' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
@@ -826,7 +838,13 @@ Please provide a modified version that incorporates the user's request while kee
                     📄 Classic
                   </button>
                   <button
-                    onClick={() => setSelectedTemplate('Modern')}
+                    onClick={() => {
+                      try {
+                        setSelectedTemplate('Modern');
+                      } catch (error) {
+                        console.error('Template selection error:', error);
+                      }
+                    }}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Modern' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
@@ -836,7 +854,13 @@ Please provide a modified version that incorporates the user's request while kee
                     🎨 Modern
                   </button>
                   <button
-                    onClick={() => setSelectedTemplate('Creative')}
+                    onClick={() => {
+                      try {
+                        setSelectedTemplate('Creative');
+                      } catch (error) {
+                        console.error('Template selection error:', error);
+                      }
+                    }}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Creative' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
@@ -846,7 +870,13 @@ Please provide a modified version that incorporates the user's request while kee
                     ✨ Creative
                   </button>
                   <button
-                    onClick={() => setSelectedTemplate('Minimal')}
+                    onClick={() => {
+                      try {
+                        setSelectedTemplate('Minimal');
+                      } catch (error) {
+                        console.error('Template selection error:', error);
+                      }
+                    }}
                     className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
                       selectedTemplate === 'Minimal' 
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
@@ -977,12 +1007,23 @@ Please provide a modified version that incorporates the user's request while kee
                     fileName={`${selectedTemplate.toLowerCase()}_${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`}
                     className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-cyan-600 hover:via-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-[1.02]"
                   >
-                    {({ blob, url, loading, error }) => (
-                      <>
-                        <DownloadIcon className="h-4 w-4" />
-                        {loading ? 'Generating PDF...' : 'Download PDF'}
-                      </>
-                    )}
+                    {({ blob, url, loading, error }) => {
+                      if (error) {
+                        console.error('PDF generation error:', error);
+                        return (
+                          <div className="flex items-center gap-2 text-red-600">
+                            <XCircleIcon className="h-4 w-4" />
+                            PDF Error - Try Another Template
+                          </div>
+                        );
+                      }
+                      return (
+                        <>
+                          <DownloadIcon className="h-4 w-4" />
+                          {loading ? 'Generating PDF...' : 'Download PDF'}
+                        </>
+                      );
+                    }}
                   </PDFDownloadLink>
                   
                   <button

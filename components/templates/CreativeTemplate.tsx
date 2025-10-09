@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     color: '#1f2937',
   },
   header: {
-    backgroundColor: '#3b82f6', // Blue background
+    backgroundColor: '#f0f0f0', // Light gray background
     padding: 25,
     textAlign: 'center',
     marginBottom: 20,
@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    backgroundColor: '#f59e0b', // Orange background
-    color: '#FFFFFF',
+    backgroundColor: '#e0e0e0', // Light gray background
+    color: '#000000',
     padding: 8,
     marginBottom: 10,
     textTransform: 'uppercase',
-    borderRadius: 4,
+    borderRadius: 2,
   },
   entry: {
     marginBottom: 12,
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     color: '#374151',
     padding: 12,
-    backgroundColor: '#fef3c7', // Light yellow background
-    borderRadius: 3,
-    borderLeftWidth: 4,
-    borderLeftColor: '#f59e0b', // Orange accent
+    backgroundColor: '#f9f9f9', // Light gray background
+    borderRadius: 2,
+    borderLeftWidth: 2,
+    borderLeftColor: '#cccccc', // Gray accent
   },
   educationEntry: {
     flexDirection: 'row',
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     marginBottom: 8,
     padding: 8,
-    backgroundColor: '#f0f9ff', // Light blue background
-    borderRadius: 4,
-    borderLeftWidth: 3,
-    borderLeftColor: '#06b6d4', // Cyan accent
+    backgroundColor: '#f5f5f5', // Light gray background
+    borderRadius: 2,
+    borderLeftWidth: 2,
+    borderLeftColor: '#999999', // Gray accent
   },
   institution: {
     fontSize: 11,
@@ -144,11 +144,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   skill: {
-    backgroundColor: '#ddd6fe', // Light purple background
-    color: '#5b21b6', // Dark purple text
+    backgroundColor: '#e8e8e8', // Light gray background
+    color: '#333333', // Dark gray text
     padding: 4,
     margin: 2,
-    borderRadius: 4,
+    borderRadius: 2,
     fontSize: 9,
     fontWeight: 'normal',
   },
