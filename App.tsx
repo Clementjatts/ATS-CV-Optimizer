@@ -100,16 +100,16 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           {cvData.workExperience.map((job, index) => (
             <div key={index} className="job-entry pr-4">
               {/* Flex container for the main heading */}
-              <div className="flex justify-between items-baseline mb-2 break-inside-avoid">
+              <div className="flex justify-between items-baseline mb-2">
                 <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
                 <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
               </div>
               {/* Sub-heading for the company */}
-              <p className="text-base font-semibold text-blue-600 mb-3 break-inside-avoid">{job.company}</p>
+              <p className="text-base font-semibold text-blue-600 mb-3">{job.company}</p>
               {/* Responsibilities list */}
               <ul className="cv-list cv-list--experience space-y-1">
                 {job.responsibilities.slice(0, 4).map((resp, i) => (
-                  <li key={i} className="text-sm text-gray-700 break-inside-avoid">
+                  <li key={i} className="text-sm text-gray-700">
                     {resp}
                   </li>
                 ))}
