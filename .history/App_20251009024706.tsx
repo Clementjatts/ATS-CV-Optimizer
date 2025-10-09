@@ -94,7 +94,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         </h2>
         <div className="space-y-4">
           {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start flex-nowrap break-inside-avoid">
+            <div key={index} className="education-entry flex justify-between items-start flex-nowrap">
               <div>
                 <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
                 <p className="text-sm text-gray-600">{edu.degree}</p>
@@ -115,14 +115,14 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           {/* Split skills into two columns for better space utilization */}
           <ul className="cv-list cv-list--skills">
             {cvData.skills.slice(0, Math.ceil(cvData.skills.length / 2)).map((skill, index) => (
-              <li key={index} className="text-sm text-gray-700 break-inside-avoid">
+              <li key={index} className="text-sm text-gray-700">
                 {skill}
               </li>
             ))}
           </ul>
           <ul className="cv-list cv-list--skills">
             {cvData.skills.slice(Math.ceil(cvData.skills.length / 2)).map((skill, index) => (
-              <li key={index} className="text-sm text-gray-700 break-inside-avoid">
+              <li key={index} className="text-sm text-gray-700">
                 {skill}
               </li>
             ))}
