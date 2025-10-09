@@ -239,3 +239,5 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
     </Page>
   </Document>
 );
+
+export default CreativeTemplate;

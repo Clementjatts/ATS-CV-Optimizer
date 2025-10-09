@@ -240,3 +240,5 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
     </Page>
   </Document>
 );
+
+export default ModernTemplate;

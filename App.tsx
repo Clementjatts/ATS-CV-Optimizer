@@ -3,10 +3,10 @@ import { optimizeCvWithGemini, CvData, extractTextFromImagesWithGemini, enhanceC
 import { cvService, SavedCV, CVSource } from './services/cvService';
 import { fileStorageService, UploadedFile } from './services/fileStorageService';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { ClassicTemplate } from './components/templates/ClassicTemplate';
-import { ModernTemplate } from './components/templates/ModernTemplate';
-import { CreativeTemplate } from './components/templates/CreativeTemplate';
-import { MinimalTemplate } from './components/templates/MinimalTemplate';
+import ClassicTemplate from './components/templates/ClassicTemplate';
+import ModernTemplate from './components/templates/ModernTemplate';
+import CreativeTemplate from './components/templates/CreativeTemplate';
+import MinimalTemplate from './components/templates/MinimalTemplate';
 import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 import mammoth from 'mammoth';
