@@ -5,8 +5,6 @@ import { fileStorageService, UploadedFile } from './services/fileStorageService'
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { ClassicTemplate } from './components/templates/ClassicTemplate';
 import { ModernTemplate } from './components/templates/ModernTemplate';
-import { CreativeTemplate } from './components/templates/CreativeTemplate';
-import { MinimalTemplate } from './components/templates/MinimalTemplate';
 import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 import mammoth from 'mammoth';
@@ -16,17 +14,13 @@ import * as pdfjsLib from 'pdfjs-dist';
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
 
 // Template types
-type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
+type TemplateType = 'Classic' | 'Modern';
 
 // Helper component to render the correct template based on state
 const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
   switch (template) {
     case 'Modern':
       return <ModernTemplate cvData={cvData} />;
-    case 'Creative':
-      return <CreativeTemplate cvData={cvData} />;
-    case 'Minimal':
-      return <MinimalTemplate cvData={cvData} />;
     case 'Classic':
     default:
       return <ClassicTemplate cvData={cvData} />;
@@ -971,6 +965,30 @@ Please provide a modified version that incorporates the user's request while kee
 
             {optimizedCvData && (
               <div className="mt-6 space-y-4">
+                {/* Template Selection UI */}
+                <div className="flex justify-center gap-4 mb-6">
+                  <button
+                    onClick={() => setSelectedTemplate('Classic')}
+                    className={`px-6 py-2 rounded-md font-semibold text-white transition-transform transform hover:scale-105 ${
+                      selectedTemplate === 'Classic' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg' 
+                        : 'bg-gray-400 hover:bg-gray-500'
+                    }`}
+                  >
+                    Classic Template
+                  </button>
+                  <button
+                    onClick={() => setSelectedTemplate('Modern')}
+                    className={`px-6 py-2 rounded-md font-semibold text-white transition-transform transform hover:scale-105 ${
+                      selectedTemplate === 'Modern' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg' 
+                        : 'bg-gray-400 hover:bg-gray-500'
+                    }`}
+                  >
+                    Modern Template
+                  </button>
+                </div>
+                
                 <div className="flex gap-3">
                   <PDFDownloadLink
                     document={<TemplateRenderer template={selectedTemplate} cvData={optimizedCvData} />}

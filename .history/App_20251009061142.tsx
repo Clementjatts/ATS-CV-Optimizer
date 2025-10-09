@@ -5,8 +5,6 @@ import { fileStorageService, UploadedFile } from './services/fileStorageService'
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { ClassicTemplate } from './components/templates/ClassicTemplate';
 import { ModernTemplate } from './components/templates/ModernTemplate';
-import { CreativeTemplate } from './components/templates/CreativeTemplate';
-import { MinimalTemplate } from './components/templates/MinimalTemplate';
 import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 import mammoth from 'mammoth';
@@ -23,10 +21,6 @@ const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData
   switch (template) {
     case 'Modern':
       return <ModernTemplate cvData={cvData} />;
-    case 'Creative':
-      return <CreativeTemplate cvData={cvData} />;
-    case 'Minimal':
-      return <MinimalTemplate cvData={cvData} />;
     case 'Classic':
     default:
       return <ClassicTemplate cvData={cvData} />;

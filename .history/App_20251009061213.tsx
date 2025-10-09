@@ -23,10 +23,6 @@ const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData
   switch (template) {
     case 'Modern':
       return <ModernTemplate cvData={cvData} />;
-    case 'Creative':
-      return <CreativeTemplate cvData={cvData} />;
-    case 'Minimal':
-      return <MinimalTemplate cvData={cvData} />;
     case 'Classic':
     default:
       return <ClassicTemplate cvData={cvData} />;
