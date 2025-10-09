@@ -1295,7 +1295,6 @@ Please provide a modified version that incorporates the user's request while kee
               </div>
             </div>
           )}
-        </div>
       </main>
       
       {/* CV Manager Modal */}
