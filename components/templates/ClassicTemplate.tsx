@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 9,
     color: '#4b5563',
-    fontWeight: 'medium',
+    fontWeight: 'normal',
   },
   company: {
     fontSize: 10,
