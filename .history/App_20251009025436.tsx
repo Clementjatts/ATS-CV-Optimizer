@@ -69,7 +69,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             <div key={index} className="job-entry pr-4 break-inside-avoid">
               {/* Flex container for the main heading */}
               <div className="flex justify-between items-baseline mb-2">
-                <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
+                <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
                 <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
               </div>
               {/* Sub-heading for the company */}
