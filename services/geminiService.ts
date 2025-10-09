@@ -71,7 +71,7 @@ const cvSchema = {
             items: {
                 type: Type.OBJECT,
                 properties: {
-                    jobTitle: { type: Type.STRING, description: "Job title optimized for the target role" },
+                    jobTitle: { type: Type.STRING, description: "Job title optimized for the target role. Extract only the PRIMARY job title. If multiple titles are provided (e.g., 'Security Operative | Transferable Skills for Residential Support'), return only the main role (e.g., 'Security Operative'). Ignore secondary roles, transferable skills, or additional qualifications." },
                     company: { type: Type.STRING, description: "Company name" },
                     location: { type: Type.STRING, description: "City, State" },
                     dates: { type: Type.STRING, description: "e.g., 'May 2020 - Present'" },
@@ -170,9 +170,10 @@ You are a world-class professional CV writer and Applicant Tracking System (ATS)
 
 4.  **Enhance Content:** Transform bullet points with action verbs, quantify achievements where possible, and ensure all content is truthful and accurately reflects the user's experience.
 5.  **Prioritize Relevance:** Focus on experiences, skills, and achievements most relevant to the target job. If the user has certifications, projects, or other qualifications mentioned in their original CV, include them in the appropriate template sections. **CRITICAL: Keep certifications and skills completely separate - never mix certification names or qualification titles into the skills section.**
-6.  **Document Optimization:** Provide specific details about what was optimized, including exact keywords integrated, skills aligned, experience optimizations made, and how the summary was tailored.
-7.  **Direct Language Requirement:** Use direct, concrete language. Replace any prohibited terms with simpler, more common alternatives. Retain only essential keywords. **IMPORTANT: Use British English spelling and terminology throughout (e.g., "organised" not "organized", "realised" not "realized", "colour" not "color", "centre" not "center").**
-8.  **Prohibited Language Styles:** Strictly avoid the following:
+6.  **Job Title Simplification:** For job titles, extract only the PRIMARY role. If multiple titles are provided (e.g., "Security Operative | Transferable Skills for Residential Support"), return only the main role (e.g., "Security Operative"). Ignore secondary roles, transferable skills, or additional qualifications in parentheses or after separators like "|" or "-".
+7.  **Document Optimization:** Provide specific details about what was optimized, including exact keywords integrated, skills aligned, experience optimizations made, and how the summary was tailored.
+8.  **Direct Language Requirement:** Use direct, concrete language. Replace any prohibited terms with simpler, more common alternatives. Retain only essential keywords. **IMPORTANT: Use British English spelling and terminology throughout (e.g., "organised" not "organized", "realised" not "realized", "colour" not "color", "centre" not "center").**
+9.  **Prohibited Language Styles:** Strictly avoid the following:
    - Juxtapositions (state preferred concepts directly)
    - Em-dashes (use periods for separate sentences)
    - Introductory phrases ("picture this", "in the realm of", etc.)

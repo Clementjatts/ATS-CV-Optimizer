@@ -69,7 +69,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
             <div key={index} className="job-entry pr-4 break-inside-avoid">
               {/* Flex container for the main heading */}
               <div className="flex justify-between items-baseline mb-2">
-                <h3 className="text-base font-bold text-gray-800">{job.jobTitle}</h3>
+                <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
                 <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
               </div>
               {/* Sub-heading for the company */}
@@ -693,6 +693,38 @@ Please provide a modified version that incorporates the user's request while kee
     setSelectedCVFromDB(combinedCV);
     setUseDatabaseCV(true);
     setIsCVManagerOpen(false);
+  };
+
+  // Clean up job titles to show only the primary role
+  const cleanJobTitle = (title: string): string => {
+    if (!title) return title;
+    
+    // Remove everything after common separators
+    const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
+    
+    for (const separator of separators) {
+      const index = title.indexOf(separator);
+      if (index > 0) {
+        title = title.substring(0, index).trim();
+      }
+    }
+    
+    // Remove common suffixes
+    const suffixes = [
+      ' | Transferable Skills',
+      ' - Transferable Skills',
+      ' (Transferable Skills)',
+      ' | Additional Qualifications',
+      ' - Additional Qualifications'
+    ];
+    
+    for (const suffix of suffixes) {
+      if (title.includes(suffix)) {
+        title = title.replace(suffix, '').trim();
+      }
+    }
+    
+    return title;
   };
 
   // Extract job title from job description
