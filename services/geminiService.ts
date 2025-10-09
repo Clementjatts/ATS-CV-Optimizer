@@ -2,7 +2,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 // Ensure the API key is available, but do not hardcode it.
 // It's expected to be set in the environment variables.
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY;
+const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || process.env.API_KEY;
 if (!apiKey) {
   throw new Error("VITE_GEMINI_API_KEY environment variable not set.");
 }
