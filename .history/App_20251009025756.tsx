@@ -727,6 +727,38 @@ Please provide a modified version that incorporates the user's request while kee
     setIsCVManagerOpen(false);
   };
 
+  // Clean up job titles to show only the primary role
+  const cleanJobTitle = (title: string): string => {
+    if (!title) return title;
+    
+    // Remove everything after common separators
+    const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
+    
+    for (const separator of separators) {
+      const index = title.indexOf(separator);
+      if (index > 0) {
+        title = title.substring(0, index).trim();
+      }
+    }
+    
+    // Remove common suffixes
+    const suffixes = [
+      ' | Transferable Skills',
+      ' - Transferable Skills',
+      ' (Transferable Skills)',
+      ' | Additional Qualifications',
+      ' - Additional Qualifications'
+    ];
+    
+    for (const suffix of suffixes) {
+      if (title.includes(suffix)) {
+        title = title.replace(suffix, '').trim();
+      }
+    }
+    
+    return title;
+  };
+
   // Extract job title from job description
   const extractJobTitle = (jobDescription: string): string => {
     if (!jobDescription.trim()) return 'CV';
