@@ -143,13 +143,13 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// --- THE FULLY STYLED CV DOCUMENT COMPONENT ---
+// This is your new PDF template component
 export const CVDocument = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.name}>{cvData.fullName}</Text>
+        <Text style={styles.name}>{cvData.fullName.toUpperCase()}</Text>
         <Text style={styles.contactInfo}>
           {cvData.contactInfo.location} | {cvData.contactInfo.email} | {cvData.contactInfo.phone}
         </Text>
@@ -157,38 +157,39 @@ export const CVDocument = ({ cvData }: { cvData: CvData }) => (
 
       {/* Professional Summary */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
+        <Text style={styles.sectionTitle}>Professional Summary</Text>
         <Text style={styles.summary}>{cvData.professionalSummary}</Text>
       </View>
 
       {/* Professional Experience */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>PROFESSIONAL EXPERIENCE</Text>
+        <Text style={styles.sectionTitle}>Professional Experience</Text>
         {cvData.workExperience.map((job, index) => (
-          <View key={index} style={styles.entry} wrap={false}>
+          // The `wrap={false}` prop on this View is KEY.
+          // It prevents this job entry from being split. But because the list items
+          // below are individual Text elements, the list itself CAN break cleanly between items.
+          <View key={index} style={styles.jobEntry} wrap={false}>
             <View style={styles.entryHeader}>
               <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
               <Text style={styles.date}>{job.dates}</Text>
             </View>
             <Text style={styles.company}>{job.company}</Text>
-            <View style={styles.responsibilitiesList}>
-              {job.responsibilities.slice(0, 4).map((resp, i) => (
-                <View key={i} style={styles.responsibility}>
-                  <Text style={styles.bullet}>• </Text>
-                  <Text style={styles.responsibilityText}>{resp}</Text>
-                </View>
-              ))}
-            </View>
+            {job.responsibilities.slice(0, 4).map((resp, i) => (
+              <View key={i} style={styles.responsibility}>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.responsibilityText}>{resp}</Text>
+              </View>
+            ))}
           </View>
         ))}
       </View>
-        
+
       {/* Education */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>EDUCATION</Text>
+        <Text style={styles.sectionTitle}>Education</Text>
         {cvData.education.map((edu, index) => (
           <View key={index} style={styles.educationEntry}>
-            <View style={styles.degreeInfo}>
+            <View>
               <Text style={styles.institution}>{edu.institution}</Text>
               <Text style={styles.degree}>{edu.degree}</Text>
             </View>
@@ -199,7 +200,7 @@ export const CVDocument = ({ cvData }: { cvData: CvData }) => (
 
       {/* Key Skills */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>KEY SKILLS & COMPETENCIES</Text>
+        <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
         <View style={styles.skillsGrid}>
           {(() => {
             // Ensure even number of skills between 12-14
@@ -224,9 +225,9 @@ export const CVDocument = ({ cvData }: { cvData: CvData }) => (
             }
             
             return skillsToShow.map((skill, index) => (
-              <View key={index} style={styles.skill}>
-                <Text>{skill ? `• ${skill}` : ''}</Text>
-              </View>
+              <Text key={index} style={styles.skill}>
+                {skill ? `• ${skill}` : ''}
+              </Text>
             ));
           })()}
         </View>
