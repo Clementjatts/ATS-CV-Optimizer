@@ -218,5 +218,3 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
     </Page>
   </Document>
 );
-
-export default MinimalTemplate;

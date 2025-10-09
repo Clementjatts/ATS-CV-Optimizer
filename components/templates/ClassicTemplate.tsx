@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { CvData } from '../../services/geminiService';
+import { CvData } from '../services/geminiService';
 
 // --- STYLESHEET: Translating Tailwind CSS to React-PDF ---
 const styles = StyleSheet.create({
@@ -234,5 +234,3 @@ export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
     </Page>
   </Document>
 );
-
-export default ClassicTemplate;
