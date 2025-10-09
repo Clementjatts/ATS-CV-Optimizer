@@ -74,14 +74,14 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         )}
       </header>
 
-      {/* PROFESSIONAL SUMMARY */}
-      <section className="cv-section">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3 avoid-break">
-          Professional Summary
-        </h2>
-        <div className="professional-summary">
-          <p className="text-gray-700 leading-relaxed text-justify avoid-break">{cvData.professionalSummary}</p>
-        </div>
+        {/* PROFESSIONAL SUMMARY */}
+        <section className="cv-section">
+          <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3 avoid-break">
+            Professional Summary
+          </h2>
+          <div className="professional-summary">
+            <p className="text-gray-700 leading-relaxed text-justify avoid-break">{cvData.professionalSummary}</p>
+          </div>
         
         {/* Hidden Keywords for ATS - Mid-document - Invisible to human eye */}
         {keywords && keywords.length > 0 && (
@@ -91,33 +91,33 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         )}
       </section>
 
-      {/* PROFESSIONAL EXPERIENCE */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4 avoid-break">
-          Professional Experience
-        </h2>
-        <div className="space-y-6">
-          {cvData.workExperience.map((job, index) => (
-            <div key={index} className="job-entry pr-4">
-              {/* Flex container for the main heading */}
-              <div className="flex justify-between items-baseline mb-2 avoid-break">
-                <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
-                <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
+        {/* PROFESSIONAL EXPERIENCE */}
+        <section className="cv-section mb-6">
+          <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4 avoid-break">
+            Professional Experience
+          </h2>
+          <div className="space-y-6">
+            {cvData.workExperience.map((job, index) => (
+              <div key={index} className="job-entry pr-4">
+                {/* Flex container for the main heading */}
+                <div className="flex justify-between items-baseline mb-2 avoid-break">
+                  <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
+                  <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
+                </div>
+                {/* Sub-heading for the company */}
+                <p className="text-base font-semibold text-blue-600 mb-3 avoid-break">{job.company}</p>
+                {/* Responsibilities list */}
+                <ul className="cv-list cv-list--experience space-y-1">
+                  {job.responsibilities.slice(0, 4).map((resp, i) => (
+                    <li key={i} className="text-sm text-gray-700 avoid-break">
+                      {resp}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              {/* Sub-heading for the company */}
-              <p className="text-base font-semibold text-blue-600 mb-3 avoid-break">{job.company}</p>
-              {/* Responsibilities list */}
-              <ul className="cv-list cv-list--experience space-y-1">
-                {job.responsibilities.slice(0, 4).map((resp, i) => (
-                  <li key={i} className="text-sm text-gray-700 avoid-break">
-                    {resp}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
 
       {/* EDUCATION */}
       <section className="cv-section mb-6">
