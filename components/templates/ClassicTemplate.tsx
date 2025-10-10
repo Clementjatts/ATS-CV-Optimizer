@@ -1,117 +1,82 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { CvData } from '../services/geminiService';
+import { CvData } from '../../services/geminiService';
 
-// --- STYLESHEET: Translating Tailwind CSS to React-PDF ---
+// Define styles for the document
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35,
-    fontFamily: 'Helvetica',
-    fontSize: 10,
-    color: '#1f2937', // Equivalent to text-gray-800
+    padding: 40,
+    fontFamily: 'Times-Roman',
+    fontSize: 11,
+    color: '#333',
   },
-  // Header Styles
   header: {
     textAlign: 'center',
     marginBottom: 20,
   },
   name: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 5,
     textTransform: 'uppercase',
-    letterSpacing: 2,
   },
   contactInfo: {
-    fontSize: 9,
-    color: '#4b5563', // text-gray-600
-    marginTop: 4,
+    fontSize: 10,
+    color: '#333',
   },
-  // Section Styles
   section: {
-    marginBottom: 12,
+    marginBottom: 15,
   },
   sectionTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    borderBottomWidth: 1.5,
-    borderBottomColor: '#9ca3af', // border-gray-400
-    paddingBottom: 2,
-    marginBottom: 8,
     textTransform: 'uppercase',
+    marginBottom: 8,
+    paddingBottom: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
   },
-  // Professional Experience Styles
   entry: {
-    marginBottom: 12,
-  },
-  entryHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginBottom: 2,
+    marginBottom: 10,
   },
   jobTitle: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
   },
-  date: {
-    fontSize: 9,
-    color: '#4b5563',
-    fontWeight: 'normal',
-  },
   company: {
-    fontSize: 10,
+    fontSize: 11,
     fontStyle: 'italic',
   },
-  responsibilitiesList: {
-    marginTop: 4,
+  date: {
+    fontSize: 10,
+    color: '#555',
+    marginBottom: 4,
   },
-  responsibility: {
+  bulletPoint: {
     flexDirection: 'row',
     marginBottom: 3,
   },
   bullet: {
     width: 10,
     fontSize: 10,
-  },
-  responsibilityText: {
-    flex: 1,
-  },
-  // Education Styles
-  educationEntry: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginBottom: 5,
-  },
-  degreeInfo: {},
-  institution: {
-    fontSize: 11,
+    color: '#3b82f6', // Blue bullet to match web styling
     fontWeight: 'bold',
   },
-  degree: {
-    fontStyle: 'italic',
+  bulletText: {
+    flex: 1,
   },
-  // Key Skills Styles
-  skillsGrid: {
+  skillsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 4,
   },
   skill: {
     width: '50%',
+    flexDirection: 'row',
     marginBottom: 3,
-  },
-  // Professional Summary Styles
-  summary: {
-    fontSize: 10,
-    textAlign: 'justify',
-    lineHeight: 1.5,
   },
 });
 
-// Clean job title function (same as in App.tsx)
+// Clean job title function
 const cleanJobTitle = (title: string): string => {
   if (!title) return title;
   
@@ -143,11 +108,11 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// --- THE FULLY STYLED CV DOCUMENT COMPONENT ---
+// The CV Document Component
 export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Header */}
+      {/* Header Section */}
       <View style={styles.header}>
         <Text style={styles.name}>{cvData.fullName}</Text>
         <Text style={styles.contactInfo}>
@@ -155,80 +120,52 @@ export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
         </Text>
       </View>
 
-      {/* Professional Summary */}
+      {/* Professional Summary Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
-        <Text style={styles.summary}>{cvData.professionalSummary}</Text>
+        <Text style={styles.sectionTitle}>Professional Summary</Text>
+        <Text>{cvData.professionalSummary}</Text>
       </View>
 
-      {/* Professional Experience */}
+      {/* Professional Experience Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>PROFESSIONAL EXPERIENCE</Text>
+        <Text style={styles.sectionTitle}>Professional Experience</Text>
         {cvData.workExperience.map((job, index) => (
-          <View key={index} style={styles.entry} wrap={false}>
-            <View style={styles.entryHeader}>
-              <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
-              <Text style={styles.date}>{job.dates}</Text>
-            </View>
+          <View key={index} style={styles.entry}>
+            <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
             <Text style={styles.company}>{job.company}</Text>
-            <View style={styles.responsibilitiesList}>
-              {job.responsibilities.slice(0, 4).map((resp, i) => (
-                <View key={i} style={styles.responsibility}>
-                  <Text style={styles.bullet}>• </Text>
-                  <Text style={styles.responsibilityText}>{resp}</Text>
-                </View>
-              ))}
-            </View>
+            <Text style={styles.date}>{job.dates}</Text>
+            {job.responsibilities.slice(0, 4).map((resp, i) => (
+              <View key={i} style={styles.bulletPoint}>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.bulletText}>{resp}</Text>
+              </View>
+            ))}
           </View>
         ))}
       </View>
-        
-      {/* Education */}
+
+      {/* Education Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>EDUCATION</Text>
+        <Text style={styles.sectionTitle}>Education</Text>
         {cvData.education.map((edu, index) => (
-          <View key={index} style={styles.educationEntry}>
-            <View style={styles.degreeInfo}>
-              <Text style={styles.institution}>{edu.institution}</Text>
-              <Text style={styles.degree}>{edu.degree}</Text>
-            </View>
+          <View key={index} style={styles.entry}>
+            <Text style={styles.jobTitle}>{edu.institution}</Text>
+            <Text>{edu.degree}</Text>
             <Text style={styles.date}>{edu.dates}</Text>
           </View>
         ))}
       </View>
 
-      {/* Key Skills */}
+      {/* Key Skills Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>KEY SKILLS & COMPETENCIES</Text>
-        <View style={styles.skillsGrid}>
-          {(() => {
-            // Ensure even number of skills between 12-14
-            let skillsToShow = cvData.skills.slice(0, 14); // Take first 14 skills max
-            
-            // If we have less than 12 skills, pad with empty items to reach 12
-            while (skillsToShow.length < 12) {
-              skillsToShow.push('');
-            }
-            
-            // Ensure even number
-            if (skillsToShow.length % 2 !== 0) {
-              skillsToShow = skillsToShow.slice(0, -1); // Remove last item to make even
-            }
-            
-            // If we have more than 14, trim to 14 and ensure even
-            if (skillsToShow.length > 14) {
-              skillsToShow = skillsToShow.slice(0, 14);
-              if (skillsToShow.length % 2 !== 0) {
-                skillsToShow = skillsToShow.slice(0, -1);
-              }
-            }
-            
-            return skillsToShow.map((skill, index) => (
-              <View key={index} style={styles.skill}>
-                <Text>{skill ? `• ${skill}` : ''}</Text>
-              </View>
-            ));
-          })()}
+        <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
+        <View style={styles.skillsContainer}>
+          {cvData.skills.slice(0, 14).map((skill, index) => (
+            <View key={index} style={styles.skill}>
+              <Text style={styles.bullet}>•</Text>
+              <Text style={styles.bulletText}>{skill}</Text>
+            </View>
+          ))}
         </View>
       </View>
     </Page>

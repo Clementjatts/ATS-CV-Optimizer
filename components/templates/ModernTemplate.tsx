@@ -29,180 +29,164 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// Modern Template Stylesheet
+// Modern Template Stylesheet with improved styling
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     fontFamily: 'Helvetica',
-    fontSize: 10,
-    color: '#1f2937',
   },
-  sidebar: {
+  leftColumn: {
     width: '30%',
+    backgroundColor: '#2C3E50', // A slightly softer dark blue
+    color: '#FFFFFF',
     padding: 25,
-    backgroundColor: '#f3f4f6', // Light gray sidebar
-    color: '#1f2937',
   },
-  mainContent: {
+  rightColumn: {
     width: '70%',
-    padding: 25,
+    padding: 30,
   },
   name: {
-    fontSize: 22,
+    fontSize: 28,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
     marginBottom: 5,
-    color: '#111827',
+    color: '#FFFFFF', // White text for dark background
   },
   title: {
-    fontSize: 12,
-    color: '#4b5563',
+    fontSize: 14,
+    color: '#BDC3C7', // Light grey for dark background
     marginBottom: 20,
-    fontStyle: 'italic',
-  },
-  sidebarSection: {
-    marginBottom: 15,
   },
   sidebarTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#6b7280',
-    paddingBottom: 2,
-    textTransform: 'uppercase',
-    color: '#111827',
-  },
-  contactText: {
-    fontSize: 9,
-    marginBottom: 3,
-    color: '#4b5563',
-  },
-  skill: {
-    fontSize: 9,
-    marginBottom: 3,
-    color: '#374151',
-  },
-  mainSection: {
-    marginBottom: 15,
-  },
-  sectionTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#111827',
-    marginBottom: 10,
     textTransform: 'uppercase',
-    borderBottomWidth: 1.5,
-    borderBottomColor: '#9ca3af',
-    paddingBottom: 2,
+    marginBottom: 10,
+    color: '#BDC3C7', // A light grey for contrast
+  },
+  contactItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    fontSize: 10,
+  },
+  icon: {
+    marginRight: 8,
+    width: 10,
+    height: 10,
+    color: '#FFFFFF', // White icons for dark background
+  },
+  skill: {
+    fontSize: 10,
+    marginBottom: 4,
+    color: '#FFFFFF',
+  },
+  mainSection: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    borderBottomWidth: 2,
+    borderBottomColor: '#3498DB',
+    paddingBottom: 4,
   },
   entry: {
-    marginBottom: 12,
+    marginBottom: 15,
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   jobTitle: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
-    color: '#111827',
+    color: '#2C3E50',
   },
   date: {
-    fontSize: 9,
-    color: '#4b5563',
+    fontSize: 10,
+    color: '#7F8C8D',
     fontWeight: 'normal',
   },
   company: {
-    fontSize: 10,
+    fontSize: 11,
     fontStyle: 'italic',
-    marginBottom: 4,
-    color: '#2563eb',
+    marginBottom: 6,
+    color: '#3498DB',
   },
   responsibility: {
     fontSize: 10,
-    marginBottom: 3,
-    color: '#374151',
+    marginBottom: 4,
+    color: '#34495E',
+    paddingLeft: 8,
   },
   summary: {
-    fontSize: 10,
+    fontSize: 11,
     textAlign: 'justify',
-    lineHeight: 1.5,
-    color: '#374151',
+    lineHeight: 1.6,
+    color: '#34495E',
   },
   educationEntry: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginBottom: 5,
+    marginBottom: 8,
   },
   institution: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
-    color: '#111827',
+    color: '#2C3E50',
   },
   degree: {
     fontSize: 10,
     fontStyle: 'italic',
-    color: '#4b5563',
+    color: '#7F8C8D',
   },
 });
 
 export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Sidebar (Left Column) */}
-      <View style={styles.sidebar}>
+      {/* Left Column */}
+      <View style={styles.leftColumn}>
         <Text style={styles.name}>{cvData.fullName}</Text>
         <Text style={styles.title}>
           {cvData.workExperience[0]?.jobTitle ? cleanJobTitle(cvData.workExperience[0].jobTitle) : 'Professional'}
         </Text>
 
-        <View style={styles.sidebarSection}>
+        <View style={{ marginBottom: 20 }}>
           <Text style={styles.sidebarTitle}>Contact</Text>
-          <Text style={styles.contactText}>+447838681955</Text>
-          <Text style={styles.contactText}>clement@clementadegbenro.com</Text>
-          <Text style={styles.contactText}>{cvData.contactInfo.location}</Text>
+          <View style={styles.contactItem}>
+            <Text style={styles.icon}>📞</Text>
+            <Text style={styles.skill}>+447838681955</Text>
+          </View>
+          <View style={styles.contactItem}>
+            <Text style={styles.icon}>✉️</Text>
+            <Text style={styles.skill}>clement@clementadegbenro.com</Text>
+          </View>
+          <View style={styles.contactItem}>
+            <Text style={styles.icon}>📍</Text>
+            <Text style={styles.skill}>{cvData.contactInfo.location}</Text>
+          </View>
         </View>
 
-        <View style={styles.sidebarSection}>
+        <View>
           <Text style={styles.sidebarTitle}>Key Skills</Text>
-          {(() => {
-            // Ensure even number of skills between 12-14
-            let skillsToShow = cvData.skills.slice(0, 14);
-            
-            // If we have less than 12 skills, pad with empty items to reach 12
-            while (skillsToShow.length < 12) {
-              skillsToShow.push('');
-            }
-            
-            // Ensure even number
-            if (skillsToShow.length % 2 !== 0) {
-              skillsToShow = skillsToShow.slice(0, -1);
-            }
-            
-            // If we have more than 14, trim to 14 and ensure even
-            if (skillsToShow.length > 14) {
-              skillsToShow = skillsToShow.slice(0, 14);
-              if (skillsToShow.length % 2 !== 0) {
-                skillsToShow = skillsToShow.slice(0, -1);
-              }
-            }
-            
-            return skillsToShow.map((skill, index) => (
-              <Text key={index} style={styles.skill}>
-                {skill ? `• ${skill}` : ''}
-              </Text>
-            ));
-          })()}
+          {cvData.skills.slice(0, 12).map((skill, index) => (
+            <Text key={index} style={styles.skill}>
+              {skill}
+            </Text>
+          ))}
         </View>
       </View>
 
-      {/* Main Content (Right Column) */}
-      <View style={styles.mainContent}>
+      {/* Right Column */}
+      <View style={styles.rightColumn}>
         <View style={styles.mainSection}>
           <Text style={styles.sectionTitle}>Professional Summary</Text>
           <Text style={styles.summary}>{cvData.professionalSummary}</Text>
@@ -218,7 +202,10 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
               </View>
               <Text style={styles.company}>{job.company}</Text>
               {job.responsibilities.slice(0, 4).map((resp, i) => (
-                <Text key={i} style={styles.responsibility}>• {resp}</Text>
+                <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
+                  <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
+                  <Text style={styles.responsibility}>{resp}</Text>
+                </View>
               ))}
             </View>
           ))}

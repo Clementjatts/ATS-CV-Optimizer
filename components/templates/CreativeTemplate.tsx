@@ -29,54 +29,58 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// Creative Template Stylesheet with vibrant colors
+// Creative Template Stylesheet with accent colors and typography
+// Accent color choice: a professional teal
+const ACCENT_COLOR = '#16A085';
+
 const styles = StyleSheet.create({
   page: {
     backgroundColor: '#FFFFFF',
     fontFamily: 'Helvetica',
     fontSize: 10,
     color: '#1f2937',
+    padding: 30,
   },
   header: {
-    backgroundColor: '#f0f0f0', // Light gray background
-    padding: 25,
-    textAlign: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingBottom: 10,
     marginBottom: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: ACCENT_COLOR,
   },
   name: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    color: '#FFFFFF',
-    marginBottom: 8,
+    color: ACCENT_COLOR,
+  },
+  contactBlock: {
+    textAlign: 'right',
   },
   contactInfo: {
-    fontSize: 9,
-    color: '#e0e7ff', // Light blue
-    marginTop: 4,
+    fontSize: 10,
+    color: '#666',
+    marginBottom: 2,
   },
   section: {
-    marginBottom: 15,
-    marginHorizontal: 25,
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
-    backgroundColor: '#e0e0e0', // Light gray background
-    color: '#000000',
-    padding: 8,
+    color: '#333',
     marginBottom: 10,
     textTransform: 'uppercase',
-    borderRadius: 2,
+    letterSpacing: 1,
   },
   entry: {
-    marginBottom: 12,
-    padding: 10,
-    backgroundColor: '#f8fafc', // Light gray background
-    borderRadius: 3,
-    borderLeftWidth: 4,
-    borderLeftColor: '#3b82f6', // Blue accent
+    marginBottom: 15,
+    padding: 12,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: ACCENT_COLOR,
   },
   entryHeader: {
     flexDirection: 'row',
@@ -85,84 +89,87 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   jobTitle: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 'bold',
-    color: '#1e40af', // Dark blue
+    color: ACCENT_COLOR,
   },
   date: {
-    fontSize: 9,
-    color: '#6b7280',
+    fontSize: 10,
+    color: '#666',
     fontWeight: 'normal',
   },
   company: {
     fontSize: 11,
     fontStyle: 'italic',
     marginBottom: 6,
-    color: '#059669', // Green
+    color: '#555',
   },
   responsibility: {
     fontSize: 10,
     marginBottom: 3,
-    color: '#374151',
+    color: '#444',
     paddingLeft: 8,
   },
   summary: {
-    fontSize: 10,
+    fontSize: 11,
     textAlign: 'justify',
-    lineHeight: 1.5,
-    color: '#374151',
-    padding: 12,
-    backgroundColor: '#f9f9f9', // Light gray background
-    borderRadius: 2,
-    borderLeftWidth: 2,
-    borderLeftColor: '#cccccc', // Gray accent
+    lineHeight: 1.6,
+    color: '#444',
+    padding: 15,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: ACCENT_COLOR,
   },
   educationEntry: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: '#f5f5f5', // Light gray background
-    borderRadius: 2,
-    borderLeftWidth: 2,
-    borderLeftColor: '#999999', // Gray accent
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: ACCENT_COLOR,
   },
   institution: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
-    color: '#0c4a6e', // Dark cyan
+    color: ACCENT_COLOR,
   },
   degree: {
     fontSize: 10,
     fontStyle: 'italic',
-    color: '#0369a1', // Medium blue
+    color: '#666',
   },
-  skillsGrid: {
+  skillsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 8,
+    marginTop: 5,
   },
-  skill: {
-    backgroundColor: '#e8e8e8', // Light gray background
-    color: '#333333', // Dark gray text
-    padding: 4,
-    margin: 2,
-    borderRadius: 2,
-    fontSize: 9,
-    fontWeight: 'normal',
+  skillPill: {
+    backgroundColor: '#EAECEE',
+    color: '#34495E',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 5,
+    fontSize: 10,
+    marginRight: 5,
+    marginBottom: 5,
   },
 });
 
 export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Header with colorful background */}
+      {/* Dynamic Header */}
       <View style={styles.header}>
         <Text style={styles.name}>{cvData.fullName}</Text>
-        <Text style={styles.contactInfo}>
-          {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
-        </Text>
+        <View style={styles.contactBlock}>
+          <Text style={styles.contactInfo}>{cvData.contactInfo.location}</Text>
+          <Text style={styles.contactInfo}>clement@clementadegbenro.com</Text>
+          <Text style={styles.contactInfo}>+447838681955</Text>
+        </View>
       </View>
 
       {/* Professional Summary */}
@@ -182,7 +189,10 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
             </View>
             <Text style={styles.company}>{job.company}</Text>
             {job.responsibilities.slice(0, 4).map((resp, i) => (
-              <Text key={i} style={styles.responsibility}>• {resp}</Text>
+              <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
+                <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
+                <Text style={styles.responsibility}>{resp}</Text>
+              </View>
             ))}
           </View>
         ))}
@@ -205,35 +215,12 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Key Skills */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
-        <View style={styles.skillsGrid}>
-          {(() => {
-            // Ensure even number of skills between 12-14
-            let skillsToShow = cvData.skills.slice(0, 14);
-            
-            // If we have less than 12 skills, pad with empty items to reach 12
-            while (skillsToShow.length < 12) {
-              skillsToShow.push('');
-            }
-            
-            // Ensure even number
-            if (skillsToShow.length % 2 !== 0) {
-              skillsToShow = skillsToShow.slice(0, -1);
-            }
-            
-            // If we have more than 14, trim to 14 and ensure even
-            if (skillsToShow.length > 14) {
-              skillsToShow = skillsToShow.slice(0, 14);
-              if (skillsToShow.length % 2 !== 0) {
-                skillsToShow = skillsToShow.slice(0, -1);
-              }
-            }
-            
-            return skillsToShow.map((skill, index) => (
-              <Text key={index} style={styles.skill}>
-                {skill ? skill : ''}
-              </Text>
-            ));
-          })()}
+        <View style={styles.skillsContainer}>
+          {cvData.skills.slice(0, 12).map((skill, index) => (
+            <Text key={index} style={styles.skillPill}>
+              {skill}
+            </Text>
+          ))}
         </View>
       </View>
     </Page>

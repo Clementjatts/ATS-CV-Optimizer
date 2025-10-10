@@ -29,120 +29,113 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// Minimal Template Stylesheet with clean, simple design
+// Minimal Template Stylesheet with clean typography and layout
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#FFFFFF',
+    padding: 50,
     fontFamily: 'Helvetica',
     fontSize: 10,
-    color: '#000000',
-    padding: 30,
-  },
-  header: {
-    textAlign: 'center',
-    marginBottom: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: '#000000',
-    paddingBottom: 15,
+    lineHeight: 1.5, // Generous line spacing
+    color: '#4A4A4A', // Soft black
   },
   name: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 8,
+    textAlign: 'center',
+    marginBottom: 15, // Increased spacing between name and contact
+    color: '#111',
   },
   contactInfo: {
-    fontSize: 9,
-    color: '#666666',
-    marginTop: 4,
+    fontSize: 10,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 25,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 25,
   },
   sectionTitle: {
     fontSize: 12,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
-    paddingBottom: 3,
+    letterSpacing: 1, // Add some space between letters
+    color: '#333',
+    marginBottom: 15,
+    marginTop: 10,
   },
   entry: {
-    marginBottom: 15,
+    marginBottom: 18,
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginBottom: 3,
+    marginBottom: 2,
   },
-  jobTitle: {
-    fontSize: 11,
+  leftText: {
     fontWeight: 'bold',
+    fontSize: 11,
+    color: '#111',
   },
-  date: {
-    fontSize: 9,
-    color: '#666666',
+  rightText: {
+    fontSize: 10,
+    color: '#666',
   },
   company: {
     fontSize: 10,
     fontStyle: 'italic',
-    marginBottom: 5,
-    color: '#333333',
+    marginBottom: 6,
+    color: '#555',
   },
   responsibility: {
-    fontSize: 9,
-    marginBottom: 2,
-    color: '#444444',
-    paddingLeft: 10,
+    fontSize: 10,
+    marginBottom: 3,
+    color: '#444',
+    paddingLeft: 8,
   },
   summary: {
-    fontSize: 10,
+    fontSize: 11,
     textAlign: 'justify',
-    lineHeight: 1.4,
-    color: '#333333',
+    lineHeight: 1.6,
+    color: '#444',
   },
   educationEntry: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   institution: {
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: 'bold',
+    color: '#111',
   },
   degree: {
-    fontSize: 9,
+    fontSize: 10,
     fontStyle: 'italic',
-    color: '#666666',
+    color: '#666',
   },
   skillsList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 5,
+    marginTop: 8,
   },
   skill: {
-    fontSize: 9,
-    marginRight: 15,
-    marginBottom: 3,
-    color: '#333333',
+    fontSize: 10,
+    color: '#444',
+    textAlign: 'justify',
+    lineHeight: 1.5,
+    wordSpacing: 2, // Add spacing between words/skills
+    orphans: 2, // Prevent orphaned words (like bullets alone)
+    widows: 2, // Prevent widowed words
   },
 });
 
 export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.name}>{cvData.fullName}</Text>
-        <Text style={styles.contactInfo}>
-          {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
-        </Text>
-      </View>
+      {/* Clean Header */}
+      <Text style={styles.name}>{cvData.fullName}</Text>
+      <Text style={styles.contactInfo}>
+        {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
+      </Text>
 
       {/* Professional Summary */}
       <View style={styles.section}>
@@ -156,12 +149,14 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
         {cvData.workExperience.map((job, index) => (
           <View key={index} style={styles.entry} wrap={false}>
             <View style={styles.entryHeader}>
-              <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
-              <Text style={styles.date}>{job.dates}</Text>
+              <Text style={styles.leftText}>{cleanJobTitle(job.jobTitle)} at {job.company}</Text>
+              <Text style={styles.rightText}>{job.dates}</Text>
             </View>
-            <Text style={styles.company}>{job.company}</Text>
             {job.responsibilities.slice(0, 4).map((resp, i) => (
-              <Text key={i} style={styles.responsibility}>• {resp}</Text>
+              <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
+                <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
+                <Text style={styles.responsibility}>{resp}</Text>
+              </View>
             ))}
           </View>
         ))}
@@ -176,7 +171,7 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
               <Text style={styles.institution}>{edu.institution}</Text>
               <Text style={styles.degree}>{edu.degree}</Text>
             </View>
-            <Text style={styles.date}>{edu.dates}</Text>
+            <Text style={styles.rightText}>{edu.dates}</Text>
           </View>
         ))}
       </View>
@@ -185,34 +180,11 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
         <View style={styles.skillsList}>
-          {(() => {
-            // Ensure even number of skills between 12-14
-            let skillsToShow = cvData.skills.slice(0, 14);
-            
-            // If we have less than 12 skills, pad with empty items to reach 12
-            while (skillsToShow.length < 12) {
-              skillsToShow.push('');
-            }
-            
-            // Ensure even number
-            if (skillsToShow.length % 2 !== 0) {
-              skillsToShow = skillsToShow.slice(0, -1);
-            }
-            
-            // If we have more than 14, trim to 14 and ensure even
-            if (skillsToShow.length > 14) {
-              skillsToShow = skillsToShow.slice(0, 14);
-              if (skillsToShow.length % 2 !== 0) {
-                skillsToShow = skillsToShow.slice(0, -1);
-              }
-            }
-            
-            return skillsToShow.map((skill, index) => (
-              <Text key={index} style={styles.skill}>
-                {skill ? `• ${skill}` : ''}
-              </Text>
-            ));
-          })()}
+          <Text style={styles.skill}>
+            {cvData.skills.slice(0, 12).map((skill, index) => 
+              `• ${skill}`
+            ).join('  ')}
+          </Text>
         </View>
       </View>
     </Page>

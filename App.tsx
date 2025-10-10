@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { optimizeCvWithGemini, CvData, extractTextFromImagesWithGemini, enhanceCVWithGemini } from './services/geminiService';
 import { cvService, SavedCV, CVSource } from './services/cvService';
 import { fileStorageService, UploadedFile } from './services/fileStorageService';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink, Font } from '@react-pdf/renderer';
 import { ClassicTemplate } from './components/templates/ClassicTemplate';
 import { ModernTemplate } from './components/templates/ModernTemplate';
 import { CreativeTemplate } from './components/templates/CreativeTemplate';
@@ -11,6 +11,31 @@ import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 import mammoth from 'mammoth';
 import * as pdfjsLib from 'pdfjs-dist';
+
+// Register custom fonts for better typography
+Font.register({
+  family: 'Inter',
+  fonts: [
+    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2' },
+    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiJ-Ek-_EeA.woff2', fontWeight: 'bold' },
+  ],
+});
+
+Font.register({
+  family: 'Merriweather',
+  fonts: [
+    { src: 'https://fonts.gstatic.com/s/merriweather/v30/u-4n0qyriQwlOrhSvowK_l521wRZWMf6.woff2' },
+    { src: 'https://fonts.gstatic.com/s/merriweather/v30/u-4n0qyriQwlOrhSvowK_l521wRZWMf6.woff2', fontWeight: 'bold' },
+  ],
+});
+
+Font.register({
+  family: 'Lato',
+  fonts: [
+    { src: 'https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wXg.woff2' },
+    { src: 'https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVSwiPGQ.woff2', fontWeight: 'bold' },
+  ],
+});
 
 // Configure PDF.js worker to ensure it can run in the background.
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
@@ -837,8 +862,7 @@ Please provide a modified version that incorporates the user's request while kee
 
           <div className="space-y-8">
             <div className="bg-gradient-to-br from-white/95 via-purple-50/95 to-pink-50/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border border-purple-200/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1">
-              <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-700 via-pink-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-3">
-                <span className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</span>
+              <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-700 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
                 Provide Your Details
               </h2>
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-purple-400 p-4 rounded-r-lg mb-6 text-sm text-blue-800 flex items-start shadow-sm">
@@ -1001,8 +1025,7 @@ Please provide a modified version that incorporates the user's request while kee
 
           {optimizedCvData && (
             <div className="bg-gradient-to-br from-white/95 via-pink-50/95 to-purple-50/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border border-pink-200/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 flex flex-col">
-              <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-3">
-                <span className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
+              <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Your Optimized CV
               </h2>
             <div className="flex-grow bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 rounded-xl border border-purple-200/50 min-h-[40rem] flex flex-col overflow-hidden shadow-inner">
@@ -1160,9 +1183,6 @@ Please provide a modified version that incorporates the user's request while kee
               {/* Header */}
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <span className="text-white text-lg font-bold">3</span>
-                  </div>
                   <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">Optimization Analysis</h2>
                 </div>
                 <button
