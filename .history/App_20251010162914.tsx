@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { optimizeCvWithGemini, CvData, extractTextFromImagesWithGemini, enhanceCVWithGemini } from './services/geminiService';
 import { cvService, SavedCV, CVSource } from './services/cvService';
 import { fileStorageService, UploadedFile } from './services/fileStorageService';
-import { PDFDownloadLink, Font } from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { ClassicTemplate } from './components/templates/ClassicTemplate';
 import { ModernTemplate } from './components/templates/ModernTemplate';
 import { CreativeTemplate } from './components/templates/CreativeTemplate';
@@ -11,31 +11,6 @@ import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 import mammoth from 'mammoth';
 import * as pdfjsLib from 'pdfjs-dist';
-
-// Register custom fonts for better typography
-Font.register({
-  family: 'Inter',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2' },
-    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiJ-Ek-_EeA.woff2', fontWeight: 'bold' },
-  ],
-});
-
-Font.register({
-  family: 'Merriweather',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/merriweather/v30/u-4n0qyriQwlOrhSvowK_l521wRZWMf6.woff2' },
-    { src: 'https://fonts.gstatic.com/s/merriweather/v30/u-4n0qyriQwlOrhSvowK_l521wRZWMf6.woff2', fontWeight: 'bold' },
-  ],
-});
-
-Font.register({
-  family: 'Lato',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wXg.woff2' },
-    { src: 'https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVSwiPGQ.woff2', fontWeight: 'bold' },
-  ],
-});
 
 // Configure PDF.js worker to ensure it can run in the background.
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;

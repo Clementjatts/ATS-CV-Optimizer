@@ -29,77 +29,59 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// Creative Template Stylesheet with accent colors and typography
-// Accent color choice: a professional teal
-const ACCENT_COLOR = '#16A085';
-
+// Minimal Template Stylesheet with clean typography and layout
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#FFFFFF',
+    padding: 50,
     fontFamily: 'Helvetica',
     fontSize: 10,
-    color: '#1f2937',
-    padding: 30,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingBottom: 10,
-    marginBottom: 20,
-    borderBottomWidth: 2,
-    borderBottomColor: ACCENT_COLOR,
+    lineHeight: 1.5, // Generous line spacing
+    color: '#4A4A4A', // Soft black
   },
   name: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: ACCENT_COLOR,
-  },
-  contactBlock: {
-    textAlign: 'right',
+    textAlign: 'center',
+    marginBottom: 2,
+    color: '#111',
   },
   contactInfo: {
     fontSize: 10,
     color: '#666',
-    marginBottom: 2,
+    textAlign: 'center',
+    marginBottom: 25,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 25,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1, // Add some space between letters
+    color: '#333',
+    marginBottom: 15,
+    marginTop: 10,
   },
   entry: {
-    marginBottom: 15,
-    padding: 12,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 4,
-    borderLeftWidth: 3,
-    borderLeftColor: ACCENT_COLOR,
+    marginBottom: 18,
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginBottom: 4,
+    marginBottom: 2,
   },
-  jobTitle: {
-    fontSize: 13,
+  leftText: {
     fontWeight: 'bold',
-    color: ACCENT_COLOR,
+    fontSize: 11,
+    color: '#111',
   },
-  date: {
+  rightText: {
     fontSize: 10,
     color: '#666',
-    fontWeight: 'normal',
   },
   company: {
-    fontSize: 11,
+    fontSize: 10,
     fontStyle: 'italic',
     marginBottom: 6,
     color: '#555',
@@ -115,61 +97,45 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     lineHeight: 1.6,
     color: '#444',
-    padding: 15,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 4,
-    borderLeftWidth: 3,
-    borderLeftColor: ACCENT_COLOR,
   },
   educationEntry: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginBottom: 10,
-    padding: 10,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 4,
-    borderLeftWidth: 3,
-    borderLeftColor: ACCENT_COLOR,
   },
   institution: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: 'bold',
-    color: ACCENT_COLOR,
+    color: '#111',
   },
   degree: {
     fontSize: 10,
     fontStyle: 'italic',
     color: '#666',
   },
-  skillsContainer: {
+  skillsList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 5,
+    marginTop: 8,
   },
-  skillPill: {
-    backgroundColor: '#EAECEE',
-    color: '#34495E',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 5,
+  skill: {
     fontSize: 10,
-    marginRight: 5,
-    marginBottom: 5,
+    marginRight: 20,
+    marginBottom: 4,
+    color: '#444',
   },
 });
 
-export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
+export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Dynamic Header */}
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.name}>{cvData.fullName}</Text>
-        <View style={styles.contactBlock}>
-          <Text style={styles.contactInfo}>{cvData.contactInfo.location}</Text>
-          <Text style={styles.contactInfo}>clement@clementadegbenro.com</Text>
-          <Text style={styles.contactInfo}>+447838681955</Text>
-        </View>
+        <Text style={styles.contactInfo}>
+          {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
+        </Text>
       </View>
 
       {/* Professional Summary */}
@@ -189,10 +155,7 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
             </View>
             <Text style={styles.company}>{job.company}</Text>
             {job.responsibilities.slice(0, 4).map((resp, i) => (
-              <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
-                <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
-                <Text style={styles.responsibility}>{resp}</Text>
-              </View>
+              <Text key={i} style={styles.responsibility}>• {resp}</Text>
             ))}
           </View>
         ))}
@@ -215,12 +178,35 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Key Skills */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
-        <View style={styles.skillsContainer}>
-          {cvData.skills.slice(0, 12).map((skill, index) => (
-            <Text key={index} style={styles.skillPill}>
-              {skill}
-            </Text>
-          ))}
+        <View style={styles.skillsList}>
+          {(() => {
+            // Ensure even number of skills between 12-14
+            let skillsToShow = cvData.skills.slice(0, 14);
+            
+            // If we have less than 12 skills, pad with empty items to reach 12
+            while (skillsToShow.length < 12) {
+              skillsToShow.push('');
+            }
+            
+            // Ensure even number
+            if (skillsToShow.length % 2 !== 0) {
+              skillsToShow = skillsToShow.slice(0, -1);
+            }
+            
+            // If we have more than 14, trim to 14 and ensure even
+            if (skillsToShow.length > 14) {
+              skillsToShow = skillsToShow.slice(0, 14);
+              if (skillsToShow.length % 2 !== 0) {
+                skillsToShow = skillsToShow.slice(0, -1);
+              }
+            }
+            
+            return skillsToShow.map((skill, index) => (
+              <Text key={index} style={styles.skill}>
+                {skill ? `• ${skill}` : ''}
+              </Text>
+            ));
+          })()}
         </View>
       </View>
     </Page>

@@ -59,8 +59,6 @@ const styles = StyleSheet.create({
   bullet: {
     width: 10,
     fontSize: 10,
-    color: '#3b82f6', // Blue bullet to match web styling
-    fontWeight: 'bold',
   },
   bulletText: {
     flex: 1,

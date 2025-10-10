@@ -162,14 +162,12 @@ const styles = StyleSheet.create({
 export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Dynamic Header */}
+      {/* Header with colorful background */}
       <View style={styles.header}>
         <Text style={styles.name}>{cvData.fullName}</Text>
-        <View style={styles.contactBlock}>
-          <Text style={styles.contactInfo}>{cvData.contactInfo.location}</Text>
-          <Text style={styles.contactInfo}>clement@clementadegbenro.com</Text>
-          <Text style={styles.contactInfo}>+447838681955</Text>
-        </View>
+        <Text style={styles.contactInfo}>
+          {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
+        </Text>
       </View>
 
       {/* Professional Summary */}
@@ -189,10 +187,7 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
             </View>
             <Text style={styles.company}>{job.company}</Text>
             {job.responsibilities.slice(0, 4).map((resp, i) => (
-              <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
-                <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
-                <Text style={styles.responsibility}>{resp}</Text>
-              </View>
+              <Text key={i} style={styles.responsibility}>• {resp}</Text>
             ))}
           </View>
         ))}
@@ -215,12 +210,35 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Key Skills */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
-        <View style={styles.skillsContainer}>
-          {cvData.skills.slice(0, 12).map((skill, index) => (
-            <Text key={index} style={styles.skillPill}>
-              {skill}
-            </Text>
-          ))}
+        <View style={styles.skillsGrid}>
+          {(() => {
+            // Ensure even number of skills between 12-14
+            let skillsToShow = cvData.skills.slice(0, 14);
+            
+            // If we have less than 12 skills, pad with empty items to reach 12
+            while (skillsToShow.length < 12) {
+              skillsToShow.push('');
+            }
+            
+            // Ensure even number
+            if (skillsToShow.length % 2 !== 0) {
+              skillsToShow = skillsToShow.slice(0, -1);
+            }
+            
+            // If we have more than 14, trim to 14 and ensure even
+            if (skillsToShow.length > 14) {
+              skillsToShow = skillsToShow.slice(0, 14);
+              if (skillsToShow.length % 2 !== 0) {
+                skillsToShow = skillsToShow.slice(0, -1);
+              }
+            }
+            
+            return skillsToShow.map((skill, index) => (
+              <Text key={index} style={styles.skill}>
+                {skill ? skill : ''}
+              </Text>
+            ));
+          })()}
         </View>
       </View>
     </Page>

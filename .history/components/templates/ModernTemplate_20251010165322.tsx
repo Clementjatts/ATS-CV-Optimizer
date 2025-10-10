@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#FFFFFF', // White text for dark background
+    color: '#2C3E50',
   },
   title: {
     fontSize: 14,
-    color: '#BDC3C7', // Light grey for dark background
+    color: '#555',
     marginBottom: 20,
   },
   sidebarTitle: {
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
     width: 10,
     height: 10,
-    color: '#FFFFFF', // White icons for dark background
   },
   skill: {
     fontSize: 10,
@@ -152,41 +151,55 @@ const styles = StyleSheet.create({
 export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Left Column */}
-      <View style={styles.leftColumn}>
+      {/* Sidebar (Left Column) */}
+      <View style={styles.sidebar}>
         <Text style={styles.name}>{cvData.fullName}</Text>
         <Text style={styles.title}>
           {cvData.workExperience[0]?.jobTitle ? cleanJobTitle(cvData.workExperience[0].jobTitle) : 'Professional'}
         </Text>
 
-        <View style={{ marginBottom: 20 }}>
+        <View style={styles.sidebarSection}>
           <Text style={styles.sidebarTitle}>Contact</Text>
-          <View style={styles.contactItem}>
-            <Text style={styles.icon}>📞</Text>
-            <Text style={styles.skill}>+447838681955</Text>
-          </View>
-          <View style={styles.contactItem}>
-            <Text style={styles.icon}>✉️</Text>
-            <Text style={styles.skill}>clement@clementadegbenro.com</Text>
-          </View>
-          <View style={styles.contactItem}>
-            <Text style={styles.icon}>📍</Text>
-            <Text style={styles.skill}>{cvData.contactInfo.location}</Text>
-          </View>
+          <Text style={styles.contactText}>+447838681955</Text>
+          <Text style={styles.contactText}>clement@clementadegbenro.com</Text>
+          <Text style={styles.contactText}>{cvData.contactInfo.location}</Text>
         </View>
 
-        <View>
+        <View style={styles.sidebarSection}>
           <Text style={styles.sidebarTitle}>Key Skills</Text>
-          {cvData.skills.slice(0, 12).map((skill, index) => (
-            <Text key={index} style={styles.skill}>
-              {skill}
-            </Text>
-          ))}
+          {(() => {
+            // Ensure even number of skills between 12-14
+            let skillsToShow = cvData.skills.slice(0, 14);
+            
+            // If we have less than 12 skills, pad with empty items to reach 12
+            while (skillsToShow.length < 12) {
+              skillsToShow.push('');
+            }
+            
+            // Ensure even number
+            if (skillsToShow.length % 2 !== 0) {
+              skillsToShow = skillsToShow.slice(0, -1);
+            }
+            
+            // If we have more than 14, trim to 14 and ensure even
+            if (skillsToShow.length > 14) {
+              skillsToShow = skillsToShow.slice(0, 14);
+              if (skillsToShow.length % 2 !== 0) {
+                skillsToShow = skillsToShow.slice(0, -1);
+              }
+            }
+            
+            return skillsToShow.map((skill, index) => (
+              <Text key={index} style={styles.skill}>
+                {skill ? `• ${skill}` : ''}
+              </Text>
+            ));
+          })()}
         </View>
       </View>
 
-      {/* Right Column */}
-      <View style={styles.rightColumn}>
+      {/* Main Content (Right Column) */}
+      <View style={styles.mainContent}>
         <View style={styles.mainSection}>
           <Text style={styles.sectionTitle}>Professional Summary</Text>
           <Text style={styles.summary}>{cvData.professionalSummary}</Text>
@@ -202,10 +215,7 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
               </View>
               <Text style={styles.company}>{job.company}</Text>
               {job.responsibilities.slice(0, 4).map((resp, i) => (
-                <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
-                  <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
-                  <Text style={styles.responsibility}>{resp}</Text>
-                </View>
+                <Text key={i} style={styles.responsibility}>• {resp}</Text>
               ))}
             </View>
           ))}

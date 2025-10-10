@@ -189,10 +189,7 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
             </View>
             <Text style={styles.company}>{job.company}</Text>
             {job.responsibilities.slice(0, 4).map((resp, i) => (
-              <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
-                <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
-                <Text style={styles.responsibility}>{resp}</Text>
-              </View>
+              <Text key={i} style={styles.responsibility}>• {resp}</Text>
             ))}
           </View>
         ))}

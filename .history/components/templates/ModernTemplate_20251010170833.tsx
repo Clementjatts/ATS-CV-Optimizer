@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#FFFFFF', // White text for dark background
+    color: '#2C3E50',
   },
   title: {
     fontSize: 14,
-    color: '#BDC3C7', // Light grey for dark background
+    color: '#555',
     marginBottom: 20,
   },
   sidebarTitle: {
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
     width: 10,
     height: 10,
-    color: '#FFFFFF', // White icons for dark background
   },
   skill: {
     fontSize: 10,
@@ -178,9 +177,10 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
         <View>
           <Text style={styles.sidebarTitle}>Key Skills</Text>
           {cvData.skills.slice(0, 12).map((skill, index) => (
-            <Text key={index} style={styles.skill}>
-              {skill}
-            </Text>
+            <View key={index} style={{ flexDirection: 'row', marginBottom: 3 }}>
+              <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
+              <Text style={styles.skill}>{skill}</Text>
+            </View>
           ))}
         </View>
       </View>

@@ -143,19 +143,16 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     marginTop: 5,
   },
   skillPill: {
-    backgroundColor: '#EAECEE',
-    color: '#34495E',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 5,
     fontSize: 10,
-    marginRight: 5,
-    marginBottom: 5,
+    color: '#34495E',
+    textAlign: 'justify',
+    lineHeight: 1.5,
+    wordSpacing: 2, // Add spacing between words/skills
+    orphans: 2, // Prevent orphaned words
+    widows: 2, // Prevent widowed words
   },
 });
 
@@ -216,11 +213,11 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
         <View style={styles.skillsContainer}>
-          {cvData.skills.slice(0, 12).map((skill, index) => (
-            <Text key={index} style={styles.skillPill}>
-              {skill}
-            </Text>
-          ))}
+          <Text style={styles.skillPill}>
+            {cvData.skills.slice(0, 12).map((skill, index) => 
+              `${skill}`
+            ).join('  ')}
+          </Text>
         </View>
       </View>
     </Page>
