@@ -821,6 +821,12 @@ Please provide a modified version that incorporates the user's request while kee
               </div>
             </div>
             
+            {/* Center Content - Tagline */}
+            <div className="flex-1 flex justify-center px-8">
+              <p className="text-lg text-slate-700 max-w-lg leading-relaxed font-medium bg-gradient-to-r from-slate-700 via-purple-700 to-pink-700 bg-clip-text text-transparent text-center">
+                Transform your CV with AI to match any job description and pass ATS systems effortlessly
+              </p>
+            </div>
             
             {/* Right Side Content - Feature badges */}
             <div className="flex items-center gap-3">

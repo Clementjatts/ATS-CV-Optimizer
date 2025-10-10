@@ -821,12 +821,19 @@ Please provide a modified version that incorporates the user's request while kee
               </div>
             </div>
             
-            
-            {/* Right Side Content - Feature badges */}
-            <div className="flex items-center gap-3">
-              <span className="px-4 py-2 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-sm font-bold rounded-full shadow-sm border border-emerald-200 hover:shadow-md transition-all duration-300 hover:scale-105">✨ AI-Powered</span>
-              <span className="px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-bold rounded-full shadow-sm border border-blue-200 hover:shadow-md transition-all duration-300 hover:scale-105">🎯 ATS Compatible</span>
-              <span className="px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 text-sm font-bold rounded-full shadow-sm border border-purple-200 hover:shadow-md transition-all duration-300 hover:scale-105">⚡ Instant Results</span>
+            {/* Right Side Content */}
+            <div className="flex flex-col items-end space-y-2">
+              {/* Tagline */}
+              <p className="text-lg text-slate-700 max-w-md leading-relaxed font-medium bg-gradient-to-r from-slate-700 via-purple-700 to-pink-700 bg-clip-text text-transparent text-right">
+                Transform your CV with AI to match any job description and pass ATS systems effortlessly
+              </p>
+              
+              {/* Feature badges */}
+              <div className="flex flex-wrap justify-end gap-3">
+                <span className="px-3 py-1.5 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-xs font-bold rounded-full shadow-sm border border-emerald-200 hover:shadow-md transition-all duration-300 hover:scale-105">✨ AI-Powered</span>
+                <span className="px-3 py-1.5 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-xs font-bold rounded-full shadow-sm border border-blue-200 hover:shadow-md transition-all duration-300 hover:scale-105">🎯 ATS Compatible</span>
+                <span className="px-3 py-1.5 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 text-xs font-bold rounded-full shadow-sm border border-purple-200 hover:shadow-md transition-all duration-300 hover:scale-105">⚡ Instant Results</span>
+              </div>
             </div>
           </div>
         </div>
