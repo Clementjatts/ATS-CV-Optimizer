@@ -144,8 +144,11 @@ const styles = StyleSheet.create({
   },
   skillsContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     marginTop: 5,
+  },
+  skillsColumn: {
+    width: '50%',
+    paddingRight: 10,
   },
   skillPill: {
     backgroundColor: '#EAECEE',
@@ -216,11 +219,20 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
         <View style={styles.skillsContainer}>
-          {cvData.skills.slice(0, 12).map((skill, index) => (
-            <Text key={index} style={styles.skillPill}>
-              {skill}
-            </Text>
-          ))}
+          <View style={styles.skillsColumn}>
+            {cvData.skills.slice(0, 6).map((skill, index) => (
+              <Text key={index} style={styles.skillPill}>
+                {skill}
+              </Text>
+            ))}
+          </View>
+          <View style={styles.skillsColumn}>
+            {cvData.skills.slice(6, 12).map((skill, index) => (
+              <Text key={index + 6} style={styles.skillPill}>
+                {skill}
+              </Text>
+            ))}
+          </View>
         </View>
       </View>
     </Page>
