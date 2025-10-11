@@ -47,12 +47,11 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   name: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 5,
     color: '#2C3E50', // Dark slate blue text for light background
     whiteSpace: 'nowrap',
-    letterSpacing: 1,
   },
   title: {
     fontSize: 14,
@@ -60,20 +59,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sidebarTitle: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    marginBottom: 12,
-    marginTop: 20,
+    marginBottom: 10,
     color: '#2C3E50', // Dark slate blue for light background
-    letterSpacing: 0.5,
   },
   contactItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
     fontSize: 10,
-    color: '#34495E',
   },
   icon: {
     marginRight: 8,
@@ -173,7 +169,7 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
         <Text style={styles.name}>{cvData.fullName.split(' ')[0]}</Text>
         <Text style={styles.name}>{cvData.fullName.split(' ').slice(1).join(' ')}</Text>
 
-        <View style={{ marginBottom: 25 }}>
+        <View style={{ marginBottom: 20 }}>
           <Text style={styles.sidebarTitle}>Contact</Text>
           <View style={styles.contactItem}>
             <Text style={styles.icon}>📞</Text>
