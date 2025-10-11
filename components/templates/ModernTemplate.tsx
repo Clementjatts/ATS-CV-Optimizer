@@ -38,19 +38,21 @@ const styles = StyleSheet.create({
   },
   leftColumn: {
     width: '30%',
-    backgroundColor: '#2C3E50', // A slightly softer dark blue
-    color: '#FFFFFF',
-    padding: 25,
+    backgroundColor: '#F4F6F8', // Light gray background as per plan
+    color: '#2C3E50', // Dark slate blue text
+    padding: 30,
   },
   rightColumn: {
     width: '70%',
     padding: 30,
   },
   name: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 5,
-    color: '#FFFFFF', // White text for dark background
+    marginBottom: 8,
+    color: '#2C3E50', // Dark slate blue text for light background
+    whiteSpace: 'nowrap',
+    letterSpacing: 1,
   },
   title: {
     fontSize: 14,
@@ -58,28 +60,42 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sidebarTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    marginBottom: 10,
-    color: '#BDC3C7', // A light grey for contrast
+    marginBottom: 12,
+    marginTop: 20,
+    color: '#2C3E50', // Dark slate blue for light background
+    letterSpacing: 0.5,
   },
   contactItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
     fontSize: 10,
+    color: '#34495E',
   },
   icon: {
     marginRight: 8,
     width: 10,
     height: 10,
-    color: '#BDC3C7', // Light grey icons for better visibility on dark background
+    color: '#3498DB', // Accent blue for light background
   },
   skill: {
-    fontSize: 10,
+    fontSize: 9,
     marginBottom: 4,
-    color: '#FFFFFF',
+    marginRight: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    backgroundColor: '#E8F4FD', // Light blue background for skills
+    color: '#2C3E50', // Dark text for light background
+    borderRadius: 12,
+    textAlign: 'center',
+  },
+  skillsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8,
   },
   mainSection: {
     marginBottom: 20,
@@ -154,31 +170,34 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
     <Page size="A4" style={styles.page}>
       {/* Left Column */}
       <View style={styles.leftColumn}>
-        <Text style={styles.name}>{cvData.fullName}</Text>
+        <Text style={styles.name}>{cvData.fullName.split(' ')[0]}</Text>
+        <Text style={styles.name}>{cvData.fullName.split(' ').slice(1).join(' ')}</Text>
 
-        <View style={{ marginBottom: 20 }}>
+        <View style={{ marginBottom: 25 }}>
           <Text style={styles.sidebarTitle}>Contact</Text>
           <View style={styles.contactItem}>
-            <Text style={styles.icon}>☎</Text>
+            <Text style={styles.icon}>📞</Text>
             <Text style={styles.skill}>+447838681955</Text>
           </View>
           <View style={styles.contactItem}>
-            <Text style={styles.icon}>@</Text>
+            <Text style={styles.icon}>✉</Text>
             <Text style={styles.skill}>clement@clementadegbenro.com</Text>
           </View>
           <View style={styles.contactItem}>
-            <Text style={styles.icon}>●</Text>
+            <Text style={styles.icon}>📍</Text>
             <Text style={styles.skill}>{cvData.contactInfo.location}</Text>
           </View>
         </View>
 
         <View>
           <Text style={styles.sidebarTitle}>Key Skills</Text>
-          {cvData.skills.slice(0, 12).map((skill, index) => (
-            <Text key={index} style={styles.skill}>
-              {skill}
-            </Text>
-          ))}
+          <View style={styles.skillsContainer}>
+            {cvData.skills.slice(0, 12).map((skill, index) => (
+              <Text key={index} style={styles.skill}>
+                {skill}
+              </Text>
+            ))}
+          </View>
         </View>
       </View>
 
