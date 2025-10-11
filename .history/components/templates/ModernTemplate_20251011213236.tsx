@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     width: 10,
     height: 10,
-    color: '#BDC3C7', // Light grey icons for better visibility on dark background
+    color: '#FFFFFF', // White icons for dark background
   },
   skill: {
     fontSize: 10,

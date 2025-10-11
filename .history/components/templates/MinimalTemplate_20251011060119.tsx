@@ -183,13 +183,13 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
         <View style={styles.skillsList}>
           <View style={styles.skillsColumn}>
-            {cvData.skills.slice(0, 12).slice(0, 6).map((skill, index) => (
+            {cvData.skills.slice(0, Math.ceil(cvData.skills.length / 2)).map((skill, index) => (
               <Text key={index} style={styles.skill}>• {skill}</Text>
             ))}
           </View>
           <View style={styles.skillsColumn}>
-            {cvData.skills.slice(0, 12).slice(6).map((skill, index) => (
-              <Text key={index + 6} style={styles.skill}>• {skill}</Text>
+            {cvData.skills.slice(Math.ceil(cvData.skills.length / 2)).map((skill, index) => (
+              <Text key={index + Math.ceil(cvData.skills.length / 2)} style={styles.skill}>• {skill}</Text>
             ))}
           </View>
         </View>
