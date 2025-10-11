@@ -116,15 +116,17 @@ const styles = StyleSheet.create({
   },
   skillsList: {
     marginTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  skillsColumn: {
+    width: '48%',
   },
   skill: {
     fontSize: 10,
     color: '#444',
-    textAlign: 'justify',
     lineHeight: 1.5,
-    wordSpacing: 2, // Add spacing between words/skills
-    orphans: 2, // Prevent orphaned words (like bullets alone)
-    widows: 2, // Prevent widowed words
+    marginBottom: 3,
   },
 });
 
@@ -180,11 +182,16 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
         <View style={styles.skillsList}>
-          <Text style={styles.skill}>
-            {cvData.skills.slice(0, 12).map((skill, index) => 
-              `• ${skill}`
-            ).join('  ')}
-          </Text>
+          <View style={styles.skillsColumn}>
+            {cvData.skills.slice(0, 12).slice(0, 6).map((skill, index) => (
+              <Text key={index} style={styles.skill}>• {skill}</Text>
+            ))}
+          </View>
+          <View style={styles.skillsColumn}>
+            {cvData.skills.slice(0, 12).slice(6).map((skill, index) => (
+              <Text key={index + 6} style={styles.skill}>• {skill}</Text>
+            ))}
+          </View>
         </View>
       </View>
     </Page>

@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     width: 10,
     height: 10,
-    color: '#FFFFFF', // White icons for dark background
+    color: '#BDC3C7', // Light grey icons for better visibility on dark background
   },
   skill: {
     fontSize: 10,
@@ -155,22 +155,19 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Left Column */}
       <View style={styles.leftColumn}>
         <Text style={styles.name}>{cvData.fullName}</Text>
-        <Text style={styles.title}>
-          {cvData.workExperience[0]?.jobTitle ? cleanJobTitle(cvData.workExperience[0].jobTitle) : 'Professional'}
-        </Text>
 
         <View style={{ marginBottom: 20 }}>
           <Text style={styles.sidebarTitle}>Contact</Text>
           <View style={styles.contactItem}>
-            <Text style={styles.icon}>📞</Text>
+            <Text style={styles.icon}>☎</Text>
             <Text style={styles.skill}>+447838681955</Text>
           </View>
           <View style={styles.contactItem}>
-            <Text style={styles.icon}>✉️</Text>
+            <Text style={styles.icon}>@</Text>
             <Text style={styles.skill}>clement@clementadegbenro.com</Text>
           </View>
           <View style={styles.contactItem}>
-            <Text style={styles.icon}>📍</Text>
+            <Text style={styles.icon}>●</Text>
             <Text style={styles.skill}>{cvData.contactInfo.location}</Text>
           </View>
         </View>
