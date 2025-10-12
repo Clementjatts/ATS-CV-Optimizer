@@ -129,16 +129,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    color: '#374151', // Dark charcoal grey
+    color: '#111',
     marginBottom: 10,
-    marginTop: 10, // Reduced from 20 to 10
-    borderBottomWidth: 2,
-    borderBottomColor: '#14b8a6', // Teal accent border
-    paddingBottom: 4,
+    marginTop: 20,
   },
   summary: {
     fontSize: 10,
-    color: '#374151', // Dark charcoal grey
+    color: '#111',
     lineHeight: 1.5,
     textAlign: 'justify',
     marginBottom: 20,
@@ -160,17 +157,16 @@ const styles = StyleSheet.create({
   jobTitleText: {
     fontSize: 11,
     fontWeight: 'bold',
-    color: '#374151', // Dark charcoal grey
+    color: '#111',
   },
   jobDate: {
     fontSize: 9,
-    color: '#14b8a6', // Teal accent for dates
-    fontWeight: 'bold',
+    color: '#666',
   },
   companyName: {
     fontSize: 10,
     fontWeight: 'bold',
-    color: '#374151', // Dark charcoal grey
+    color: '#111',
     marginBottom: 6,
   },
   jobDescription: {
@@ -203,12 +199,12 @@ const styles = StyleSheet.create({
   bulletText: {
     flex: 1,
     fontSize: 9,
-    color: '#374151', // Dark charcoal grey
+    color: '#111',
     lineHeight: 1.4,
   },
   separator: {
     borderBottomWidth: 1,
-    borderBottomColor: '#14b8a6', // Teal accent separator
+    borderBottomColor: '#FFFFFF',
     marginBottom: 15,
     paddingBottom: 15,
   },

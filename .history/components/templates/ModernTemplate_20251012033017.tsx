@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: '#374151', // Dark charcoal grey
     marginBottom: 10,
-    marginTop: 10, // Reduced from 20 to 10
+    marginTop: 20,
     borderBottomWidth: 2,
     borderBottomColor: '#14b8a6', // Teal accent border
     paddingBottom: 4,
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     borderBottomWidth: 1,
-    borderBottomColor: '#14b8a6', // Teal accent separator
+    borderBottomColor: '#FFFFFF',
     marginBottom: 15,
     paddingBottom: 15,
   },
