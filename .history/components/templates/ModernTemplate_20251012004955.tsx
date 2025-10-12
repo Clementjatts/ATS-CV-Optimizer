@@ -81,15 +81,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     fontSize: 10,
+    color: '#34495E',
   },
   icon: {
     marginRight: 8,
-    fontSize: 12,
+    width: 10,
+    height: 10,
     color: '#3498DB', // Accent blue for light background
-  },
-  contactText: {
-    fontSize: 10,
-    color: '#34495E',
   },
   skill: {
     fontSize: 9,
