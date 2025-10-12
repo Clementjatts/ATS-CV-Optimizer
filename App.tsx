@@ -140,7 +140,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           </span>
           <span className="flex items-center gap-1">
             <span className="text-gray-600">✉️</span>
-            clement@clementadegbenro.com
+            clementjatts@gmail.com
           </span>
           <span className="flex items-center gap-1">
             <span className="text-gray-600">📞</span>

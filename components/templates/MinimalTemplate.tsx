@@ -136,7 +136,7 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Clean Header */}
       <Text style={styles.name}>{cvData.fullName}</Text>
       <Text style={styles.contactInfo}>
-        {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
+        {cvData.contactInfo.location} | clementjatts@gmail.com | +447838681955
       </Text>
 
       {/* Professional Summary */}

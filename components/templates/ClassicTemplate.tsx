@@ -39,6 +39,12 @@ const styles = StyleSheet.create({
   entry: {
     marginBottom: 10,
   },
+  entryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    marginBottom: 4,
+  },
   jobTitle: {
     fontSize: 12,
     fontWeight: 'bold',
@@ -50,7 +56,6 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 10,
     color: '#555',
-    marginBottom: 4,
   },
   bulletPoint: {
     flexDirection: 'row',
@@ -116,7 +121,7 @@ export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
       <View style={styles.header}>
         <Text style={styles.name}>{cvData.fullName}</Text>
         <Text style={styles.contactInfo}>
-          {cvData.contactInfo.location} | clement@clementadegbenro.com | +447838681955
+          {cvData.contactInfo.location} | clementjatts@gmail.com | +447838681955
         </Text>
       </View>
 
@@ -131,9 +136,11 @@ export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
         <Text style={styles.sectionTitle}>Professional Experience</Text>
         {cvData.workExperience.map((job, index) => (
           <View key={index} style={styles.entry}>
-            <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
+            <View style={styles.entryHeader}>
+              <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
+              <Text style={styles.date}>{job.dates}</Text>
+            </View>
             <Text style={styles.company}>{job.company}</Text>
-            <Text style={styles.date}>{job.dates}</Text>
             {job.responsibilities.slice(0, 4).map((resp, i) => (
               <View key={i} style={styles.bulletPoint}>
                 <Text style={styles.bullet}>•</Text>
@@ -149,9 +156,11 @@ export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
         <Text style={styles.sectionTitle}>Education</Text>
         {cvData.education.map((edu, index) => (
           <View key={index} style={styles.entry}>
-            <Text style={styles.jobTitle}>{edu.institution}</Text>
+            <View style={styles.entryHeader}>
+              <Text style={styles.jobTitle}>{edu.institution}</Text>
+              <Text style={styles.date}>{edu.dates}</Text>
+            </View>
             <Text>{edu.degree}</Text>
-            <Text style={styles.date}>{edu.dates}</Text>
           </View>
         ))}
       </View>

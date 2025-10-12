@@ -170,7 +170,7 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
         <Text style={styles.name}>{cvData.fullName}</Text>
         <View style={styles.contactBlock}>
           <Text style={styles.contactInfo}>{cvData.contactInfo.location}</Text>
-          <Text style={styles.contactInfo}>clement@clementadegbenro.com</Text>
+          <Text style={styles.contactInfo}>clementjatts@gmail.com</Text>
           <Text style={styles.contactInfo}>+447838681955</Text>
         </View>
       </View>
