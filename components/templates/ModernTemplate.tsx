@@ -39,19 +39,19 @@ const styles = StyleSheet.create({
   },
   leftPanel: {
     width: '27%',
-    backgroundColor: '#484444', // Dark gray background
+    backgroundColor: '#1F2937', // Deep midnight blue background
     padding: 20,
-    color: '#bebebe', // Light gray text
+    color: '#F3F4F6', // Soft off-white text
   },
   rightPanel: {
     width: '73%',
     padding: 20,
-    color: '#111',
+    color: '#374151', // Dark charcoal grey
   },
   name: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#1F2937', // Even darker charcoal for prominence
     marginBottom: 8,
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    color: '#FFFFFF',
+    color: '#14b8a6', // Muted teal accent color
     marginBottom: 10,
     marginTop: 15,
   },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   contactText: {
     fontSize: 9,
-    color: '#bebebe',
+    color: '#F3F4F6', // Soft off-white for better readability
   },
   skillItem: {
     flexDirection: 'row',
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   skillName: {
     fontSize: 9,
-    color: '#bebebe',
+    color: '#F3F4F6', // Soft off-white for better readability
     flex: 1,
   },
   skillYears: {
@@ -113,12 +113,12 @@ const styles = StyleSheet.create({
   educationTitle: {
     fontSize: 10,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#14b8a6', // Muted teal accent color
     marginBottom: 4,
   },
   educationSchool: {
     fontSize: 9,
-    color: '#bebebe',
+    color: '#F3F4F6', // Soft off-white for better readability
     marginBottom: 2,
   },
   educationDate: {
@@ -129,13 +129,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    color: '#111',
+    color: '#374151', // Dark charcoal grey
     marginBottom: 10,
-    marginTop: 20,
+    marginTop: 10, // Reduced from 20 to 10
+    borderBottomWidth: 2,
+    borderBottomColor: '#14b8a6', // Teal accent border
+    paddingBottom: 4,
   },
   summary: {
     fontSize: 10,
-    color: '#111',
+    color: '#374151', // Dark charcoal grey
     lineHeight: 1.5,
     textAlign: 'justify',
     marginBottom: 20,
@@ -157,16 +160,17 @@ const styles = StyleSheet.create({
   jobTitleText: {
     fontSize: 11,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#374151', // Dark charcoal grey
   },
   jobDate: {
     fontSize: 9,
-    color: '#666',
+    color: '#14b8a6', // Teal accent for dates
+    fontWeight: 'bold',
   },
   companyName: {
     fontSize: 10,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#374151', // Dark charcoal grey
     marginBottom: 6,
   },
   jobDescription: {
@@ -199,12 +203,12 @@ const styles = StyleSheet.create({
   bulletText: {
     flex: 1,
     fontSize: 9,
-    color: '#111',
+    color: '#374151', // Dark charcoal grey
     lineHeight: 1.4,
   },
   separator: {
     borderBottomWidth: 1,
-    borderBottomColor: '#FFFFFF',
+    borderBottomColor: '#14b8a6', // Teal accent separator
     marginBottom: 15,
     paddingBottom: 15,
   },
