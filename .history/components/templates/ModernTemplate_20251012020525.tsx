@@ -266,15 +266,15 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
           <Text style={styles.name}>{cvData.fullName}</Text>
         </View>
 
-        {/* Professional Summary Section */}
+        {/* About Me Section */}
         <View style={{ marginBottom: 12 }}>
-          <Text style={styles.rightSectionTitle}>Professional Summary</Text>
+          <Text style={styles.rightSectionTitle}>About me</Text>
           <Text style={styles.summary}>{cvData.professionalSummary}</Text>
         </View>
 
-        {/* Professional Experience Section */}
+        {/* Work Experience Section */}
         <View style={styles.workExperience}>
-          <Text style={styles.rightSectionTitle}>Professional Experience</Text>
+          <Text style={styles.rightSectionTitle}>Work experience</Text>
           {cvData.workExperience.map((job, index) => (
             <View key={index} style={styles.experienceItem}>
               <View style={styles.jobPosition}>

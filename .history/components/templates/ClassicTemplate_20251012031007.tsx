@@ -156,11 +156,9 @@ export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
         <Text style={styles.sectionTitle}>Education</Text>
         {cvData.education.map((edu, index) => (
           <View key={index} style={styles.entry}>
-            <View style={styles.entryHeader}>
-              <Text style={styles.jobTitle}>{edu.institution}</Text>
-              <Text style={styles.date}>{edu.dates}</Text>
-            </View>
+            <Text style={styles.jobTitle}>{edu.institution}</Text>
             <Text>{edu.degree}</Text>
+            <Text style={styles.date}>{edu.dates}</Text>
           </View>
         ))}
       </View>

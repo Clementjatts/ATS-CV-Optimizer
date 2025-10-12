@@ -76,15 +76,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 9,
   },
-  contactLabel: {
-    marginRight: 12,
-    fontSize: 9,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    width: 60,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    opacity: 0.9,
+  contactIcon: {
+    marginRight: 8,
+    fontSize: 10,
+    color: '#bebebe',
+    width: 15,
   },
   contactText: {
     fontSize: 9,
@@ -145,7 +141,7 @@ const styles = StyleSheet.create({
   },
   experienceItem: {
     marginBottom: 20,
-    paddingLeft: 0,
+    paddingLeft: 15,
     position: 'relative',
   },
   jobPosition: {
@@ -186,22 +182,6 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
     marginBottom: 2,
   },
-  bulletPoint: {
-    flexDirection: 'row',
-    marginBottom: 2,
-  },
-  bullet: {
-    color: '#3b82f6', // Blue bullet to match web styling
-    fontWeight: 'bold',
-    marginRight: 6,
-    fontSize: 9,
-  },
-  bulletText: {
-    flex: 1,
-    fontSize: 9,
-    color: '#111',
-    lineHeight: 1.4,
-  },
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: '#FFFFFF',
@@ -219,12 +199,15 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
         <View style={styles.separator}>
           <Text style={styles.sectionTitle}>Contact</Text>
           <View style={styles.contactItem}>
+            <Text style={styles.contactIcon}>☎</Text>
             <Text style={styles.contactText}>+447838681955</Text>
           </View>
           <View style={styles.contactItem}>
-            <Text style={styles.contactText}>clementjatts@gmail.com</Text>
+            <Text style={styles.contactIcon}>✉</Text>
+            <Text style={styles.contactText}>clement@clementadegbenro.com</Text>
           </View>
           <View style={styles.contactItem}>
+            <Text style={styles.contactIcon}>📍</Text>
             <Text style={styles.contactText}>{cvData.contactInfo.location}</Text>
           </View>
         </View>
@@ -243,6 +226,7 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
             .map((skill, index) => (
             <View key={index} style={styles.skillItem}>
               <Text style={styles.skillName}>{skill}</Text>
+              <Text style={styles.skillYears}>2+ years</Text>
             </View>
           ))}
         </View>
@@ -254,6 +238,7 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
             <View key={index} style={styles.educationItem}>
               <Text style={styles.educationTitle}>{edu.degree}</Text>
               <Text style={styles.educationSchool}>{edu.institution}</Text>
+              <Text style={styles.educationDate}>{edu.dates}</Text>
             </View>
           ))}
         </View>
@@ -261,20 +246,23 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
 
       {/* Right Panel */}
       <View style={styles.rightPanel}>
-        {/* Name */}
-        <View style={{ marginBottom: 12 }}>
+        {/* Name and Title */}
+        <View style={{ marginBottom: 20 }}>
           <Text style={styles.name}>{cvData.fullName}</Text>
+          <Text style={styles.jobTitle}>
+            {cvData.workExperience[0]?.jobTitle ? cleanJobTitle(cvData.workExperience[0].jobTitle) : 'Professional'}
+          </Text>
         </View>
 
-        {/* Professional Summary Section */}
-        <View style={{ marginBottom: 12 }}>
-          <Text style={styles.rightSectionTitle}>Professional Summary</Text>
+        {/* About Me Section */}
+        <View style={{ marginBottom: 20 }}>
+          <Text style={styles.rightSectionTitle}>About me</Text>
           <Text style={styles.summary}>{cvData.professionalSummary}</Text>
         </View>
 
-        {/* Professional Experience Section */}
+        {/* Work Experience Section */}
         <View style={styles.workExperience}>
-          <Text style={styles.rightSectionTitle}>Professional Experience</Text>
+          <Text style={styles.rightSectionTitle}>Work experience</Text>
           {cvData.workExperience.map((job, index) => (
             <View key={index} style={styles.experienceItem}>
               <View style={styles.jobPosition}>
@@ -282,15 +270,11 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
                 <Text style={styles.jobDate}>{job.dates}</Text>
               </View>
               <Text style={styles.companyName}>{job.company}</Text>
-              <View style={styles.bulletPoint}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.bulletText}>{job.responsibilities.slice(0, 1).join(' ')}</Text>
-              </View>
+              <Text style={styles.jobDescription}>
+                {job.responsibilities.slice(0, 1).join(' ')}
+              </Text>
               {job.responsibilities.slice(1, 4).map((resp, i) => (
-                <View key={i} style={styles.bulletPoint}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text style={styles.bulletText}>{resp}</Text>
-                </View>
+                <Text key={i} style={styles.responsibility}>• {resp}</Text>
               ))}
             </View>
           ))}
