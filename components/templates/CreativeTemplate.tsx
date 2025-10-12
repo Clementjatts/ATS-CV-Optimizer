@@ -87,11 +87,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginBottom: 4,
+    pageBreakAfter: 'avoid', // Prevent headings from being stranded at bottom of page
   },
   jobTitle: {
     fontSize: 13,
     fontWeight: 'bold',
     color: ACCENT_COLOR,
+    pageBreakAfter: 'avoid', // Keep heading with following content
   },
   date: {
     fontSize: 10,
@@ -103,12 +105,15 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     marginBottom: 6,
     color: '#555',
+    pageBreakAfter: 'avoid', // Keep company name with following content
   },
   responsibility: {
     fontSize: 10,
     marginBottom: 3,
     color: '#444',
     paddingLeft: 8,
+    orphans: 2, // Prevent orphaned lines (first line left alone at bottom)
+    widows: 2,  // Prevent widowed lines (last line left alone at top)
   },
   summary: {
     fontSize: 11,
@@ -127,6 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     marginBottom: 10,
     padding: 10,
+    pageBreakAfter: 'avoid', // Prevent education entries from being stranded
     backgroundColor: '#F8F9FA',
     borderRadius: 4,
     borderLeftWidth: 3,

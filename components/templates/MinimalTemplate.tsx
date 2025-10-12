@@ -65,16 +65,19 @@ const styles = StyleSheet.create({
   },
   entry: {
     marginBottom: 18,
+    // Removed pageBreakInside: 'avoid' to allow content to flow across pages
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 2,
+    pageBreakAfter: 'avoid', // Prevent headings from being stranded at bottom of page
   },
   leftText: {
     fontWeight: 'bold',
     fontSize: 11,
     color: '#111',
+    pageBreakAfter: 'avoid', // Keep heading with following content
   },
   rightText: {
     fontSize: 10,
@@ -85,12 +88,15 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     marginBottom: 6,
     color: '#555',
+    pageBreakAfter: 'avoid', // Keep company name with following content
   },
   responsibility: {
     fontSize: 10,
     marginBottom: 3,
     color: '#444',
     paddingLeft: 8,
+    orphans: 2, // Prevent orphaned lines (first line left alone at bottom)
+    widows: 2,  // Prevent widowed lines (last line left alone at top)
   },
   summary: {
     fontSize: 11,
@@ -103,11 +109,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginBottom: 10,
+    pageBreakAfter: 'avoid', // Prevent education entries from being stranded
   },
   institution: {
     fontSize: 11,
     fontWeight: 'bold',
     color: '#111',
+    pageBreakAfter: 'avoid', // Keep institution name with following content
   },
   degree: {
     fontSize: 10,

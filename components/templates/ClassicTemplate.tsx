@@ -38,20 +38,24 @@ const styles = StyleSheet.create({
   },
   entry: {
     marginBottom: 10,
+    // Removed pageBreakInside: 'avoid' to allow content to flow across pages
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginBottom: 4,
+    pageBreakAfter: 'avoid', // Prevent headings from being stranded at bottom of page
   },
   jobTitle: {
     fontSize: 12,
     fontWeight: 'bold',
+    pageBreakAfter: 'avoid', // Keep heading with following content
   },
   company: {
     fontSize: 11,
     fontStyle: 'italic',
+    pageBreakAfter: 'avoid', // Keep company name with following content
   },
   date: {
     fontSize: 10,
@@ -69,6 +73,8 @@ const styles = StyleSheet.create({
   },
   bulletText: {
     flex: 1,
+    orphans: 2, // Prevent orphaned lines (first line left alone at bottom)
+    widows: 2,  // Prevent widowed lines (last line left alone at top)
   },
   skillsContainer: {
     flexDirection: 'row',
