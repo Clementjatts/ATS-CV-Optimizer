@@ -95,8 +95,6 @@ const styles = StyleSheet.create({
     marginBottom: 3,
     color: '#444',
     paddingLeft: 8,
-    orphans: 2, // Prevent orphaned lines (first line left alone at bottom)
-    widows: 2,  // Prevent widowed lines (last line left alone at top)
   },
   summary: {
     fontSize: 11,
@@ -109,13 +107,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginBottom: 10,
-    pageBreakAfter: 'avoid', // Prevent education entries from being stranded
   },
   institution: {
     fontSize: 11,
     fontWeight: 'bold',
     color: '#111',
-    pageBreakAfter: 'avoid', // Keep institution name with following content
   },
   degree: {
     fontSize: 10,

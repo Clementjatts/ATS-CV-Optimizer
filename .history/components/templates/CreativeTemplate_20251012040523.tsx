@@ -29,62 +29,79 @@ const cleanJobTitle = (title: string): string => {
   return title;
 };
 
-// Minimal Template Stylesheet with clean typography and layout
+// Creative Template Stylesheet with accent colors and typography
+// Accent color choice: a professional teal
+const ACCENT_COLOR = '#16A085';
+
 const styles = StyleSheet.create({
   page: {
-    padding: 50,
+    backgroundColor: '#FFFFFF',
     fontFamily: 'Helvetica',
     fontSize: 10,
-    lineHeight: 1.5, // Generous line spacing
-    color: '#4A4A4A', // Soft black
+    color: '#1f2937',
+    padding: 30,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingBottom: 10,
+    marginBottom: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: ACCENT_COLOR,
   },
   name: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 15, // Increased spacing between name and contact
-    color: '#111',
+    color: ACCENT_COLOR,
+  },
+  contactBlock: {
+    textAlign: 'right',
   },
   contactInfo: {
     fontSize: 10,
     color: '#666',
-    textAlign: 'center',
-    marginBottom: 25,
+    marginBottom: 2,
   },
   section: {
-    marginBottom: 25,
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1, // Add some space between letters
     color: '#333',
-    marginBottom: 15,
-    marginTop: 10,
+    marginBottom: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   entry: {
-    marginBottom: 18,
-    // Removed pageBreakInside: 'avoid' to allow content to flow across pages
+    marginBottom: 15,
+    padding: 12,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: ACCENT_COLOR,
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 2,
+    alignItems: 'baseline',
+    marginBottom: 4,
     pageBreakAfter: 'avoid', // Prevent headings from being stranded at bottom of page
   },
-  leftText: {
+  jobTitle: {
+    fontSize: 13,
     fontWeight: 'bold',
-    fontSize: 11,
-    color: '#111',
+    color: ACCENT_COLOR,
     pageBreakAfter: 'avoid', // Keep heading with following content
   },
-  rightText: {
+  date: {
     fontSize: 10,
     color: '#666',
+    fontWeight: 'normal',
   },
   company: {
-    fontSize: 10,
+    fontSize: 11,
     fontStyle: 'italic',
     marginBottom: 6,
     color: '#555',
@@ -95,57 +112,71 @@ const styles = StyleSheet.create({
     marginBottom: 3,
     color: '#444',
     paddingLeft: 8,
-    orphans: 2, // Prevent orphaned lines (first line left alone at bottom)
-    widows: 2,  // Prevent widowed lines (last line left alone at top)
   },
   summary: {
     fontSize: 11,
     textAlign: 'justify',
     lineHeight: 1.6,
     color: '#444',
+    padding: 15,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: ACCENT_COLOR,
   },
   educationEntry: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginBottom: 10,
-    pageBreakAfter: 'avoid', // Prevent education entries from being stranded
+    padding: 10,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: ACCENT_COLOR,
   },
   institution: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
-    color: '#111',
-    pageBreakAfter: 'avoid', // Keep institution name with following content
+    color: ACCENT_COLOR,
   },
   degree: {
     fontSize: 10,
     fontStyle: 'italic',
     color: '#666',
   },
-  skillsList: {
-    marginTop: 8,
+  skillsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    marginTop: 5,
   },
   skillsColumn: {
-    width: '48%',
+    width: '50%',
+    paddingRight: 10,
   },
-  skill: {
+  skillPill: {
+    backgroundColor: '#EAECEE',
+    color: '#34495E',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 5,
     fontSize: 10,
-    color: '#444',
-    lineHeight: 1.5,
-    marginBottom: 3,
+    marginRight: 5,
+    marginBottom: 5,
   },
 });
 
-export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
+export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Clean Header */}
-      <Text style={styles.name}>{cvData.fullName}</Text>
-      <Text style={styles.contactInfo}>
-        {cvData.contactInfo.location} | clementjatts@gmail.com | +447838681955
-      </Text>
+      {/* Dynamic Header */}
+      <View style={styles.header}>
+        <Text style={styles.name}>{cvData.fullName}</Text>
+        <View style={styles.contactBlock}>
+          <Text style={styles.contactInfo}>{cvData.contactInfo.location}</Text>
+          <Text style={styles.contactInfo}>clementjatts@gmail.com</Text>
+          <Text style={styles.contactInfo}>+447838681955</Text>
+        </View>
+      </View>
 
       {/* Professional Summary */}
       <View style={styles.section}>
@@ -159,9 +190,10 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
         {cvData.workExperience.map((job, index) => (
           <View key={index} style={styles.entry} wrap={false}>
             <View style={styles.entryHeader}>
-              <Text style={styles.leftText}>{cleanJobTitle(job.jobTitle)} at {job.company}</Text>
-              <Text style={styles.rightText}>{job.dates}</Text>
+              <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
+              <Text style={styles.date}>{job.dates}</Text>
             </View>
+            <Text style={styles.company}>{job.company}</Text>
             {job.responsibilities.slice(0, 4).map((resp, i) => (
               <View key={i} style={{ flexDirection: 'row', marginBottom: 3 }}>
                 <Text style={{ color: '#3b82f6', fontWeight: 'bold', width: 10 }}>•</Text>
@@ -181,7 +213,7 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
               <Text style={styles.institution}>{edu.institution}</Text>
               <Text style={styles.degree}>{edu.degree}</Text>
             </View>
-            <Text style={styles.rightText}>{edu.dates}</Text>
+            <Text style={styles.date}>{edu.dates}</Text>
           </View>
         ))}
       </View>
@@ -189,15 +221,19 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Key Skills */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Skills & Competencies</Text>
-        <View style={styles.skillsList}>
+        <View style={styles.skillsContainer}>
           <View style={styles.skillsColumn}>
-            {cvData.skills.slice(0, 12).slice(0, 6).map((skill, index) => (
-              <Text key={index} style={styles.skill}>• {skill}</Text>
+            {cvData.skills.slice(0, 6).map((skill, index) => (
+              <Text key={index} style={styles.skillPill}>
+                {skill}
+              </Text>
             ))}
           </View>
           <View style={styles.skillsColumn}>
-            {cvData.skills.slice(0, 12).slice(6).map((skill, index) => (
-              <Text key={index + 6} style={styles.skill}>• {skill}</Text>
+            {cvData.skills.slice(6, 12).map((skill, index) => (
+              <Text key={index + 6} style={styles.skillPill}>
+                {skill}
+              </Text>
             ))}
           </View>
         </View>

@@ -73,8 +73,6 @@ const styles = StyleSheet.create({
   },
   bulletText: {
     flex: 1,
-    orphans: 2, // Prevent orphaned lines (first line left alone at bottom)
-    widows: 2,  // Prevent widowed lines (last line left alone at top)
   },
   skillsContainer: {
     flexDirection: 'row',
