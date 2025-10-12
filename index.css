@@ -1,3 +1,6 @@
+/* Import Inter font directly for better PDF generation compatibility */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 /* ATS CV Optimizer - Bullet Point Alignment Fixes */
 /* Comprehensive solution for consistent bullet alignment across screen sizes and PDF generation */
 

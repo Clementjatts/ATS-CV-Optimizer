@@ -47,12 +47,20 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   name: {
-    fontSize: 26,
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    color: '#2C3E50', // Dark slate blue text for light background
+    whiteSpace: 'nowrap',
+    letterSpacing: 0.3,
+  },
+  lastName: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#2C3E50', // Dark slate blue text for light background
     whiteSpace: 'nowrap',
-    letterSpacing: 1,
+    letterSpacing: 0.3,
   },
   title: {
     fontSize: 14,
@@ -73,13 +81,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     fontSize: 10,
-    color: '#34495E',
   },
   icon: {
     marginRight: 8,
-    width: 10,
-    height: 10,
+    fontSize: 12,
     color: '#3498DB', // Accent blue for light background
+  },
+  contactText: {
+    fontSize: 10,
+    color: '#34495E',
   },
   skill: {
     fontSize: 9,
@@ -171,21 +181,21 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Left Column */}
       <View style={styles.leftColumn}>
         <Text style={styles.name}>{cvData.fullName.split(' ')[0]}</Text>
-        <Text style={styles.name}>{cvData.fullName.split(' ').slice(1).join(' ')}</Text>
+        <Text style={styles.lastName}>{cvData.fullName.split(' ').slice(1).join(' ')}</Text>
 
         <View style={{ marginBottom: 25 }}>
           <Text style={styles.sidebarTitle}>Contact</Text>
           <View style={styles.contactItem}>
-            <Text style={styles.icon}>📞</Text>
-            <Text style={styles.skill}>+447838681955</Text>
+            <Text style={styles.icon}>☎</Text>
+            <Text style={styles.contactText}>+447838681955</Text>
           </View>
           <View style={styles.contactItem}>
             <Text style={styles.icon}>✉</Text>
-            <Text style={styles.skill}>clement@clementadegbenro.com</Text>
+            <Text style={styles.contactText}>clement@clementadegbenro.com</Text>
           </View>
           <View style={styles.contactItem}>
             <Text style={styles.icon}>📍</Text>
-            <Text style={styles.skill}>{cvData.contactInfo.location}</Text>
+            <Text style={styles.contactText}>{cvData.contactInfo.location}</Text>
           </View>
         </View>
 
