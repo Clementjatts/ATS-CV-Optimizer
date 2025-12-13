@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, Suspense } from 'react';
 import { optimizeCvWithGemini, CvData, extractTextFromImagesWithGemini, enhanceCVWithGemini } from './services/geminiService';
 import { cvService, SavedCV, CVSource } from './services/cvService';
 import { fileStorageService, UploadedFile } from './services/fileStorageService';
@@ -7,10 +7,10 @@ import { ClassicTemplate } from './components/templates/ClassicTemplate';
 import { ModernTemplate } from './components/templates/ModernTemplate';
 import { CreativeTemplate } from './components/templates/CreativeTemplate';
 import { MinimalTemplate } from './components/templates/MinimalTemplate';
-import CVManager from './components/CVManager';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
-import mammoth from 'mammoth';
-import * as pdfjsLib from 'pdfjs-dist';
+
+const CVManager = React.lazy(() => import('./components/CVManager'));
+
 
 // Register custom fonts for better typography
 Font.register({
@@ -37,8 +37,8 @@ Font.register({
   ],
 });
 
-// Configure PDF.js worker to ensure it can run in the background.
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
+// Worker configuration will be handled dynamically
+
 
 // Template types
 type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
@@ -456,6 +456,9 @@ export default function App() {
 
   const parseFile = useCallback(async (file: File): Promise<{ text: string; isScanned: boolean }> => {
     if (file.type === 'application/pdf') {
+      const pdfjsLib = await import('pdfjs-dist');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
+      
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
       let textContent = '';
@@ -468,7 +471,9 @@ export default function App() {
       const isScanned = pdf.numPages > 0 && textContent.trim().split(/\s+/).length < 50;
       return { text: textContent, isScanned };
     } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      const mammoth = await import('mammoth');
       const arrayBuffer = await file.arrayBuffer();
+      // @ts-ignore
       const result = await mammoth.extractRawText({ arrayBuffer });
       return { text: result.value, isScanned: false };
     }
@@ -476,6 +481,9 @@ export default function App() {
   }, []);
 
   const performOcrOnPdf = async (file: File): Promise<string> => {
+    const pdfjsLib = await import('pdfjs-dist');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
+
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
     const base64Images: string[] = [];
@@ -1358,12 +1366,14 @@ Please provide a modified version that incorporates the user's request while kee
       </main>
       
       {/* CV Manager Modal */}
-      <CVManager 
-        isOpen={isCVManagerOpen}
-        onClose={() => setIsCVManagerOpen(false)}
-        onSelectCV={handleSelectCVFromDB}
-        onSelectMultipleCVs={handleSelectMultipleCVsFromDB}
-      />
+      <Suspense fallback={null}>
+        <CVManager 
+          isOpen={isCVManagerOpen}
+          onClose={() => setIsCVManagerOpen(false)}
+          onSelectCV={handleSelectCVFromDB}
+          onSelectMultipleCVs={handleSelectMultipleCVsFromDB}
+        />
+      </Suspense>
     </div>
   );
 }

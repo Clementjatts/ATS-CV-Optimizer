@@ -12,6 +12,21 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              vendor: ['react', 'react-dom'],
+              pdf: ['pdfjs-dist', '@react-pdf/renderer'],
+              utils: ['mammoth', 'firebase/app', 'firebase/storage', 'firebase/firestore']
+            }
+          }
+        },
+        chunkSizeWarningLimit: 1000
+      },
+      optimizeDeps: {
+        include: ['pdfjs-dist', '@react-pdf/renderer']
       }
     };
 });
