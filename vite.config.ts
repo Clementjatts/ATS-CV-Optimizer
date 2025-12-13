@@ -12,6 +12,23 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              vendor: ['react', 'react-dom'],
+              firebase: ['firebase/app', 'firebase/storage', 'firebase/firestore'],
+              // pdfjs-dist and mammoth are dynamically imported, so we let Vite split them automatically
+              // @react-pdf/renderer is large and statically imported, keeping it separate helps caching
+              pdfRenderer: ['@react-pdf/renderer']
+            }
+          }
+        },
+        chunkSizeWarningLimit: 1000
+      },
+      optimizeDeps: {
+        include: ['pdfjs-dist', '@react-pdf/renderer']
       }
     };
 });
