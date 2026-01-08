@@ -1,33 +1,8 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { CvData } from '../../services/geminiService';
+import { cleanJobTitle } from '../../utils/cvHelpers';
 
-// Clean job title function (same as in other templates)
-const cleanJobTitle = (title: string): string => {
-  if (!title) return title;
-  
-  // Remove everything after common separators
-  const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
-  for (const separator of separators) {
-    const index = title.indexOf(separator);
-    if (index > 0) {
-      title = title.substring(0, index).trim();
-    }
-  }
-  
-  // Remove specific suffixes
-  const suffixes = [
-    ' | Transferable Skills', ' - Transferable Skills', ' (Transferable Skills)',
-    ' | Additional Qualifications', ' - Additional Qualifications'
-  ];
-  for (const suffix of suffixes) {
-    if (title.includes(suffix)) {
-      title = title.replace(suffix, '').trim();
-    }
-  }
-  
-  return title;
-};
 
 // Minimal Template Stylesheet with clean typography and layout
 const styles = StyleSheet.create({
@@ -144,7 +119,7 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
       {/* Clean Header */}
       <Text style={styles.name}>{cvData.fullName}</Text>
       <Text style={styles.contactInfo}>
-        {cvData.contactInfo.location} | clementjatts@gmail.com | +447838681955
+        {cvData.contactInfo.location} | {cvData.contactInfo.email} | {cvData.contactInfo.phone}
       </Text>
 
       {/* Professional Summary */}
@@ -171,7 +146,7 @@ export const MinimalTemplate = ({ cvData }: { cvData: CvData }) => (
           </View>
         ))}
       </View>
-        
+
       {/* Education */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Education</Text>

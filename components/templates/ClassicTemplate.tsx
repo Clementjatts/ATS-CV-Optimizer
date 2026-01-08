@@ -1,6 +1,7 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { CvData } from '../../services/geminiService';
+import { cleanJobTitle } from '../../utils/cvHelpers';
 
 // Define styles for the document
 const styles = StyleSheet.create({
@@ -87,37 +88,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Clean job title function
-const cleanJobTitle = (title: string): string => {
-  if (!title) return title;
-  
-  // Remove everything after common separators
-  const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
-  
-  for (const separator of separators) {
-    const index = title.indexOf(separator);
-    if (index > 0) {
-      title = title.substring(0, index).trim();
-    }
-  }
-  
-  // Remove common suffixes
-  const suffixes = [
-    ' | Transferable Skills',
-    ' - Transferable Skills',
-    ' (Transferable Skills)',
-    ' | Additional Qualifications',
-    ' - Additional Qualifications'
-  ];
-  
-  for (const suffix of suffixes) {
-    if (title.includes(suffix)) {
-      title = title.replace(suffix, '').trim();
-    }
-  }
-  
-  return title;
-};
 
 // The CV Document Component
 export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
@@ -127,7 +97,7 @@ export const ClassicTemplate = ({ cvData }: { cvData: CvData }) => (
       <View style={styles.header}>
         <Text style={styles.name}>{cvData.fullName}</Text>
         <Text style={styles.contactInfo}>
-          {cvData.contactInfo.location} | clementjatts@gmail.com | +447838681955
+          {cvData.contactInfo.location} | {cvData.contactInfo.email} | {cvData.contactInfo.phone}
         </Text>
       </View>
 

@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, Suspense } from 'react';
 import { optimizeCvWithGemini, CvData, extractTextFromImagesWithGemini, enhanceCVWithGemini } from './services/geminiService';
 import { cvService, SavedCV, CVSource } from './services/cvService';
 import { fileStorageService, UploadedFile } from './services/fileStorageService';
+import { sanitizeFileName } from './utils/cvHelpers';
 import { CopyIcon, DownloadIcon, SparkleIcon, InfoIcon, LoadingSpinner, UploadIcon, FileIcon, TrashIcon, CheckCircleIcon, XCircleIcon, DatabaseIcon } from './components/icons';
 
 const CVManager = React.lazy(() => import('./components/CVManager'));
@@ -16,17 +17,17 @@ type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
 // Clean up job titles to show only the primary role
 const cleanJobTitle = (title: string): string => {
   if (!title) return title;
-  
+
   // Remove everything after common separators
   const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
-  
+
   for (const separator of separators) {
     const index = title.indexOf(separator);
     if (index > 0) {
       title = title.substring(0, index).trim();
     }
   }
-  
+
   // Remove common suffixes
   const suffixes = [
     ' | Transferable Skills',
@@ -35,13 +36,13 @@ const cleanJobTitle = (title: string): string => {
     ' | Additional Qualifications',
     ' - Additional Qualifications'
   ];
-  
+
   for (const suffix of suffixes) {
     if (title.includes(suffix)) {
       title = title.replace(suffix, '').trim();
     }
   }
-  
+
   return title;
 };
 
@@ -60,20 +61,14 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           </span>
           <span className="flex items-center gap-1">
             <span className="text-gray-600">✉️</span>
-            clementjatts@gmail.com
+            {cvData.contactInfo.email}
           </span>
           <span className="flex items-center gap-1">
             <span className="text-gray-600">📞</span>
-            +447838681955
+            {cvData.contactInfo.phone}
           </span>
         </div>
-        
-        {/* Hidden Keywords for ATS - Invisible to human eye */}
-        {keywords && keywords.length > 0 && (
-          <div className="text-white" style={{ fontSize: '1px', lineHeight: '1px', color: 'white' }}>
-            {keywords.join(' ')}
-          </div>
-        )}
+
       </header>
 
       {/* PROFESSIONAL SUMMARY */}
@@ -84,13 +79,7 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
         <div className="professional-summary">
           <p className="text-gray-700 leading-relaxed text-justify">{cvData.professionalSummary}</p>
         </div>
-        
-        {/* Hidden Keywords for ATS - Mid-document - Invisible to human eye */}
-        {keywords && keywords.length > 0 && (
-          <div className="text-white" style={{ fontSize: '1px', lineHeight: '1px', color: 'white', height: '1px', overflow: 'hidden' }}>
-            {keywords.join(' ')}
-          </div>
-        )}
+
       </section>
 
       {/* PROFESSIONAL EXPERIENCE */}
@@ -149,17 +138,17 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
           {(() => {
             // Ensure even number of skills between 12-14
             let skillsToShow = cvData.skills.slice(0, 14); // Take first 14 skills max
-            
+
             // If we have less than 12 skills, pad with empty items to reach 12
             while (skillsToShow.length < 12) {
               skillsToShow.push('');
             }
-            
+
             // Ensure even number
             if (skillsToShow.length % 2 !== 0) {
               skillsToShow = skillsToShow.slice(0, -1); // Remove last item to make even
             }
-            
+
             // If we have more than 14, trim to 14 and ensure even
             if (skillsToShow.length > 14) {
               skillsToShow = skillsToShow.slice(0, 14);
@@ -167,39 +156,33 @@ const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, 
                 skillsToShow = skillsToShow.slice(0, -1);
               }
             }
-            
+
             const halfLength = skillsToShow.length / 2;
             const leftColumn = skillsToShow.slice(0, halfLength);
             const rightColumn = skillsToShow.slice(halfLength);
-            
-              return (
-                <>
-                  <ul className="cv-list cv-list--skills text-left">
-                    {leftColumn.map((skill, index) => (
-                      <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                  <ul className="cv-list cv-list--skills text-left">
-                    {rightColumn.map((skill, index) => (
-                      <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              );
+
+            return (
+              <>
+                <ul className="cv-list cv-list--skills text-left">
+                  {leftColumn.map((skill, index) => (
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+                <ul className="cv-list cv-list--skills text-left">
+                  {rightColumn.map((skill, index) => (
+                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            );
           })()}
         </div>
       </section>
 
-      {/* Hidden Keywords for ATS - Footer area - Invisible to human eye */}
-      {keywords && keywords.length > 0 && (
-        <div className="text-white" style={{ fontSize: '1px', lineHeight: '1px', color: 'white', height: '1px', overflow: 'hidden' }}>
-          {keywords.join(' ')}
-        </div>
-      )}
     </div>
   );
 };
@@ -349,24 +332,24 @@ export default function App() {
   const [jobTitle, setJobTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Template selection state
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('Classic');
   const [templateChangeCounter, setTemplateChangeCounter] = useState(0);
-  
+
   // UI state for sections
   const [isAnalysisMinimized, setIsAnalysisMinimized] = useState(true);
 
   const [isParsing, setIsParsing] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [parsingError, setParsingError] = useState<string | null>(null);
-  
+
   // AI Chat states
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
-  const [chatMessages, setChatMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant', content: string }>>([]);
   const [chatInput, setChatInput] = useState<string>('');
   const [isChatLoading, setIsChatLoading] = useState<boolean>(false);
-  
+
   // CV Database states
   const [isCVManagerOpen, setIsCVManagerOpen] = useState<boolean>(false);
   const [selectedCVFromDB, setSelectedCVFromDB] = useState<CVSource | null>(null);
@@ -378,7 +361,7 @@ export default function App() {
     if (file.type === 'application/pdf') {
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
-      
+
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
       let textContent = '';
@@ -455,7 +438,7 @@ export default function App() {
     try {
       // Parse the file first to get the text content
       const { text: initialText, isScanned } = await parseFile(file);
-      
+
       // Auto-save the uploaded file to Firebase Storage with parsed text
       await fileStorageService.uploadFile(file, `Uploaded CV - ${file.name}`, [], initialText);
 
@@ -521,7 +504,7 @@ export default function App() {
     try {
       // Determine which CV content to use
       let cvContent = userCvText;
-      
+
       if (useDatabaseCV && selectedCVFromDB) {
         // Check if it's an optimized CV or uploaded file
         if ('content' in selectedCVFromDB) {
@@ -530,7 +513,7 @@ export default function App() {
         } else {
           // It's an uploaded file - use the stored parsed text
           const uploadedFile = selectedCVFromDB as UploadedFile;
-          
+
           if (uploadedFile.parsedText && uploadedFile.parsedText.trim()) {
             // Use the stored parsed text
             cvContent = uploadedFile.parsedText;
@@ -543,19 +526,19 @@ export default function App() {
               if (!uploadedFile.downloadURL || !uploadedFile.downloadURL.startsWith('https://')) {
                 throw new Error('Invalid download URL for the uploaded file');
               }
-              
+
               // Download the file from Firebase Storage
               const response = await fetch(uploadedFile.downloadURL);
-              
+
               if (!response.ok) {
                 throw new Error(`Failed to download file: ${response.status} ${response.statusText}`);
               }
-              
+
               const blob = await response.blob();
-              
+
               // Create a File object from the blob
               const file = new File([blob], uploadedFile.fileName, { type: uploadedFile.fileType });
-              
+
               // Parse the file to extract text
               const { text: parsedText } = await parseFile(file);
               cvContent = parsedText;
@@ -576,10 +559,10 @@ export default function App() {
 
       // Use the new enhanceCVWithGemini function to get both job title and optimized CV
       const { title, cvData } = await enhanceCVWithGemini(cvContent, jobDescriptionText);
-      
+
       // Set the extracted job title
       setJobTitle(title);
-      
+
       // Set the optimized CV data
       if (cvData) {
         setOptimizedCvData(cvData);
@@ -620,18 +603,18 @@ Please provide a modified version that incorporates the user's request while kee
 
       const response = await optimizeCvWithGemini(JSON.stringify(optimizedCvData), modificationPrompt);
       setOptimizedCvData(response);
-      
-      const assistantMessage = { 
-        role: 'assistant' as const, 
-        content: 'I\'ve updated your CV based on your request. The changes should now be visible in the preview above.' 
+
+      const assistantMessage = {
+        role: 'assistant' as const,
+        content: 'I\'ve updated your CV based on your request. The changes should now be visible in the preview above.'
       };
       setChatMessages(prev => [...prev, assistantMessage]);
-      
+
     } catch (err) {
       console.error('Chat modification error:', err);
-      const errorMessage = { 
-        role: 'assistant' as const, 
-        content: 'Sorry, I encountered an error while trying to modify your CV. Please try again or be more specific with your request.' 
+      const errorMessage = {
+        role: 'assistant' as const,
+        content: 'Sorry, I encountered an error while trying to modify your CV. Please try again or be more specific with your request.'
       };
       setChatMessages(prev => [...prev, errorMessage]);
     } finally {
@@ -651,11 +634,11 @@ Please provide a modified version that incorporates the user's request while kee
     // For now, we'll combine the content of multiple CVs
     // This could be enhanced to create a more sophisticated combination
     if (cvs.length === 0) return;
-    
+
     // Use the first CV as primary and combine content from others
     const primaryCV = cvs[0];
     let combinedContent = '';
-    
+
     cvs.forEach((cv, index) => {
       if ('content' in cv) {
         // It's an optimized CV
@@ -668,14 +651,14 @@ Please provide a modified version that incorporates the user's request while kee
         }
       }
     });
-    
+
     // Create a combined CV object
     const combinedCV: CVSource = {
       ...primaryCV,
       name: `Combined CV (${cvs.length} sources)`,
       content: combinedContent.trim()
     };
-    
+
     setSelectedCVFromDB(combinedCV);
     setUseDatabaseCV(true);
     setIsCVManagerOpen(false);
@@ -684,7 +667,7 @@ Please provide a modified version that incorporates the user's request while kee
   // Extract job title from job description
   const extractJobTitle = (jobDescription: string): string => {
     if (!jobDescription.trim()) return 'CV';
-    
+
     // Common patterns for job titles in job descriptions
     const patterns = [
       /(?:position|role|job|opening|opportunity)[\s:]+([A-Z][A-Za-z\s&]+?)(?:\n|$|\.|,|;)/i,
@@ -692,7 +675,7 @@ Please provide a modified version that incorporates the user's request while kee
       /(?:title|position)[\s:]+([A-Z][A-Za-z\s&]+?)(?:\n|$|\.|,|;)/i,
       /^([A-Z][A-Za-z\s&]+?)(?:\n|$|\.|,|;)/, // First line if it looks like a title
     ];
-    
+
     for (const pattern of patterns) {
       const match = jobDescription.match(pattern);
       if (match && match[1]) {
@@ -708,7 +691,7 @@ Please provide a modified version that incorporates the user's request while kee
         }
       }
     }
-    
+
     // Fallback: use first few words from the description
     const words = jobDescription.trim().split(/\s+/).slice(0, 4);
     const fallback = words.join(' ').replace(/[^\w\s]/g, '');
@@ -717,10 +700,10 @@ Please provide a modified version that incorporates the user's request while kee
 
   const handleSaveCurrentCV = async () => {
     if (!optimizedCvData) return;
-    
+
     try {
       const extractedJobTitle = jobTitle || extractJobTitle(jobDescriptionText);
-      
+
       await cvService.saveCV({
         name: extractedJobTitle,
         content: JSON.stringify(optimizedCvData),
@@ -747,17 +730,17 @@ Please provide a modified version that incorporates the user's request while kee
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-pink-300 to-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-gradient-to-r from-yellow-300 to-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-gradient-to-r from-blue-300 to-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
-        
+
         {/* Floating geometric shapes */}
         <div className="absolute top-32 right-1/4 w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full animate-bounce delay-500"></div>
         <div className="absolute top-64 left-1/3 w-6 h-6 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full animate-bounce delay-1000"></div>
         <div className="absolute bottom-32 right-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full animate-bounce delay-1500"></div>
-        
+
         {/* Floating lines */}
         <div className="absolute top-1/4 left-1/4 w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-400 to-transparent rotate-45 animate-pulse delay-2000"></div>
         <div className="absolute bottom-1/4 right-1/4 w-24 h-0.5 bg-gradient-to-r from-transparent via-pink-400 to-transparent -rotate-45 animate-pulse delay-3000"></div>
       </div>
-      
+
       <header className="bg-gradient-to-r from-white/90 via-purple-50/90 to-pink-50/90 backdrop-blur-sm shadow-xl border-b border-purple-200/50 relative z-10">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -773,8 +756,8 @@ Please provide a modified version that incorporates the user's request while kee
                 <p className="text-sm text-slate-600 font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">AI-Powered Resume Enhancement</p>
               </div>
             </div>
-            
-            
+
+
             {/* Right Side Content - Feature badges */}
             <div className="flex items-center gap-3">
               <span className="px-4 py-2 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-sm font-bold rounded-full shadow-sm border border-emerald-200 hover:shadow-md transition-all duration-300 hover:scale-105">✨ AI-Powered</span>
@@ -797,7 +780,7 @@ Please provide a modified version that incorporates the user's request while kee
                 <InfoIcon className="h-5 w-5 mr-3 flex-shrink-0 mt-0.5" />
                 <p>Upload your CV (including scanned PDFs) and paste the job description. The content will be extracted and optimized.</p>
               </div>
-              
+
               {/* Template Selection UI */}
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Choose CV Template</h3>
@@ -811,11 +794,10 @@ Please provide a modified version that incorporates the user's request while kee
                         console.error('Template selection error:', error);
                       }
                     }}
-                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                      selectedTemplate === 'Classic' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                    }`}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${selectedTemplate === 'Classic'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                      }`}
                   >
                     📄 Classic
                   </button>
@@ -828,11 +810,10 @@ Please provide a modified version that incorporates the user's request while kee
                         console.error('Template selection error:', error);
                       }
                     }}
-                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                      selectedTemplate === 'Modern' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                    }`}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${selectedTemplate === 'Modern'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                      }`}
                   >
                     🎨 Modern
                   </button>
@@ -845,11 +826,10 @@ Please provide a modified version that incorporates the user's request while kee
                         console.error('Template selection error:', error);
                       }
                     }}
-                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                      selectedTemplate === 'Creative' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                    }`}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${selectedTemplate === 'Creative'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                      }`}
                   >
                     ✨ Creative
                   </button>
@@ -862,17 +842,16 @@ Please provide a modified version that incorporates the user's request while kee
                         console.error('Template selection error:', error);
                       }
                     }}
-                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                      selectedTemplate === 'Minimal' 
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                    }`}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${selectedTemplate === 'Minimal'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                      }`}
                   >
                     🔲 Minimal
                   </button>
                 </div>
               </div>
-              
+
               {/* Merged Layout: CV Upload + Job Description */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* CV Upload Section - Top Left */}
@@ -887,7 +866,7 @@ Please provide a modified version that incorporates the user's request while kee
                     loadingText={isUploadingFile ? 'Uploading to database...' : isScanning ? 'Scanning with AI (OCR)...' : 'Parsing file...'}
                     parsingError={parsingError}
                   />
-                  
+
                   {/* Database CV Selection */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
@@ -899,8 +878,8 @@ Please provide a modified version that incorporates the user's request while kee
                         onClick={() => setIsCVManagerOpen(true)}
                         className="flex-1 px-3 py-2 bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-300 rounded-lg text-purple-700 hover:from-purple-200 hover:to-pink-200 transition-all duration-300 text-sm font-medium"
                       >
-                        {selectedCVFromDB ? 
-                          ('content' in selectedCVFromDB ? selectedCVFromDB.name : selectedCVFromDB.fileName) 
+                        {selectedCVFromDB ?
+                          ('content' in selectedCVFromDB ? selectedCVFromDB.name : selectedCVFromDB.fileName)
                           : 'Select CV from Database'}
                       </button>
                       {selectedCVFromDB && (
@@ -917,7 +896,7 @@ Please provide a modified version that incorporates the user's request while kee
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Job Description Section - Top Right */}
                 <div className="space-y-3">
                   <LabeledTextarea
@@ -956,141 +935,140 @@ Please provide a modified version that incorporates the user's request while kee
               <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Your Optimized CV
               </h2>
-            <div className="flex-grow bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 rounded-xl border border-purple-200/50 min-h-[40rem] flex flex-col overflow-hidden shadow-inner">
-              {isLoading && (
-                <div className="m-auto text-center text-slate-500">
-                  <div className="flex justify-center">
-                    <LoadingSpinner className="h-10 w-10" />
+              <div className="flex-grow bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 rounded-xl border border-purple-200/50 min-h-[40rem] flex flex-col overflow-hidden shadow-inner">
+                {isLoading && (
+                  <div className="m-auto text-center text-slate-500">
+                    <div className="flex justify-center">
+                      <LoadingSpinner className="h-10 w-10" />
+                    </div>
+                    <p className="mt-4 font-semibold">Generating your new CV...</p>
+                    <p className="text-sm">This may take a moment.</p>
                   </div>
-                  <p className="mt-4 font-semibold">Generating your new CV...</p>
-                  <p className="text-sm">This may take a moment.</p>
-                </div>
-              )}
-              {error && (
-                <div className="m-auto text-center text-red-600 bg-red-50 p-6 rounded-md w-full">
-                  <p className="font-semibold">Error</p>
-                  <p className="text-sm mt-2">{error}</p>
-                </div>
-              )}
-              {optimizedCvData && (
-                <div className="flex-grow overflow-auto">
-                  <CvDisplay cvData={optimizedCvData} keywords={optimizedCvData.optimizationDetails.keywordsIntegrated} />
-                </div>
-              )}
-              {!isLoading && !error && !optimizedCvData && (
-                <div className="m-auto text-center text-slate-500">
-                  <p>Your optimized CV will appear here after processing.</p>
-                </div>
-              )}
-            </div>
-
-            {optimizedCvData && (
-              <div className="mt-6 space-y-4">
-                <div className="flex gap-3">
-                  <Suspense fallback={
-                    <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg opacity-70 cursor-wait">
-                      <LoadingSpinner className="h-4 w-4" />
-                      Loading PDF...
-                    </button>
-                  }>
-                    <PDFExportButton
-                      key={`pdf-${selectedTemplate}-${templateChangeCounter}`}
-                      template={selectedTemplate}
-                      cvData={optimizedCvData}
-                      fileName={`${selectedTemplate.toLowerCase()}_${jobTitle || optimizedCvData.fullName.replace(/\s+/g, '_')}_CV.pdf`}
-                    />
-                  </Suspense>
-                  
-                  <button
-                    onClick={handleSaveCurrentCV}
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-orange-600 hover:via-red-600 hover:to-pink-700 transition-all duration-300 transform hover:scale-[1.02]"
-                  >
-                    <DatabaseIcon className="h-4 w-4" />
-                    Save to Database
-                  </button>
-                  
-                  <button
-                    onClick={() => setIsChatOpen(!isChatOpen)}
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-700 transition-all duration-300 transform hover:scale-[1.02]"
-                  >
-                    <SparkleIcon className="h-4 w-4" />
-                    {isChatOpen ? 'Close AI Chat' : 'AI Chat'}
-                  </button>
-                </div>
-
-                {/* AI Chat Interface */}
-                {isChatOpen && (
-                  <div className="bg-gradient-to-br from-white/95 via-emerald-50/95 to-teal-50/95 backdrop-blur-sm border border-emerald-200/50 rounded-xl shadow-lg">
-                    <div className="p-4 border-b border-slate-200 bg-gradient-to-r from-emerald-50 to-teal-50">
-                      <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-                        <SparkleIcon className="h-4 w-4 text-emerald-600" />
-                        AI Assistant - Modify Your CV
-                      </h3>
-                      <p className="text-sm text-slate-600 mt-1">
-                        Ask me to make specific changes to your CV, like "Add Python to my skills" or "Make the summary more concise"
-                      </p>
-                    </div>
-                    
-                    {/* Chat Messages */}
-                    <div className="h-64 overflow-y-auto p-4 space-y-3 bg-gradient-to-br from-emerald-50 to-teal-50">
-                      {chatMessages.length === 0 ? (
-                        <div className="text-center text-slate-500 py-8">
-                          <SparkleIcon className="h-8 w-8 mx-auto text-slate-400 mb-2" />
-                          <p>Start a conversation to modify your CV!</p>
-                          <p className="text-sm mt-1">Try: "Add JavaScript to my skills" or "Shorten my professional summary"</p>
-                        </div>
-                      ) : (
-                        chatMessages.map((msg, index) => (
-                          <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-xs lg:max-w-md px-3 py-2 rounded-lg text-sm ${
-                              msg.role === 'user' 
-                                ? 'bg-blue-600 text-white' 
-                                : 'bg-white border border-slate-200 text-slate-800'
-                            }`}>
-                              {msg.content}
-                            </div>
-                          </div>
-                        ))
-                      )}
-                      {isChatLoading && (
-                        <div className="flex justify-start">
-                          <div className="bg-white border border-slate-200 text-slate-800 px-3 py-2 rounded-lg text-sm flex items-center gap-2">
-                            <LoadingSpinner className="h-3 w-3" />
-                            Updating your CV...
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Chat Input */}
-                    <div className="p-4 border-t border-slate-200">
-                      <form onSubmit={(e) => {
-                        e.preventDefault();
-                        if (chatInput.trim() && !isChatLoading) {
-                          handleChatMessage(chatInput);
-                        }
-                      }} className="flex gap-2">
-                        <input
-                          type="text"
-                          value={chatInput}
-                          onChange={(e) => setChatInput(e.target.value)}
-                          placeholder="Ask me to modify your CV..."
-                          disabled={isChatLoading}
-                          className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 disabled:bg-slate-100"
-                        />
-                        <button
-                          type="submit"
-                          disabled={!chatInput.trim() || isChatLoading}
-                          className="px-4 py-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 text-white rounded-xl text-sm font-medium hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none"
-                        >
-                          Send
-                        </button>
-                      </form>
-                    </div>
+                )}
+                {error && (
+                  <div className="m-auto text-center text-red-600 bg-red-50 p-6 rounded-md w-full">
+                    <p className="font-semibold">Error</p>
+                    <p className="text-sm mt-2">{error}</p>
+                  </div>
+                )}
+                {optimizedCvData && (
+                  <div className="flex-grow overflow-auto">
+                    <CvDisplay cvData={optimizedCvData} keywords={optimizedCvData.optimizationDetails.keywordsIntegrated} />
+                  </div>
+                )}
+                {!isLoading && !error && !optimizedCvData && (
+                  <div className="m-auto text-center text-slate-500">
+                    <p>Your optimized CV will appear here after processing.</p>
                   </div>
                 )}
               </div>
-            )}
+
+              {optimizedCvData && (
+                <div className="mt-6 space-y-4">
+                  <div className="flex gap-3">
+                    <Suspense fallback={
+                      <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg opacity-70 cursor-wait">
+                        <LoadingSpinner className="h-4 w-4" />
+                        Loading PDF...
+                      </button>
+                    }>
+                      <PDFExportButton
+                        key={`pdf-${selectedTemplate}-${templateChangeCounter}`}
+                        template={selectedTemplate}
+                        cvData={optimizedCvData}
+                        fileName={`${sanitizeFileName(jobTitle || optimizedCvData.fullName)}.pdf`}
+                      />
+                    </Suspense>
+
+                    <button
+                      onClick={handleSaveCurrentCV}
+                      className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-orange-600 hover:via-red-600 hover:to-pink-700 transition-all duration-300 transform hover:scale-[1.02]"
+                    >
+                      <DatabaseIcon className="h-4 w-4" />
+                      Save to Database
+                    </button>
+
+                    <button
+                      onClick={() => setIsChatOpen(!isChatOpen)}
+                      className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-700 transition-all duration-300 transform hover:scale-[1.02]"
+                    >
+                      <SparkleIcon className="h-4 w-4" />
+                      {isChatOpen ? 'Close AI Chat' : 'AI Chat'}
+                    </button>
+                  </div>
+
+                  {/* AI Chat Interface */}
+                  {isChatOpen && (
+                    <div className="bg-gradient-to-br from-white/95 via-emerald-50/95 to-teal-50/95 backdrop-blur-sm border border-emerald-200/50 rounded-xl shadow-lg">
+                      <div className="p-4 border-b border-slate-200 bg-gradient-to-r from-emerald-50 to-teal-50">
+                        <h3 className="font-semibold text-slate-800 flex items-center gap-2">
+                          <SparkleIcon className="h-4 w-4 text-emerald-600" />
+                          AI Assistant - Modify Your CV
+                        </h3>
+                        <p className="text-sm text-slate-600 mt-1">
+                          Ask me to make specific changes to your CV, like "Add Python to my skills" or "Make the summary more concise"
+                        </p>
+                      </div>
+
+                      {/* Chat Messages */}
+                      <div className="h-64 overflow-y-auto p-4 space-y-3 bg-gradient-to-br from-emerald-50 to-teal-50">
+                        {chatMessages.length === 0 ? (
+                          <div className="text-center text-slate-500 py-8">
+                            <SparkleIcon className="h-8 w-8 mx-auto text-slate-400 mb-2" />
+                            <p>Start a conversation to modify your CV!</p>
+                            <p className="text-sm mt-1">Try: "Add JavaScript to my skills" or "Shorten my professional summary"</p>
+                          </div>
+                        ) : (
+                          chatMessages.map((msg, index) => (
+                            <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                              <div className={`max-w-xs lg:max-w-md px-3 py-2 rounded-lg text-sm ${msg.role === 'user'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-white border border-slate-200 text-slate-800'
+                                }`}>
+                                {msg.content}
+                              </div>
+                            </div>
+                          ))
+                        )}
+                        {isChatLoading && (
+                          <div className="flex justify-start">
+                            <div className="bg-white border border-slate-200 text-slate-800 px-3 py-2 rounded-lg text-sm flex items-center gap-2">
+                              <LoadingSpinner className="h-3 w-3" />
+                              Updating your CV...
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Chat Input */}
+                      <div className="p-4 border-t border-slate-200">
+                        <form onSubmit={(e) => {
+                          e.preventDefault();
+                          if (chatInput.trim() && !isChatLoading) {
+                            handleChatMessage(chatInput);
+                          }
+                        }} className="flex gap-2">
+                          <input
+                            type="text"
+                            value={chatInput}
+                            onChange={(e) => setChatInput(e.target.value)}
+                            placeholder="Ask me to modify your CV..."
+                            disabled={isChatLoading}
+                            className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 disabled:bg-slate-100"
+                          />
+                          <button
+                            type="submit"
+                            disabled={!chatInput.trim() || isChatLoading}
+                            className="px-4 py-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 text-white rounded-xl text-sm font-medium hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none"
+                          >
+                            Send
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -1122,161 +1100,161 @@ Please provide a modified version that incorporates the user's request while kee
               {/* Success Banner */}
               {!isAnalysisMinimized && (
                 <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-6 mb-8 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-emerald-800">CV Successfully Optimized for ATS</h3>
-                </div>
-
-                {/* Main Content Grid */}
-                <div className="space-y-8">
-                  {/* ATS Optimization Section */}
-                  <div className="bg-white/70 rounded-xl p-6 border border-emerald-100">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                        <span className="text-white text-sm">📋</span>
-                      </div>
-                      <h4 className="text-lg font-bold text-slate-800">ATS Optimization</h4>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
                     </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-5 rounded-xl border border-blue-100">
-                        <div className="flex items-center gap-2 mb-4">
-                          <div className="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center">
-                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                          </div>
-                          <p className="font-bold text-blue-800">Format & Structure</p>
-                        </div>
-                        <ul className="optimization-list optimization-list--blue space-y-2 text-sm text-blue-700">
-                          <li>Clean, scannable format for ATS systems</li>
-                          <li>Standard section headers for easy parsing</li>
-                          <li>Consistent formatting and structure</li>
-                        </ul>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-5 rounded-xl border border-purple-100">
-                        <div className="flex items-center gap-2 mb-4">
-                          <div className="w-6 h-6 bg-purple-500 rounded-lg flex items-center justify-center">
-                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                          </div>
-                          <p className="font-bold text-purple-800">Content Quality</p>
-                        </div>
-                        <ul className="optimization-list optimization-list--purple space-y-2 text-sm text-purple-700">
-                          <li>Professional language and action verbs</li>
-                          <li>Quantified achievements where possible</li>
-                          <li>Industry-standard terminology</li>
-                        </ul>
-                      </div>
-                    </div>
+                    <h3 className="text-xl font-bold text-emerald-800">CV Successfully Optimized for ATS</h3>
                   </div>
 
-                  {/* Job Description Matching Section */}
-                  <div className="bg-white/70 rounded-xl p-6 border border-emerald-100">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
-                        <span className="text-white text-sm">🎯</span>
-                      </div>
-                      <h4 className="text-lg font-bold text-slate-800">Job Description Matching</h4>
-                    </div>
-
-                    <div className="space-y-6">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {/* Keywords Section */}
-                        <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-5 rounded-xl border border-amber-100">
-                          <div className="flex items-center gap-2 mb-4">
-                            <div className="w-6 h-6 bg-amber-500 rounded-lg flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                              </svg>
-                            </div>
-                            <p className="font-bold text-amber-800">Keywords Integrated</p>
-                          </div>
-                          <p className="text-sm text-amber-700 leading-relaxed">
-                            {optimizedCvData.optimizationDetails.keywordsIntegrated.join(', ')}
-                          </p>
+                  {/* Main Content Grid */}
+                  <div className="space-y-8">
+                    {/* ATS Optimization Section */}
+                    <div className="bg-white/70 rounded-xl p-6 border border-emerald-100">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                          <span className="text-white text-sm">📋</span>
                         </div>
-
-                        {/* Skills Section */}
-                        <div className="bg-gradient-to-br from-teal-50 to-cyan-50 p-5 rounded-xl border border-teal-100">
-                          <div className="flex items-center gap-2 mb-4">
-                            <div className="w-6 h-6 bg-teal-500 rounded-lg flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                              </svg>
-                            </div>
-                            <p className="font-bold text-teal-800">Skills Aligned</p>
-                          </div>
-                          <p className="text-sm text-teal-700 leading-relaxed">
-                            {optimizedCvData.optimizationDetails.skillsAligned.join(', ')}
-                          </p>
-                        </div>
+                        <h4 className="text-lg font-bold text-slate-800">ATS Optimization</h4>
                       </div>
 
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {/* Experience Section */}
-                        <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-5 rounded-xl border border-rose-100">
+                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-5 rounded-xl border border-blue-100">
                           <div className="flex items-center gap-2 mb-4">
-                            <div className="w-6 h-6 bg-rose-500 rounded-lg flex items-center justify-center">
+                            <div className="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center">
                               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                               </svg>
                             </div>
-                            <p className="font-bold text-rose-800">Experience Optimizations</p>
+                            <p className="font-bold text-blue-800">Format & Structure</p>
                           </div>
-                          <ul className="optimization-list optimization-list--rose space-y-2 text-sm text-rose-700">
-                            {optimizedCvData.optimizationDetails.experienceOptimizations.map((optimization, index) => (
-                              <li key={index}>{optimization}</li>
-                            ))}
+                          <ul className="optimization-list optimization-list--blue space-y-2 text-sm text-blue-700">
+                            <li>Clean, scannable format for ATS systems</li>
+                            <li>Standard section headers for easy parsing</li>
+                            <li>Consistent formatting and structure</li>
                           </ul>
                         </div>
 
-                        {/* Summary Section */}
-                        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-5 rounded-xl border border-indigo-100">
+                        <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-5 rounded-xl border border-purple-100">
                           <div className="flex items-center gap-2 mb-4">
-                            <div className="w-6 h-6 bg-indigo-500 rounded-lg flex items-center justify-center">
+                            <div className="w-6 h-6 bg-purple-500 rounded-lg flex items-center justify-center">
                               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                               </svg>
                             </div>
-                            <p className="font-bold text-indigo-800">Summary Tailoring</p>
+                            <p className="font-bold text-purple-800">Content Quality</p>
                           </div>
-                          <p className="text-sm text-indigo-700 leading-relaxed">{optimizedCvData.optimizationDetails.summaryTailoring}</p>
+                          <ul className="optimization-list optimization-list--purple space-y-2 text-sm text-purple-700">
+                            <li>Professional language and action verbs</li>
+                            <li>Quantified achievements where possible</li>
+                            <li>Industry-standard terminology</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Job Description Matching Section */}
+                    <div className="bg-white/70 rounded-xl p-6 border border-emerald-100">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                          <span className="text-white text-sm">🎯</span>
+                        </div>
+                        <h4 className="text-lg font-bold text-slate-800">Job Description Matching</h4>
+                      </div>
+
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          {/* Keywords Section */}
+                          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-5 rounded-xl border border-amber-100">
+                            <div className="flex items-center gap-2 mb-4">
+                              <div className="w-6 h-6 bg-amber-500 rounded-lg flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                              </div>
+                              <p className="font-bold text-amber-800">Keywords Integrated</p>
+                            </div>
+                            <p className="text-sm text-amber-700 leading-relaxed">
+                              {optimizedCvData.optimizationDetails.keywordsIntegrated.join(', ')}
+                            </p>
+                          </div>
+
+                          {/* Skills Section */}
+                          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 p-5 rounded-xl border border-teal-100">
+                            <div className="flex items-center gap-2 mb-4">
+                              <div className="w-6 h-6 bg-teal-500 rounded-lg flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                </svg>
+                              </div>
+                              <p className="font-bold text-teal-800">Skills Aligned</p>
+                            </div>
+                            <p className="text-sm text-teal-700 leading-relaxed">
+                              {optimizedCvData.optimizationDetails.skillsAligned.join(', ')}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          {/* Experience Section */}
+                          <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-5 rounded-xl border border-rose-100">
+                            <div className="flex items-center gap-2 mb-4">
+                              <div className="w-6 h-6 bg-rose-500 rounded-lg flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+                                </svg>
+                              </div>
+                              <p className="font-bold text-rose-800">Experience Optimizations</p>
+                            </div>
+                            <ul className="optimization-list optimization-list--rose space-y-2 text-sm text-rose-700">
+                              {optimizedCvData.optimizationDetails.experienceOptimizations.map((optimization, index) => (
+                                <li key={index}>{optimization}</li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* Summary Section */}
+                          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-5 rounded-xl border border-indigo-100">
+                            <div className="flex items-center gap-2 mb-4">
+                              <div className="w-6 h-6 bg-indigo-500 rounded-lg flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                              </div>
+                              <p className="font-bold text-indigo-800">Summary Tailoring</p>
+                            </div>
+                            <p className="text-sm text-indigo-700 leading-relaxed">{optimizedCvData.optimizationDetails.summaryTailoring}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Pro Tip */}
-                <div className="mt-8 bg-gradient-to-r from-emerald-100 to-green-100 border border-emerald-200 rounded-xl p-5 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm">💡</span>
-                    </div>
-                    <div>
-                      <p className="text-sm text-emerald-800 leading-relaxed">
-                        <span className="font-bold">Pro Tip:</span> Your CV has been restructured using a modern template that maximizes ATS compatibility while highlighting your most relevant qualifications for this specific role.
-                      </p>
+                  {/* Pro Tip */}
+                  <div className="mt-8 bg-gradient-to-r from-emerald-100 to-green-100 border border-emerald-200 rounded-xl p-5 shadow-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-white text-sm">💡</span>
+                      </div>
+                      <div>
+                        <p className="text-sm text-emerald-800 leading-relaxed">
+                          <span className="font-bold">Pro Tip:</span> Your CV has been restructured using a modern template that maximizes ATS compatibility while highlighting your most relevant qualifications for this specific role.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               )}
             </div>
           )}
         </div>
       </main>
-      
+
       {/* CV Manager Modal */}
       <Suspense fallback={null}>
-        <CVManager 
+        <CVManager
           isOpen={isCVManagerOpen}
           onClose={() => setIsCVManagerOpen(false)}
           onSelectCV={handleSelectCVFromDB}

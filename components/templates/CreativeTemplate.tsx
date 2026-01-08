@@ -1,33 +1,9 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { CvData } from '../../services/geminiService';
+import { cleanJobTitle } from '../../utils/cvHelpers';
 
-// Clean job title function (same as in other templates)
-const cleanJobTitle = (title: string): string => {
-  if (!title) return title;
-  
-  // Remove everything after common separators
-  const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
-  for (const separator of separators) {
-    const index = title.indexOf(separator);
-    if (index > 0) {
-      title = title.substring(0, index).trim();
-    }
-  }
-  
-  // Remove specific suffixes
-  const suffixes = [
-    ' | Transferable Skills', ' - Transferable Skills', ' (Transferable Skills)',
-    ' | Additional Qualifications', ' - Additional Qualifications'
-  ];
-  for (const suffix of suffixes) {
-    if (title.includes(suffix)) {
-      title = title.replace(suffix, '').trim();
-    }
-  }
-  
-  return title;
-};
+
 
 // Creative Template Stylesheet with accent colors and typography
 // Accent color choice: a professional teal
@@ -176,8 +152,8 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
         <Text style={styles.name}>{cvData.fullName}</Text>
         <View style={styles.contactBlock}>
           <Text style={styles.contactInfo}>{cvData.contactInfo.location}</Text>
-          <Text style={styles.contactInfo}>clementjatts@gmail.com</Text>
-          <Text style={styles.contactInfo}>+447838681955</Text>
+          <Text style={styles.contactInfo}>{cvData.contactInfo.email}</Text>
+          <Text style={styles.contactInfo}>{cvData.contactInfo.phone}</Text>
         </View>
       </View>
 
@@ -206,7 +182,7 @@ export const CreativeTemplate = ({ cvData }: { cvData: CvData }) => (
           </View>
         ))}
       </View>
-        
+
       {/* Education */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Education</Text>

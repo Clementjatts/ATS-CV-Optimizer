@@ -1,33 +1,8 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { CvData } from '../../services/geminiService';
+import { cleanJobTitle } from '../../utils/cvHelpers';
 
-// Clean job title function
-const cleanJobTitle = (title: string): string => {
-  if (!title) return title;
-  
-  // Remove everything after common separators
-  const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
-  for (const separator of separators) {
-    const index = title.indexOf(separator);
-    if (index > 0) {
-      title = title.substring(0, index).trim();
-    }
-  }
-  
-  // Remove specific suffixes
-  const suffixes = [
-    ' | Transferable Skills', ' - Transferable Skills', ' (Transferable Skills)',
-    ' | Additional Qualifications', ' - Additional Qualifications'
-  ];
-  for (const suffix of suffixes) {
-    if (title.includes(suffix)) {
-      title = title.replace(suffix, '').trim();
-    }
-  }
-  
-  return title;
-};
 
 // Modern Template Stylesheet matching the Modern folder design
 const styles = StyleSheet.create({
@@ -223,10 +198,10 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
         <View style={styles.separator}>
           <Text style={styles.sectionTitle}>Contact</Text>
           <View style={styles.contactItem}>
-            <Text style={styles.contactText}>+447838681955</Text>
+            <Text style={styles.contactText}>{cvData.contactInfo.phone}</Text>
           </View>
           <View style={styles.contactItem}>
-            <Text style={styles.contactText}>clementjatts@gmail.com</Text>
+            <Text style={styles.contactText}>{cvData.contactInfo.email}</Text>
           </View>
           <View style={styles.contactItem}>
             <Text style={styles.contactText}>{cvData.contactInfo.location}</Text>
@@ -237,18 +212,18 @@ export const ModernTemplate = ({ cvData }: { cvData: CvData }) => (
         <View style={styles.separator}>
           <Text style={styles.sectionTitle}>Skills</Text>
           {cvData.skills
-            .filter(skill => 
-              !skill.toLowerCase().includes('enhanced dbs') && 
+            .filter(skill =>
+              !skill.toLowerCase().includes('enhanced dbs') &&
               !skill.toLowerCase().includes('dbs') &&
               !skill.toLowerCase().includes('disclosure') &&
               !skill.toLowerCase().includes('barring service')
             )
             .slice(0, 8)
             .map((skill, index) => (
-            <View key={index} style={styles.skillItem}>
-              <Text style={styles.skillName}>{skill}</Text>
-            </View>
-          ))}
+              <View key={index} style={styles.skillItem}>
+                <Text style={styles.skillName}>{skill}</Text>
+              </View>
+            ))}
         </View>
 
         {/* Education Section */}

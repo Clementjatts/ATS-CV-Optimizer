@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { cvService, SavedCV, CVSource } from '../services/cvService';
 import { fileStorageService, UploadedFile } from '../services/fileStorageService';
 import { CvData } from '../services/geminiService';
-import { 
-  PlusIcon, 
-  MagnifyingGlassIcon, 
-  TrashIcon, 
+import {
+  PlusIcon,
+  MagnifyingGlassIcon,
+  TrashIcon,
   PencilIcon,
   TagIcon,
   CalendarIcon,
@@ -79,14 +79,14 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
           // It's a SavedCV
           const cv = item as SavedCV;
           return cv.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                 cv.jobTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                 cv.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                 cv.description?.toLowerCase().includes(searchTerm.toLowerCase());
+            cv.jobTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            cv.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            cv.description?.toLowerCase().includes(searchTerm.toLowerCase());
         } else {
           // It's an UploadedFile
           const file = item as UploadedFile;
           return file.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                 file.description?.toLowerCase().includes(searchTerm.toLowerCase());
+            file.description?.toLowerCase().includes(searchTerm.toLowerCase());
         }
       });
     }
@@ -163,13 +163,13 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
 
   const handleToggleCVSelection = (cv: CVSource) => {
     setSelectedCVs(prev => {
-      const isSelected = prev.some(selected => 
+      const isSelected = prev.some(selected =>
         ('id' in selected && 'id' in cv && selected.id === cv.id) ||
         ('fileName' in selected && 'fileName' in cv && selected.fileName === cv.fileName)
       );
-      
+
       if (isSelected) {
-        return prev.filter(selected => 
+        return prev.filter(selected =>
           !(('id' in selected && 'id' in cv && selected.id === cv.id) ||
             ('fileName' in selected && 'fileName' in cv && selected.fileName === cv.fileName))
         );
@@ -218,34 +218,39 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cv-manager-title"
+    >
       <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold">CV Database</h2>
+              <h2 id="cv-manager-title" className="text-2xl font-bold">CV Database</h2>
               <p className="text-purple-100">Manage and select from your saved CVs</p>
             </div>
             <div className="flex items-center space-x-4">
               {/* Multi-select toggle */}
               <button
                 onClick={handleToggleMultiSelect}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  isMultiSelectMode 
-                    ? 'bg-white text-purple-600 hover:bg-purple-50' 
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isMultiSelectMode
+                    ? 'bg-white text-purple-600 hover:bg-purple-50'
                     : 'bg-purple-500 text-white hover:bg-purple-400'
-                }`}
+                  }`}
               >
                 {isMultiSelectMode ? 'Exit Multi-Select' : 'Multi-Select'}
               </button>
-              
+
               {/* Close button */}
               <button
                 onClick={onClose}
                 className="text-white hover:text-purple-200 transition-colors"
+                aria-label="Close CV Database dialog"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -259,21 +264,19 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
             <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
               <button
                 onClick={() => setActiveTab('optimized')}
-                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'optimized'
+                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${activeTab === 'optimized'
                     ? 'bg-white text-purple-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 Optimized CVs ({savedCVs.length})
               </button>
               <button
                 onClick={() => setActiveTab('uploaded')}
-                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'uploaded'
+                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${activeTab === 'uploaded'
                     ? 'bg-white text-purple-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 Uploaded Files ({uploadedFiles.length})
               </button>
@@ -333,128 +336,127 @@ const CVManager: React.FC<CVManagerProps> = ({ onSelectCV, onSelectMultipleCVs, 
                   </div>
                 </div>
               )}
-              
+
               <div className="max-h-96 overflow-y-auto pr-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCVs.map((item) => {
-                const isOptimizedCV = 'content' in item;
-                const cv = item as SavedCV;
-                const file = item as UploadedFile;
-                
-                const isSelected = selectedCVs.some(selected => 
-                  ('id' in selected && 'id' in item && selected.id === item.id) ||
-                  ('fileName' in selected && 'fileName' in item && selected.fileName === item.fileName)
-                );
+                  {filteredCVs.map((item) => {
+                    const isOptimizedCV = 'content' in item;
+                    const cv = item as SavedCV;
+                    const file = item as UploadedFile;
 
-                return (
-                  <div key={item.id} className={`bg-gradient-to-br from-white to-purple-50 border rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 ${
-                    isMultiSelectMode && isSelected ? 'border-blue-500 bg-blue-50' : 'border-purple-200'
-                  }`}>
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-start space-x-3 flex-1">
-                        {/* Multi-select checkbox */}
-                        {isMultiSelectMode && (
-                          <input
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={() => handleToggleCVSelection(item)}
-                            className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                          />
+                    const isSelected = selectedCVs.some(selected =>
+                      ('id' in selected && 'id' in item && selected.id === item.id) ||
+                      ('fileName' in selected && 'fileName' in item && selected.fileName === item.fileName)
+                    );
+
+                    return (
+                      <div key={item.id} className={`bg-gradient-to-br from-white to-purple-50 border rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 ${isMultiSelectMode && isSelected ? 'border-blue-500 bg-blue-50' : 'border-purple-200'
+                        }`}>
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-start space-x-3 flex-1">
+                            {/* Multi-select checkbox */}
+                            {isMultiSelectMode && (
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => handleToggleCVSelection(item)}
+                                className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                              />
+                            )}
+                            <h3 className="font-bold text-lg text-gray-800 truncate">
+                              {isOptimizedCV ? cv.name : file.fileName}
+                            </h3>
+                          </div>
+                          <div className="flex gap-2">
+                            {isOptimizedCV ? (
+                              <button
+                                onClick={() => handleDeleteCV(cv.id!)}
+                                className="text-red-600 hover:text-red-800"
+                                title="Delete"
+                              >
+                                <TrashIcon className="w-4 h-4" />
+                              </button>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={() => handleDownloadFile(file)}
+                                  className="text-green-600 hover:text-green-800"
+                                  title="Download"
+                                >
+                                  <DownloadIcon className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteFile(file.id!, file.storagePath)}
+                                  className="text-red-600 hover:text-red-800"
+                                  title="Delete"
+                                >
+                                  <TrashIcon className="w-4 h-4" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="space-y-2 text-sm text-gray-600">
+                          {isOptimizedCV ? (
+                            <>
+                              {cv.jobTitle && (
+                                <div className="flex items-center gap-2">
+                                  <BuildingOfficeIcon className="w-4 h-4" />
+                                  <span>{cv.jobTitle}</span>
+                                </div>
+                              )}
+                              {cv.company && (
+                                <div className="flex items-center gap-2">
+                                  <BuildingOfficeIcon className="w-4 h-4" />
+                                  <span>{cv.company}</span>
+                                </div>
+                              )}
+                              <div className="flex items-center gap-2">
+                                <CalendarIcon className="w-4 h-4" />
+                                <span>{cv.updatedAt.toDate().toLocaleDateString()}</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="flex items-center gap-2">
+                                <span className="text-lg">{fileStorageService.getFileTypeIcon(file.fileType)}</span>
+                                <span>{fileStorageService.formatFileSize(file.fileSize)}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <CalendarIcon className="w-4 h-4" />
+                                <span>{file.uploadedAt.toDate().toLocaleDateString()}</span>
+                              </div>
+                            </>
+                          )}
+                        </div>
+
+                        {(isOptimizedCV ? cv.tags : file.tags).length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-1">
+                            {(isOptimizedCV ? cv.tags : file.tags).slice(0, 3).map((tag, index) => (
+                              <span key={index} className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
+                                {tag}
+                              </span>
+                            ))}
+                            {(isOptimizedCV ? cv.tags : file.tags).length > 3 && (
+                              <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                +{(isOptimizedCV ? cv.tags : file.tags).length - 3}
+                              </span>
+                            )}
+                          </div>
                         )}
-                        <h3 className="font-bold text-lg text-gray-800 truncate">
-                          {isOptimizedCV ? cv.name : file.fileName}
-                        </h3>
-                      </div>
-                      <div className="flex gap-2">
-                        {isOptimizedCV ? (
+
+                        {!isMultiSelectMode && (
                           <button
-                            onClick={() => handleDeleteCV(cv.id!)}
-                            className="text-red-600 hover:text-red-800"
-                            title="Delete"
+                            onClick={() => onSelectCV(item)}
+                            className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
                           >
-                            <TrashIcon className="w-4 h-4" />
+                            {isOptimizedCV ? 'Use This CV' : 'Use This File'}
                           </button>
-                        ) : (
-                          <>
-                            <button
-                              onClick={() => handleDownloadFile(file)}
-                              className="text-green-600 hover:text-green-800"
-                              title="Download"
-                            >
-                              <DownloadIcon className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteFile(file.id!, file.storagePath)}
-                              className="text-red-600 hover:text-red-800"
-                              title="Delete"
-                            >
-                              <TrashIcon className="w-4 h-4" />
-                            </button>
-                          </>
                         )}
                       </div>
-                    </div>
-
-                    <div className="space-y-2 text-sm text-gray-600">
-                      {isOptimizedCV ? (
-                        <>
-                          {cv.jobTitle && (
-                            <div className="flex items-center gap-2">
-                              <BuildingOfficeIcon className="w-4 h-4" />
-                              <span>{cv.jobTitle}</span>
-                            </div>
-                          )}
-                          {cv.company && (
-                            <div className="flex items-center gap-2">
-                              <BuildingOfficeIcon className="w-4 h-4" />
-                              <span>{cv.company}</span>
-                            </div>
-                          )}
-                          <div className="flex items-center gap-2">
-                            <CalendarIcon className="w-4 h-4" />
-                            <span>{cv.updatedAt.toDate().toLocaleDateString()}</span>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">{fileStorageService.getFileTypeIcon(file.fileType)}</span>
-                            <span>{fileStorageService.formatFileSize(file.fileSize)}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <CalendarIcon className="w-4 h-4" />
-                            <span>{file.uploadedAt.toDate().toLocaleDateString()}</span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-
-                    {(isOptimizedCV ? cv.tags : file.tags).length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-1">
-                        {(isOptimizedCV ? cv.tags : file.tags).slice(0, 3).map((tag, index) => (
-                          <span key={index} className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
-                            {tag}
-                          </span>
-                        ))}
-                        {(isOptimizedCV ? cv.tags : file.tags).length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                            +{(isOptimizedCV ? cv.tags : file.tags).length - 3}
-                          </span>
-                        )}
-                      </div>
-                    )}
-
-                    {!isMultiSelectMode && (
-                      <button
-                        onClick={() => onSelectCV(item)}
-                        className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
-                      >
-                        {isOptimizedCV ? 'Use This CV' : 'Use This File'}
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
+                    );
+                  })}
                 </div>
               </div>
             </>
