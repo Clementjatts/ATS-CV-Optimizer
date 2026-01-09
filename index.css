@@ -7,6 +7,10 @@
   --font-sans: 'Inter', 'sans-serif';
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* ATS CV Optimizer - Bullet Point Alignment Fixes */
 /* Comprehensive solution for consistent bullet alignment across screen sizes and PDF generation */
 

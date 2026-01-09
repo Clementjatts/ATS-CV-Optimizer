@@ -41,7 +41,7 @@ const LabeledTextarea: React.FC<{
       onChange={onChange}
       placeholder={placeholder}
       required
-      className="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out text-sm h-32"
+      className="w-full block p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out text-sm h-32"
     />
   </div>
 );
@@ -192,6 +192,19 @@ export default function App() {
   const [selectedCVFromDB, setSelectedCVFromDB] = useState<CVSource | null>(null);
   const [useDatabaseCV, setUseDatabaseCV] = useState<boolean>(false);
   const [isUploadingFile, setIsUploadingFile] = useState<boolean>(false);
+
+  const pdfDocument = React.useMemo(() => {
+    if (!optimizedCvData) return null;
+    const CommonProps = { cvData: optimizedCvData };
+    switch (selectedTemplate) {
+      case 'Standard': return <StandardTemplate {...CommonProps} />;
+      case 'Classic': return <ClassicTemplate {...CommonProps} />;
+      case 'Modern': return <ModernTemplate {...CommonProps} />;
+      case 'Creative': return <CreativeTemplate {...CommonProps} />;
+      case 'Minimal': return <MinimalTemplate {...CommonProps} />;
+      default: return <StandardTemplate {...CommonProps} />;
+    }
+  }, [optimizedCvData, selectedTemplate]);
 
 
   const parseFile = useCallback(async (file: File): Promise<{ text: string; isScanned: boolean }> => {
@@ -768,28 +781,37 @@ Please provide a modified version that incorporates the user's request while kee
                     onChange={(e) => setJobDescriptionText(e.target.value)}
                     placeholder="Paste the complete job description here..."
                   />
+                  {/* Spacer container to align with Left Column's "Or select from database" block */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 invisible select-none" aria-hidden="true">
+                      {/* Matches the height/margin of the label in the left column */}
+                      <DatabaseIcon className="w-4 h-4" />
+                      <span className="text-sm font-medium">Or select from database:</span>
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        onClick={handleOptimize}
+                        disabled={!isFormValid || isLoading || isParsing || isScanning}
+                        className="w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-xl hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform hover:scale-[1.02] disabled:transform-none"
+                      >
+                        {isLoading ? (
+                          <>
+                            <LoadingSpinner />
+                            Optimizing...
+                          </>
+                        ) : (
+                          <>
+                            <SparkleIcon className="h-4 w-4" />
+                            Optimize CV
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex justify-center">
-              <button
-                onClick={handleOptimize}
-                disabled={!isFormValid || isLoading || isParsing || isScanning}
-                className="w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-xl hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform hover:scale-[1.02] disabled:transform-none"
-              >
-                {isLoading ? (
-                  <>
-                    <LoadingSpinner />
-                    Optimizing...
-                  </>
-                ) : (
-                  <>
-                    <SparkleIcon className="h-4 w-4" />
-                    Optimize CV
-                  </>
-                )}
-              </button>
-            </div>
+
           </div>
 
           {optimizedCvData && (
@@ -814,28 +836,15 @@ Please provide a modified version that incorporates the user's request while kee
                   </div>
                 )}
                 {optimizedCvData && (
-                  (() => {
-                    const CommonProps = { cvData: optimizedCvData };
-                    const TemplateMap: Record<TemplateType, React.ReactElement> = {
-                      'Standard': <StandardTemplate {...CommonProps} />,
-                      'Classic': <ClassicTemplate {...CommonProps} />,
-                      'Modern': <ModernTemplate {...CommonProps} />,
-                      'Creative': <CreativeTemplate {...CommonProps} />,
-                      'Minimal': <MinimalTemplate {...CommonProps} />,
-                    };
-
-                    return (
-                      <PDFViewer
-                        key={selectedTemplate} // Force remount on template change to prevent blank screen
-                        width="100%"
-                        height="100%"
-                        className="w-full h-full min-h-[600px] border-none"
-                        showToolbar={true}
-                      >
-                        {TemplateMap[selectedTemplate] || <StandardTemplate {...CommonProps} />}
-                      </PDFViewer>
-                    );
-                  })()
+                  <PDFViewer
+                    key={selectedTemplate}
+                    width="100%"
+                    height="100%"
+                    className="w-full h-full min-h-[600px] border-none"
+                    showToolbar={true}
+                  >
+                    {pdfDocument}
+                  </PDFViewer>
                 )}
                 {!isLoading && !error && !optimizedCvData && (
                   <div className="m-auto text-center text-slate-500">
