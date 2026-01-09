@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Svg, Path } from '@react-pdf/renderer';
 import { CvData } from '../../services/geminiService';
 import { cleanJobTitle } from '../../utils/cvHelpers';
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', // font-bold
         color: '#1F2937', // text-gray-800
         textTransform: 'uppercase', // uppercase
-        marginBottom: 8, // mb-2
+        marginBottom: 16, // Increased spacing as requested
         letterSpacing: 1, // tracking-wide
     },
     contactRow: {
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     contactText: {
         color: '#4B5563', // text-gray-600
         fontSize: 10, // text-sm
+        lineHeight: 1.2, // Fix alignment with icon
     },
 
     // Sections common styles
@@ -158,17 +159,32 @@ export const StandardTemplate = ({ cvData }: { cvData: CvData }) => (
                 <View style={styles.contactRow}>
                     {/* Location */}
                     <View style={styles.contactItem}>
-                        <Text style={styles.contactIcon}>📍</Text>
+                        <Svg viewBox="0 0 24 24" style={{ width: 10, height: 10, marginRight: 6, top: 1 }}>
+                            <Path
+                                fill="#4B5563"
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                            />
+                        </Svg>
                         <Text style={styles.contactText}>{cvData.contactInfo.location}</Text>
                     </View>
                     {/* Email */}
                     <View style={styles.contactItem}>
-                        <Text style={styles.contactIcon}>✉️</Text>
+                        <Svg viewBox="0 0 24 24" style={{ width: 10, height: 10, marginRight: 6, top: 1 }}>
+                            <Path
+                                fill="#4B5563"
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                            />
+                        </Svg>
                         <Text style={styles.contactText}>{cvData.contactInfo.email}</Text>
                     </View>
                     {/* Phone */}
                     <View style={styles.contactItem}>
-                        <Text style={styles.contactIcon}>📞</Text>
+                        <Svg viewBox="0 0 24 24" style={{ width: 10, height: 10, marginRight: 6, top: 1 }}>
+                            <Path
+                                fill="#4B5563"
+                                d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+                            />
+                        </Svg>
                         <Text style={styles.contactText}>{cvData.contactInfo.phone}</Text>
                     </View>
                 </View>
@@ -183,24 +199,47 @@ export const StandardTemplate = ({ cvData }: { cvData: CvData }) => (
             {/* Experience */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Professional Experience</Text>
-                {cvData.workExperience.map((job, index) => (
-                    <View key={index} style={styles.jobEntry}>
-                        <View style={styles.jobHeaderRow}>
-                            <Text style={styles.jobTitle}>{cleanJobTitle(job.jobTitle)}</Text>
-                            <Text style={styles.jobDate}>{job.dates}</Text>
-                        </View>
-                        <Text style={styles.companyName}>{job.company}</Text>
+                {cvData.workExperience.map((job, index) => {
+                    const responsibilities = job.responsibilities.slice(0, 4); // Keep existing 4-item limit
+                    const firstResponsibility = responsibilities[0];
+                    const remainingResponsibilities = responsibilities.slice(1);
 
-                        <View style={styles.bulletList}>
-                            {job.responsibilities.slice(0, 4).map((resp, i) => (
-                                <View key={i} style={styles.bulletItem}>
-                                    <Text style={styles.bulletDot}>•</Text>
-                                    <Text style={styles.bulletText}>{resp}</Text>
+                    return (
+                        <View key={index} style={styles.jobEntry} wrap={true}>
+                            {/* 
+                              Header Block: Keeps Job Info + First Responsibility together ("Header Glue") 
+                              wrap={false} ensures this block never breaks.
+                            */}
+                            <View wrap={false}>
+                                <View style={styles.jobHeaderRow}>
+                                    <Text style={styles.jobTitle} orphans={2} widows={2}>{cleanJobTitle(job.jobTitle)}</Text>
+                                    <Text style={styles.jobDate}>{job.dates}</Text>
                                 </View>
-                            ))}
+                                <Text style={styles.companyName} orphans={2} widows={2}>{job.company}</Text>
+
+                                {/* Render first bullet inside the glue block if it exists */}
+                                {firstResponsibility && (
+                                    <View style={styles.bulletList}>
+                                        <View style={styles.bulletItem} wrap={false}>
+                                            <Text style={styles.bulletDot}>•</Text>
+                                            <Text style={styles.bulletText} orphans={2} widows={2}>{firstResponsibility}</Text>
+                                        </View>
+                                    </View>
+                                )}
+                            </View>
+
+                            {/* Remaining bullets can flow to next page ("Fill the Gap") */}
+                            <View style={styles.bulletList}>
+                                {remainingResponsibilities.map((resp, i) => (
+                                    <View key={i} style={styles.bulletItem} wrap={false}>
+                                        <Text style={styles.bulletDot}>•</Text>
+                                        <Text style={styles.bulletText} orphans={2} widows={2}>{resp}</Text>
+                                    </View>
+                                ))}
+                            </View>
                         </View>
-                    </View>
-                ))}
+                    );
+                })}
             </View>
 
             {/* Education */}
