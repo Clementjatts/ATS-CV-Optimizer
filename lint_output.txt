@@ -1,0 +1,52 @@
+
+> ats-cv-optimizer@0.0.0 lint
+> eslint . --report-unused-disable-directives
+
+
+/Users/clementadegbenro/ATS-CV-Optimizer/src/App.tsx
+    1:35   warning  'useCallback' is defined but never used                          @typescript-eslint/no-unused-vars
+    2:32   warning  'CvData' is defined but never used                               @typescript-eslint/no-unused-vars
+    2:40   warning  'extractTextFromImagesWithGemini' is defined but never used      @typescript-eslint/no-unused-vars
+    2:73   warning  'enhanceCVWithGemini' is defined but never used                  @typescript-eslint/no-unused-vars
+    3:21   warning  'SavedCV' is defined but never used                              @typescript-eslint/no-unused-vars
+    4:10   warning  'fileStorageService' is defined but never used                   @typescript-eslint/no-unused-vars
+    5:10   warning  'sanitizeFileName' is defined but never used                     @typescript-eslint/no-unused-vars
+    6:10   warning  'CopyIcon' is defined but never used                             @typescript-eslint/no-unused-vars
+    6:20   warning  'DownloadIcon' is defined but never used                         @typescript-eslint/no-unused-vars
+    6:73   warning  'UploadIcon' is defined but never used                           @typescript-eslint/no-unused-vars
+    6:85   warning  'FileIcon' is defined but never used                             @typescript-eslint/no-unused-vars
+    6:95   warning  'TrashIcon' is defined but never used                            @typescript-eslint/no-unused-vars
+    6:106  warning  'CheckCircleIcon' is defined but never used                      @typescript-eslint/no-unused-vars
+    6:123  warning  'XCircleIcon' is defined but never used                          @typescript-eslint/no-unused-vars
+   13:7    warning  'PDFExportButton' is assigned a value but never used             @typescript-eslint/no-unused-vars
+   61:5    warning  'setError' is assigned a value but never used                    @typescript-eslint/no-unused-vars
+   67:10   warning  'templateChangeCounter' is assigned a value but never used       @typescript-eslint/no-unused-vars
+  421:76   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  421:100  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  421:105  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  421:135  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  431:62   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  431:90   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  431:95   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  431:127  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/clementadegbenro/ATS-CV-Optimizer/src/components/CVManager.tsx
+    9:3   warning  'PencilIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+   10:3   warning  'TagIcon' is defined but never used                                                                           @typescript-eslint/no-unused-vars
+   29:10  warning  'showSaveForm' is assigned a value but never used                                                             @typescript-eslint/no-unused-vars
+   53:6   warning  React Hook useEffect has a missing dependency: 'filterCVs'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+   97:9   warning  'handleSaveCV' is assigned a value but never used                                                             @typescript-eslint/no-unused-vars
+  201:9   warning  'addTag' is assigned a value but never used                                                                   @typescript-eslint/no-unused-vars
+  211:9   warning  'removeTag' is assigned a value but never used                                                                @typescript-eslint/no-unused-vars
+
+/Users/clementadegbenro/ATS-CV-Optimizer/src/components/PDFExportButton.tsx
+    1:17  warning  'Component' is defined but never used                                   @typescript-eslint/no-unused-vars
+  115:11  warning  'blob' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  115:17  warning  'url' is defined but never used. Allowed unused args must match /^_/u   @typescript-eslint/no-unused-vars
+
+/Users/clementadegbenro/ATS-CV-Optimizer/src/components/templates/CreativeTemplate.tsx
+  187:17  warning  'firstResp' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  188:17  warning  'remainingResp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 37 problems (8 errors, 29 warnings)
+
