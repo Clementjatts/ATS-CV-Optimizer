@@ -9,9 +9,17 @@ export const parseFile = async (file: File): Promise<{ text: string; isScanned: 
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
       const text = await page.getTextContent();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      interface TextItem {
+        str: string;
+        [key: string]: unknown;
+      }
       textContent +=
-        text.items.map((item: any) => ('str' in item ? item.str : '')).join(' ') + '\n';
+        text.items
+          .map((item: unknown) => {
+            const textItem = item as TextItem;
+            return 'str' in textItem ? textItem.str : '';
+          })
+          .join(' ') + '\n';
     }
     // Heuristic: If the PDF has pages but we extracted less than 50 words, it's likely a scanned document.
     const isScanned = pdf.numPages > 0 && textContent.trim().split(/\s+/).length < 50;

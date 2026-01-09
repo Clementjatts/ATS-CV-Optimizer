@@ -1,6 +1,28 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Mock Firebase
+vi.mock('firebase/app', () => ({
+  initializeApp: vi.fn(),
+}));
+
+vi.mock('firebase/auth', () => ({
+  getAuth: vi.fn(() => ({
+    currentUser: null,
+  })),
+}));
+
+vi.mock('firebase/firestore', () => ({
+  getFirestore: vi.fn(),
+}));
+
+vi.mock('firebase/storage', () => ({
+  getStorage: vi.fn(),
+  ref: vi.fn(),
+  uploadBytes: vi.fn(),
+  getDownloadURL: vi.fn(),
+}));
+
 // Mock HTML2Canvas
 vi.mock('html2canvas', () => ({
   default: vi.fn(() =>
@@ -98,13 +120,10 @@ global.URL.revokeObjectURL = vi.fn();
 
 // Mock HTMLElement properties for dimensions
 Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
-  get: function () {
-    return parseInt(this.style.width) || 800;
-  },
+  configurable: true,
+  value: 800,
 });
-
 Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
-  get: function () {
-    return parseInt(this.style.height) || 600;
-  },
+  configurable: true,
+  value: 600,
 });
