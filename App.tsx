@@ -11,181 +11,17 @@ const PDFExportButton = React.lazy(() => import('./components/PDFExportButton'))
 // Worker configuration will be handled dynamically
 
 
+import { PDFViewer } from '@react-pdf/renderer';
+import { StandardTemplate } from './components/templates/StandardTemplate';
+import { ClassicTemplate } from './components/templates/ClassicTemplate';
+import { ModernTemplate } from './components/templates/ModernTemplate';
+import { CreativeTemplate } from './components/templates/CreativeTemplate';
+import { MinimalTemplate } from './components/templates/MinimalTemplate';
+
 // Template types
-type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
-
-// Clean up job titles to show only the primary role
-const cleanJobTitle = (title: string): string => {
-  if (!title) return title;
-
-  // Remove everything after common separators
-  const separators = ['|', ' - ', ' – ', ' — ', ' (', ' [', ' / '];
-
-  for (const separator of separators) {
-    const index = title.indexOf(separator);
-    if (index > 0) {
-      title = title.substring(0, index).trim();
-    }
-  }
-
-  // Remove common suffixes
-  const suffixes = [
-    ' | Transferable Skills',
-    ' - Transferable Skills',
-    ' (Transferable Skills)',
-    ' | Additional Qualifications',
-    ' - Additional Qualifications'
-  ];
-
-  for (const suffix of suffixes) {
-    if (title.includes(suffix)) {
-      title = title.replace(suffix, '').trim();
-    }
-  }
-
-  return title;
-};
-
-// Modern Professional CV Display Component
-const CvDisplay: React.FC<{ cvData: CvData; keywords?: string[] }> = ({ cvData, keywords }) => {
-  return (
-    <div id="cv-container" className="bg-white p-6 md:p-8 text-black font-[calibri] text-[10pt] leading-normal w-full max-w-3xl mx-auto">
-
-      {/* PROFILE HEADER */}
-      <header className="text-center border-b-2 border-gray-300 pb-4 mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 uppercase tracking-wide mb-2">{cvData.fullName}</h1>
-        <div className="flex flex-wrap justify-center items-center gap-3 text-sm text-gray-600">
-          <span className="flex items-center gap-1">
-            <span className="text-gray-600">📍</span>
-            {cvData.contactInfo.location}
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="text-gray-600">✉️</span>
-            {cvData.contactInfo.email}
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="text-gray-600">📞</span>
-            {cvData.contactInfo.phone}
-          </span>
-        </div>
-
-      </header>
-
-      {/* PROFESSIONAL SUMMARY */}
-      <section className="cv-section">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-3">
-          Professional Summary
-        </h2>
-        <div className="professional-summary">
-          <p className="text-gray-700 leading-relaxed text-justify">{cvData.professionalSummary}</p>
-        </div>
-
-      </section>
-
-      {/* PROFESSIONAL EXPERIENCE */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
-          Professional Experience
-        </h2>
-        <div className="space-y-6">
-          {cvData.workExperience.map((job, index) => (
-            <div key={index} className="job-entry pr-4">
-              {/* Flex container for the main heading */}
-              <div className="flex justify-between items-baseline mb-2">
-                <h3 className="text-base font-bold text-gray-800">{cleanJobTitle(job.jobTitle)}</h3>
-                <p className="text-sm text-gray-600 font-medium">{job.dates}</p>
-              </div>
-              {/* Sub-heading for the company */}
-              <p className="text-base font-semibold text-blue-600 mb-3">{job.company}</p>
-              {/* Responsibilities list */}
-              <ul className="cv-list cv-list--experience space-y-1">
-                {job.responsibilities.slice(0, 4).map((resp, i) => (
-                  <li key={i} className="text-sm text-gray-700">
-                    {resp}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* EDUCATION */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
-          Education
-        </h2>
-        <div className="space-y-4">
-          {cvData.education.map((edu, index) => (
-            <div key={index} className="education-entry flex justify-between items-start flex-nowrap break-inside-avoid">
-              <div>
-                <h3 className="text-base font-bold text-gray-800">{edu.institution}</h3>
-                <p className="text-sm text-gray-600">{edu.degree}</p>
-              </div>
-              <span className="text-sm font-semibold text-gray-600">{edu.dates}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+type TemplateType = 'Standard' | 'Classic' | 'Modern' | 'Creative' | 'Minimal';
 
 
-      {/* KEY SKILLS & COMPETENCIES */}
-      <section className="cv-section mb-6">
-        <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-400 pb-1 mb-4">
-          Key Skills & Competencies
-        </h2>
-        <div className="skills-grid">
-          {(() => {
-            // Ensure even number of skills between 12-14
-            let skillsToShow = cvData.skills.slice(0, 14); // Take first 14 skills max
-
-            // If we have less than 12 skills, pad with empty items to reach 12
-            while (skillsToShow.length < 12) {
-              skillsToShow.push('');
-            }
-
-            // Ensure even number
-            if (skillsToShow.length % 2 !== 0) {
-              skillsToShow = skillsToShow.slice(0, -1); // Remove last item to make even
-            }
-
-            // If we have more than 14, trim to 14 and ensure even
-            if (skillsToShow.length > 14) {
-              skillsToShow = skillsToShow.slice(0, 14);
-              if (skillsToShow.length % 2 !== 0) {
-                skillsToShow = skillsToShow.slice(0, -1);
-              }
-            }
-
-            const halfLength = skillsToShow.length / 2;
-            const leftColumn = skillsToShow.slice(0, halfLength);
-            const rightColumn = skillsToShow.slice(halfLength);
-
-            return (
-              <>
-                <ul className="cv-list cv-list--skills text-left">
-                  {leftColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-                <ul className="cv-list cv-list--skills text-left">
-                  {rightColumn.map((skill, index) => (
-                    <li key={index} className="text-sm text-gray-700 break-inside-avoid text-left">
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            );
-          })()}
-        </div>
-      </section>
-
-    </div>
-  );
-};
 
 
 const LabeledTextarea: React.FC<{
@@ -326,6 +162,7 @@ const FileInput: React.FC<FileInputProps> = ({ id, label, file, onFileChange, on
 
 export default function App() {
   const [userCvFile, setUserCvFile] = useState<File | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null); // Ref for auto-scroll
   const [userCvText, setUserCvText] = useState('');
   const [jobDescriptionText, setJobDescriptionText] = useState('');
   const [optimizedCvData, setOptimizedCvData] = useState<CvData | null>(null);
@@ -334,7 +171,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
 
   // Template selection state
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('Classic');
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('Standard');
   const [templateChangeCounter, setTemplateChangeCounter] = useState(0);
 
   // UI state for sections
@@ -418,6 +255,15 @@ export default function App() {
     return await extractTextFromImagesWithGemini(base64Images);
   };
 
+
+  // Auto-scroll to results when optimization is complete
+  React.useEffect(() => {
+    if (optimizedCvData && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [optimizedCvData]);
 
   const handleFileChange = async (file: File) => {
     if (!file) return;
@@ -784,7 +630,23 @@ Please provide a modified version that incorporates the user's request while kee
               {/* Template Selection UI */}
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Choose CV Template</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  <button
+                    onClick={() => {
+                      try {
+                        setSelectedTemplate('Standard');
+                        setTemplateChangeCounter(prev => prev + 1);
+                      } catch (error) {
+                        console.error('Template selection error:', error);
+                      }
+                    }}
+                    className={`p-3 rounded-lg font-medium text-sm transition-all duration-200 ${selectedTemplate === 'Standard'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                      }`}
+                  >
+                    ⭐ Standard
+                  </button>
                   <button
                     onClick={() => {
                       try {
@@ -931,7 +793,7 @@ Please provide a modified version that incorporates the user's request while kee
           </div>
 
           {optimizedCvData && (
-            <div className="bg-gradient-to-br from-white/95 via-pink-50/95 to-purple-50/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border border-pink-200/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 flex flex-col">
+            <div ref={resultsRef} className="bg-gradient-to-br from-white/95 via-pink-50/95 to-purple-50/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border border-pink-200/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 flex flex-col">
               <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Your Optimized CV
               </h2>
@@ -952,9 +814,28 @@ Please provide a modified version that incorporates the user's request while kee
                   </div>
                 )}
                 {optimizedCvData && (
-                  <div className="flex-grow overflow-auto">
-                    <CvDisplay cvData={optimizedCvData} keywords={optimizedCvData.optimizationDetails.keywordsIntegrated} />
-                  </div>
+                  (() => {
+                    const CommonProps = { cvData: optimizedCvData };
+                    const TemplateMap: Record<TemplateType, React.ReactElement> = {
+                      'Standard': <StandardTemplate {...CommonProps} />,
+                      'Classic': <ClassicTemplate {...CommonProps} />,
+                      'Modern': <ModernTemplate {...CommonProps} />,
+                      'Creative': <CreativeTemplate {...CommonProps} />,
+                      'Minimal': <MinimalTemplate {...CommonProps} />,
+                    };
+
+                    return (
+                      <PDFViewer
+                        key={selectedTemplate} // Force remount on template change to prevent blank screen
+                        width="100%"
+                        height="100%"
+                        className="w-full h-full min-h-[600px] border-none"
+                        showToolbar={true}
+                      >
+                        {TemplateMap[selectedTemplate] || <StandardTemplate {...CommonProps} />}
+                      </PDFViewer>
+                    );
+                  })()
                 )}
                 {!isLoading && !error && !optimizedCvData && (
                   <div className="m-auto text-center text-slate-500">
@@ -966,19 +847,7 @@ Please provide a modified version that incorporates the user's request while kee
               {optimizedCvData && (
                 <div className="mt-6 space-y-4">
                   <div className="flex gap-3">
-                    <Suspense fallback={
-                      <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-lg opacity-70 cursor-wait">
-                        <LoadingSpinner className="h-4 w-4" />
-                        Loading PDF...
-                      </button>
-                    }>
-                      <PDFExportButton
-                        key={`pdf-${selectedTemplate}-${templateChangeCounter}`}
-                        template={selectedTemplate}
-                        cvData={optimizedCvData}
-                        fileName={`${sanitizeFileName(jobTitle || optimizedCvData.fullName)}.pdf`}
-                      />
-                    </Suspense>
+
 
                     <button
                       onClick={handleSaveCurrentCV}

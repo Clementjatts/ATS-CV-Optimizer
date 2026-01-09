@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { PDFDownloadLink, Font } from '@react-pdf/renderer';
 import { ClassicTemplate } from './templates/ClassicTemplate';
 import { ModernTemplate } from './templates/ModernTemplate';
@@ -6,6 +6,8 @@ import { CreativeTemplate } from './templates/CreativeTemplate';
 import { MinimalTemplate } from './templates/MinimalTemplate';
 import { DownloadIcon, XCircleIcon } from './icons';
 import { CvData } from '../services/geminiService';
+
+import { StandardTemplate } from './templates/StandardTemplate';
 
 // Register custom fonts for better typography
 Font.register({
@@ -32,19 +34,29 @@ Font.register({
   ],
 });
 
-type TemplateType = 'Classic' | 'Modern' | 'Creative' | 'Minimal';
+type TemplateType = 'Standard' | 'Classic' | 'Modern' | 'Creative' | 'Minimal';
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  fallback: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
 
 // Error boundary component for PDF templates
-class PDFErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
+class PDFErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any) {
+  // Explicitly declare properties since @types/react is missing
+  declare state: ErrorBoundaryState;
+  declare props: ErrorBoundaryProps;
+
+  static getDerivedStateFromError(error: any): ErrorBoundaryState {
     console.error('PDF Template Error:', error);
     return { hasError: true };
   }
@@ -63,12 +75,14 @@ class PDFErrorBoundary extends React.Component<
 
 // Helper component to render the correct template based on state
 const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData: CvData }) => {
-  const fallbackTemplate = <ClassicTemplate cvData={cvData} />;
-  
+  const fallbackTemplate = <StandardTemplate cvData={cvData} />;
+
   return (
     <PDFErrorBoundary fallback={fallbackTemplate}>
       {(() => {
         switch (template) {
+          case 'Standard':
+            return <StandardTemplate cvData={cvData} />;
           case 'Modern':
             return <ModernTemplate cvData={cvData} />;
           case 'Creative':
@@ -76,8 +90,9 @@ const TemplateRenderer = ({ template, cvData }: { template: TemplateType; cvData
           case 'Minimal':
             return <MinimalTemplate cvData={cvData} />;
           case 'Classic':
-          default:
             return <ClassicTemplate cvData={cvData} />;
+          default:
+            return <StandardTemplate cvData={cvData} />;
         }
       })()}
     </PDFErrorBoundary>
